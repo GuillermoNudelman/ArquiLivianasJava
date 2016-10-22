@@ -32,5 +32,17 @@ public class ConvenioServiceImpl implements ConvenioService {
         System.out.println("listConvenios ");
         return this.convenioDao.listConvenios();
     }
+    
+    @Override
+    @Transactional
+    public Convenio buscarConvenio(String codigo) {
+        return this.convenioDao.buscarConvenio(codigo);
+    }
+    
+    
+    @Override
+    public void editarConvenio(Convenio convenio) {
+          this.convenioDao.editarConvenio(convenio);
+    }
 }
 

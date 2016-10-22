@@ -1,5 +1,8 @@
 package uy.edu.ort;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -59,7 +62,7 @@ public class MainUserService {
        
                 
         System.out.println("Bienvenido a sistema de gestion de Cadetify!");
-        String[] menu = {"Manejo Camionetas", "Terminar"};
+        String[] menu = {"Manejo Camionetas", "Manejo Convenios", "Terminar"};
         int opcion = 0;
         Scanner in = new Scanner(System.in);
         while (opcion != menu.length) {
@@ -75,6 +78,10 @@ public class MainUserService {
                    break;
                 }
                 case 2: {
+                   InterfazConvenio.ConvenioInferfaz(applicationContext);
+                   break;
+                }
+                case 3: {
                     
                      break;
                 }
@@ -91,7 +98,7 @@ public class MainUserService {
             try {
                 verificacion = in.nextInt();
                 while (verificacion < 1 || verificacion > unLargo) {
-                    System.out.println("El numero tiene que perteneser al rango especificado, intente nuevamente");
+                    System.out.println("El numero tiene que pertenecer al rango especificado, intente nuevamente");
                     verificacion = in.nextInt();
                 }
             } catch (InputMismatchException e) {
@@ -109,7 +116,7 @@ public class MainUserService {
             try {
                 verificacion = in.nextInt();
                 if (verificacion < 1) {
-                    System.out.println("Dato no valido, el numero debe ser positivo , intente nuevamente");
+                    System.out.println("Dato no valido, el numero debe ser positivo, intente nuevamente");
                     verificacion = 0;
                 }
             } catch (InputMismatchException e) {
@@ -119,6 +126,23 @@ public class MainUserService {
             }
         }
         return verificacion;
-
+    }
+     
+     public static Date esFecha(String fecha) { 
+        Scanner in = new Scanner(System.in);
+        boolean fechaCorrecta = false;
+        Date date = new Date();
+        while(!fechaCorrecta){
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
+            String dateInString = fecha;
+            try {
+                date = formatter.parse(dateInString);
+                fechaCorrecta = true;
+            } catch (ParseException e) {
+                System.out.println("error en fecha, reingrese: ");
+                fecha = in.nextLine();
+            }
+        }
+        return date;
     }
 }

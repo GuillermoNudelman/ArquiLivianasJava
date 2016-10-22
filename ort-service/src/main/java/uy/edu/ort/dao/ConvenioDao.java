@@ -10,5 +10,9 @@ public interface ConvenioDao {
     void removeConvenio(Convenio convenio);
 
     List<Convenio> listConvenios();
+
+    Convenio buscarConvenio(String codigo);
+    
+    void editarConvenio(Convenio convenio);
 }
 

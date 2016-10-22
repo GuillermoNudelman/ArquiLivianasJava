@@ -10,5 +10,9 @@ public interface ConvenioService {
     public void removeConvenio(Convenio convenio);
 
     public List<Convenio> listConvenio();
+    
+    public Convenio buscarConvenio(String codigo);
+    
+    void editarConvenio(Convenio convenio);
 }
 

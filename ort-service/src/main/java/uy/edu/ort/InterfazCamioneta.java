@@ -40,7 +40,7 @@ public final class InterfazCamioneta {
                     camioneta.setCapacidadKgs(esPositivo(in));
                     System.out.println("Kilometros Recorridos :");
                     camioneta.setKmsRecorridos(esPositivo(in));
-                    System.out.println("kmsRecorridos :");
+                    System.out.println("Kilometros restantes para realizar service:");
                     camioneta.setKmsProxService(esPositivo(in));                    
                     camionetaService.addCamioneta(camioneta);
                     
@@ -58,7 +58,7 @@ public final class InterfazCamioneta {
                         camioneta.setCapacidadKgs(esPositivo(in));
                         System.out.println("Kilometros Recorridos :");
                         camioneta.setKmsRecorridos(esPositivo(in));
-                        System.out.println("kmsRecorridos :");
+                        System.out.println("Kilometros restantes para realizar service:");
                         camioneta.setKmsProxService(esPositivo(in));                    
                         camionetaService.addCamioneta(camioneta);
                     }
@@ -76,10 +76,21 @@ public final class InterfazCamioneta {
                     break;
                 }
                 case 4: {
-                    
+                    Long proxService = Long.MAX_VALUE;
+                    System.out.println("Cantidad maxima de kilometros para realizar próximo service (dejar en blanco si no se usa filtro):");
+                    try {
+                        String entrada = in.nextLine();
+                        if (entrada != "") {
+                            proxService = Long.valueOf(entrada);
+                        }
+                    } catch (NumberFormatException e) {  
+                        System.out.println("Número invalido, no se aplicará este filtro.");
+                     } 
                     List<Camioneta> camionetas = camionetaService.listCamioneta();
                     for (Camioneta c : camionetas) {
-                        System.out.println(c);
+                        if (c.getKmsProxService() <= proxService) {
+                            System.out.println(c);
+                        }
                     }
                     break;
                 }
