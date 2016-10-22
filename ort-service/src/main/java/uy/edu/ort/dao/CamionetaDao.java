@@ -11,6 +11,8 @@ public interface CamionetaDao {
     
     Camioneta buscarCamioneta(String codigo);
 
+    Camioneta buscarCamionetaPorCodigo(int idCamioneta);
+    
     List<Camioneta> listCamionetas();
     
     void editarCamioneta(Camioneta camioneta);

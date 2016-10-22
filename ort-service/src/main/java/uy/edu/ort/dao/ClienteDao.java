@@ -11,7 +11,7 @@ public interface ClienteDao {
 
     List<Cliente> listCliente();
     
-    Cliente buscarCliente(String codigo);
+    Cliente buscarClientePorNombreEmpresa(String nombreEmpresa);
     
     void editarCliente(Cliente cliente);
 }

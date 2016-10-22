@@ -28,15 +28,16 @@ public class ClienteDaoHibTemplateImpl implements ClienteDao{
         return clientes;
     }
     
-    @Override
-    public Cliente buscarCliente(String codigo) {
-        Object[] params  = {codigo};        
-        List<Cliente> clientes = (List<Cliente>) hibernateTemplate.find("select c from Cliente c where c.nombreempresa = ?", params);
-        return clientes.isEmpty() ? null : clientes.get(0);
-    }
 
     @Override
     public void editarCliente(Cliente cliente) {
         this.hibernateTemplate.update(cliente);
+    }
+    
+    @Override
+    public Cliente buscarClientePorNombreEmpresa(String codigo) {
+        Object[] params  = {codigo};        
+        List<Cliente> clientes = (List<Cliente>) hibernateTemplate.find("select c from Cliente c where c.nombreEmpresa = ?", params);
+        return clientes.isEmpty() ? null : clientes.get(0);
     }
 }

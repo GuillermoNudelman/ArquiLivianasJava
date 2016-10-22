@@ -11,7 +11,9 @@ public interface ClienteService {
 
     public List<Cliente> listCliente();
     
-    public Cliente buscarCliente(String codigo);
     
     void editarCliente(Cliente cliente);
+    
+    public Cliente buscarClientePorNombreEmpresa(String codigo);
+    
 }

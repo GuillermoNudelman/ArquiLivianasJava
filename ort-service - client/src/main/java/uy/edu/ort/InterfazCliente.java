@@ -47,7 +47,7 @@ public final class InterfazCliente {
                 }
                 case 2: {
                     System.out.println("Nombre de la Empresa: ");
-                    Cliente cliente = clienteService.buscarCliente(in.nextLine());
+                    Cliente cliente = clienteService.buscarClientePorNombreEmpresa(in.nextLine());
                     if(cliente == null){
                         System.out.println("No existe el cliente ingresado.");
                     }else{
@@ -58,15 +58,17 @@ public final class InterfazCliente {
                         cliente.setTelefono((int) esPositivo(in));
                         System.out.println("Nombre de contacto: ");
                         cliente.setNombreContacto(in.nextLine());       
-                        clienteService.editarCliente(cliente);
+                        clienteService.removeCliente(cliente);
+                        clienteService.addCliente(cliente);
+                        //camionetaService.editarCamioneta(camioneta);
                     }
                     break;
                 }
                 case 3: {                   
                     System.out.println("Ingrese nombre de la empresa: ");
-                    Cliente cliente = clienteService.buscarCliente(in.nextLine());
+                    Cliente cliente = clienteService.buscarClientePorNombreEmpresa(in.nextLine());
                     if(cliente == null){
-                        System.out.println("No existe un cliente con ese codigo.");
+                        System.out.println("No existe un cliente con ese nombre de empresa.");
                     }else{
                         clienteService.removeCliente(cliente);
                         System.out.println("El cliente ha sido eliminado con exito.");

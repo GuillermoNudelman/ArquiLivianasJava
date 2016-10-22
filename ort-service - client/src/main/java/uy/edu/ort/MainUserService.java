@@ -28,41 +28,10 @@ public class MainUserService {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
        
-        //ClienteService clienteService = (ClienteService) applicationContext.getBean("clienteService");
-        /*Cliente cliente = new Cliente();
-        cliente.setNombreContacto("Nombre1");
-        cliente.setNombreEmpresa("NombreEmp1");
-        clienteService.addCliente(cliente);
-
-        Cliente cliente2 = new Cliente();
-        cliente2.setNombreContacto("Nombre2");
-        cliente2.setNombreEmpresa("NombreEmp2");
-        clienteService.addCliente(cliente2);
-
-        List<Cliente> clientes = clienteService.listCliente();
-        for (Cliente c : clientes) {
-            System.out.println(c);
-        }
-        
         PaqueteService paqueteService = (PaqueteService) applicationContext.getBean("paqueteService");
-        Paquete paquete = new Paquete();
-        paquete.setCliente(cliente);
-        paquete.setCodigo("Cod1g0");
-        paquete.setCosto(123);
-        paquete.setDescripcion("descripcion");
-        paquete.setPeso(321);
-        paqueteService.addPaquete(paquete);
-        
-        List<Paquete> paquetes = paqueteService.listPaquetes();
-        for (Paquete p : paquetes) {
-            System.out.println(p);
-        }*/
-        
-        PaqueteService paqueteService = (PaqueteService) applicationContext.getBean("paqueteService");
-       
-                
+                        
         System.out.println("Bienvenido a sistema de gestion de Cadetify!");
-        String[] menu = {"Manejo Camionetas", "Manejo Convenios", "Terminar"};
+        String[] menu = {"Manejo Camionetas", "Manejo Convenios", "Manejo Clientes", "Terminar"};
         int opcion = 0;
         Scanner in = new Scanner(System.in);
         while (opcion != menu.length) {
@@ -82,6 +51,10 @@ public class MainUserService {
                    break;
                 }
                 case 3: {
+                   InterfazCliente.ClienteInferfaz(applicationContext);
+                   break;
+                }
+                case 4: {
                     
                      break;
                 }
@@ -125,6 +98,7 @@ public class MainUserService {
                 in.nextLine();
             }
         }
+        in.nextLine();
         return verificacion;
     }
      

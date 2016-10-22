@@ -68,8 +68,10 @@ public final class InterfazCamioneta {
                         System.out.println("Kilometros Recorridos: ");
                         camioneta.setKmsRecorridos(esPositivo(in));
                         System.out.println("Kilometros restantes para realizar service: ");
-                        camioneta.setKmsProxService(esPositivo(in));                    
-                        camionetaService.editarCamioneta(camioneta);
+                        camioneta.setKmsProxService(esPositivo(in));
+                        camionetaService.removeCamioneta(camioneta);
+                        camionetaService.addCamioneta(camioneta);
+                        //camionetaService.editarCamioneta(camioneta);
                     }
                     break;
                 }
