@@ -10,4 +10,8 @@ public interface ClienteDao {
     void removeCliente(Cliente cliente);
 
     List<Cliente> listCliente();
+    
+    Cliente buscarCliente(String codigo);
+    
+    void editarCliente(Cliente cliente);
 }

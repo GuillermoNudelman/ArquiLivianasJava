@@ -8,9 +8,10 @@ import uy.edu.ort.model.Camioneta;
 public class CamionetaDaoHibTemplateImpl implements CamionetaDao {
 
     private HibernateTemplate hibernateTemplate;
-
+    
     public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
         this.hibernateTemplate = hibernateTemplate;
+        this.hibernateTemplate.setCheckWriteOperations(false);
     }
 
     @Override

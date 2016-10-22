@@ -11,25 +11,57 @@
           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
    
+        
     <!-- Beans Cliente -->
+    
+    <bean id="clienteServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <!-- puede tener cualquier nombre-->
+        <property name="serviceName" value="ClienteService" />
+        <property name="service" ref="clienteService" />
+        <property name="serviceInterface" value="uy.edu.ort.service.ClienteService" />
+        <!-- default 1099 -->
+        <property name="registryPort" value="1199" />
+    </bean>
+    
     <bean id="clienteService" class="uy.edu.ort.service.ClienteServiceImpl">
         <property name="clienteDao" ref="clienteDao"/>
     </bean>
 
     <bean id="clienteDao" class="uy.edu.ort.dao.ClienteDaoHibTemplateImpl">
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
-    </bean>
+    </bean>   
     
     <!-- Beans Paquete -->
+    
+    <bean id="paqueteServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <!-- puede tener cualquier nombre-->
+        <property name="serviceName" value="PaqueteService" />
+        <property name="service" ref="paqueteService" />
+        <property name="serviceInterface" value="uy.edu.ort.service.PaqueteService" />
+        <!-- default 1099 -->
+        <property name="registryPort" value="1199" />
+    </bean>
+    
     <bean id="paqueteService" class="uy.edu.ort.service.PaqueteServiceImpl">
         <property name="paqueteDao" ref="paqueteDao"/>
     </bean>
 
     <bean id="paqueteDao" class="uy.edu.ort.dao.PaqueteDaoHibTemplateImpl">
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
-    </bean>
+    </bean>   
+    
     
     <!-- Beans Camioneta -->
+    
+    <bean id="camionetaServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <!-- puede tener cualquier nombre-->
+        <property name="serviceName" value="CamionetaService" />
+        <property name="service" ref="camionetaService" />
+        <property name="serviceInterface" value="uy.edu.ort.service.CamionetaService" />
+        <!-- default 1099 -->
+        <property name="registryPort" value="1199" />
+    </bean>
+    
     <bean id="camionetaService" class="uy.edu.ort.service.CamionetaServiceImpl">
         <property name="camionetaDao" ref="camionetaDao"/>
     </bean>
@@ -38,23 +70,46 @@
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>
     
+    
+    
     <!-- Beans Entrega -->
+    
+    <bean id="entregaServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <!-- puede tener cualquier nombre-->
+        <property name="serviceName" value="EntregaService" />
+        <property name="service" ref="entregaService" />
+        <property name="serviceInterface" value="uy.edu.ort.service.EntregaService" />
+        <!-- default 1099 -->
+        <property name="registryPort" value="1199" />
+    </bean>
+    
     <bean id="entregaService" class="uy.edu.ort.service.EntregaServiceImpl">
         <property name="entregaDao" ref="entregaDao"/>
     </bean>
 
     <bean id="entregaDao" class="uy.edu.ort.dao.EntregaDaoHibTemplateImpl">
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
-    </bean>
+    </bean>   
+    
     
     <!-- Beans Convenio -->
+    
+    <bean id="convenioServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <!-- puede tener cualquier nombre-->
+        <property name="serviceName" value="ConvenioService" />
+        <property name="service" ref="convenioService" />
+        <property name="serviceInterface" value="uy.edu.ort.service.ConvenioService" />
+        <!-- default 1099 -->
+        <property name="registryPort" value="1199" />
+    </bean>
+    
     <bean id="convenioService" class="uy.edu.ort.service.ConvenioServiceImpl">
         <property name="convenioDao" ref="convenioDao"/>
     </bean>
 
     <bean id="convenioDao" class="uy.edu.ort.dao.ConvenioDaoHibTemplateImpl">
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
-    </bean>
+    </bean>     
 
     <!-- Hibernate Template -->
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">

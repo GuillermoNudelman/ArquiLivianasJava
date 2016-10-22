@@ -34,5 +34,15 @@ public class ClienteServiceImpl implements ClienteService{
         return this.clienteDao.listCliente();
     }
     
+    @Override
+    @Transactional
+    public Cliente buscarCliente(String codigo) {
+        return this.clienteDao.buscarCliente(codigo);
+    }
     
+    
+    @Override
+    public void editarCliente(Cliente cliente) {
+          this.clienteDao.editarCliente(cliente);
+    }
 }
