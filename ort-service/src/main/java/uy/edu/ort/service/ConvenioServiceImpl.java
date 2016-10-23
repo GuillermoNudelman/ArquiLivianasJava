@@ -41,6 +41,7 @@ public class ConvenioServiceImpl implements ConvenioService {
     
     
     @Override
+    @Transactional
     public void editarConvenio(Convenio convenio) {
           this.convenioDao.editarConvenio(convenio);
     }

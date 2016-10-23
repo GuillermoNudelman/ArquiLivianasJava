@@ -28,7 +28,6 @@ public class Paquete extends EntidadGenerica{
     private Cliente cliente;
 
     public Paquete(String codigo, Date fechaCreacion, int costo, int peso, String descripcion, Cliente cliente) {
-        
         this.codigo = codigo;
         this.fechaCreacion = fechaCreacion;
         this.costo = costo;

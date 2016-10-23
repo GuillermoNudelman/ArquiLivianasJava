@@ -19,8 +19,6 @@ public class Entrega extends EntidadGenerica{
     
     @OneToMany
     private List<Paquete> listaPaquetes;
-   
-
 
     @Column
     private int distanciaRecorrerKm;

@@ -10,4 +10,11 @@ public interface EntregaService {
     public void removeEntrega(Entrega entrega);
 
     public List<Entrega> listEntrega();
+    
+    public Entrega buscarEntrega(String codigo);
+    
+    public void editarEntrega(Entrega entrega);
+    
+    public void sumarDistancia(Entrega entrega, int distancia);
+    
 }

@@ -11,4 +11,7 @@ public interface PaqueteDao {
 
     List<Paquete> listPaquetes();
     
+    Paquete buscarPaquete(String codigo);
+    
+    void editarPaquete(Paquete paquete);
 }

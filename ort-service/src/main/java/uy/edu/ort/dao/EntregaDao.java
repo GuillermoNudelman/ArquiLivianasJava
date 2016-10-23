@@ -10,4 +10,10 @@ public interface EntregaDao {
     void removeEntrega(Entrega entrega);
 
     List<Entrega> listEntregas();
+    
+    Entrega buscarEntrega(String codigo);
+    
+    void editarEntrega(Entrega entrega);
+    
+    void sumarDistancia(Entrega entrega, int distancia);
 }

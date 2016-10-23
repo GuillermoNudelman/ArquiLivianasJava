@@ -27,5 +27,24 @@ public class EntregaDaoHibTemplateImpl implements EntregaDao {
         List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("select e from Entrega e");
         return entregas;
     }
+    
+    @Override
+    public Entrega buscarEntrega(String codigo) {
+        Object[] params  = {codigo};        
+        List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("select e from Entrega e where e.codigo = ?", params);
+        return entregas.isEmpty() ? null : entregas.get(0);
+    }
+
+    @Override
+    public void editarEntrega(Entrega entrega) {
+        //TODO
+        this.hibernateTemplate.update(entrega);
+    }
+    
+    
+    @Override
+    public void sumarDistancia(Entrega entrega, int distancia){
+    //TODO
+    }
 }
 

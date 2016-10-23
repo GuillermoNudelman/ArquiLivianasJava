@@ -34,6 +34,23 @@ public class EntregaServiceImpl implements EntregaService {
         System.out.println("listEntrega ");
         return this.entregaDao.listEntregas();
     }
+    
+    @Override
+    @Transactional
+    public Entrega buscarEntrega(String codigo) {
+        return this.entregaDao.buscarEntrega(codigo);
+    }
+    
+    @Override
+    @Transactional
+    public void editarEntrega(Entrega entrega) {
+          this.entregaDao.editarEntrega(entrega);
+    }
 
+    @Override
+    @Transactional
+    public void sumarDistancia(Entrega entrega, int distancia){
+    //TODO
+    }
 }
 

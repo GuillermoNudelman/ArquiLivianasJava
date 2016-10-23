@@ -34,4 +34,17 @@ public class PaqueteServiceImpl implements PaqueteService {
         return this.paqueteDao.listPaquetes();
     }
     
+    @Override
+    @Transactional
+    public Paquete buscarPaquete(String codigo) {
+        return this.paqueteDao.buscarPaquete(codigo);
+    }
+    
+    
+    @Override
+    @Transactional
+    public void editarPaquete(Paquete paquete) {
+          this.paqueteDao.editarPaquete(paquete);
+    }
+    
 }
