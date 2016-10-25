@@ -13,9 +13,11 @@ public class Convenio extends EntidadGenerica{
     @Column
     private Date fechaCreacion;
     
+    /*
     @OneToOne
     @JoinColumn(name="cliente_fk")
     private Cliente cliente;
+    */
     
     @Column
     private int importeInicialConvenio;
@@ -23,15 +25,22 @@ public class Convenio extends EntidadGenerica{
     @Column
     private int importeActualConvenio;
     
+    @Column
+    private boolean estaEnUso;
+    
+    @ManyToOne(fetch=FetchType.EAGER)
+    private Cliente cliente;
+    
     public Convenio() {
     }
 
-    public Convenio(String codigo, Date fechaCreacion, /*Cliente cliente, */ int importeInicialConvenio, int importeActualConvenio) {
+    public Convenio(String codigo, Date fechaCreacion, Cliente cliente, int importeInicialConvenio, boolean estaEnUso, int importeActualConvenio) {
         this.codigo = codigo;
         this.fechaCreacion = fechaCreacion;
         this.cliente = cliente;
         this.importeInicialConvenio = importeInicialConvenio;
         this.importeActualConvenio = importeActualConvenio;
+        this.estaEnUso = estaEnUso;
     }
 
     public String getCodigo() {
@@ -70,6 +79,7 @@ public class Convenio extends EntidadGenerica{
         return "Code  : " + codigo;
     }
 
+    
     public Cliente getCliente() {
         return cliente;
     }
@@ -77,4 +87,15 @@ public class Convenio extends EntidadGenerica{
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+    
+
+    public boolean isEstaEnUso() {
+        return estaEnUso;
+    }
+
+    public void setEstaEnUso(boolean estaEnUso) {
+        this.estaEnUso = estaEnUso;
+    }
+    
+    
 }

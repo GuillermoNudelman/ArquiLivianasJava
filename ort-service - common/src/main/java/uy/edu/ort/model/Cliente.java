@@ -1,5 +1,6 @@
 package uy.edu.ort.model;
 
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -16,15 +17,22 @@ public class Cliente extends EntidadGenerica{
     
     @Column
     private int telefono;
+    
+    /*
+    @OneToMany(fetch=FetchType.EAGER)
+    private List<Convenio> listaConvenios;
+*/
 
     public Cliente() {
     }
 
-    public Cliente(String nombreContacto, String nombreEmpresa, String direccion, int telefono) {
+    public Cliente(String nombreContacto, String nombreEmpresa, String direccion, int telefono/*, List<Convenio> listaConvenios*/) {
         this.nombreContacto = nombreContacto;
         this.nombreEmpresa = nombreEmpresa;
         this.direccion = direccion;
         this.telefono = telefono;
+        /*
+        this.listaConvenios = listaConvenios;*/
     }
 
     public String getNombreContacto() {
@@ -58,6 +66,22 @@ public class Cliente extends EntidadGenerica{
     public void setTelefono(int telefono) {
         this.telefono = telefono;
     }  
+/*
+    public List<Convenio> getListaConvenios() {
+        return listaConvenios;
+    }
+
+    public void setListaConvenios(List<Convenio> listaConvenios) {
+        this.listaConvenios = listaConvenios;
+    }
+    
+    public void addConvenio(Convenio convenio) {
+        this.listaConvenios.add(convenio);
+    }
+    
+    public void removeConvenio(Convenio convenio) {
+        this.listaConvenios.remove(convenio);
+    }*/
 
     @Override
     public String toString() {

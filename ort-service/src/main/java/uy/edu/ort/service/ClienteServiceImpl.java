@@ -5,6 +5,7 @@ import uy.edu.ort.dao.ClienteDao;
 import uy.edu.ort.model.Cliente;
 
 import javax.transaction.Transactional;
+import uy.edu.ort.model.Convenio;
 
 public class ClienteServiceImpl implements ClienteService{
 
@@ -47,4 +48,9 @@ public class ClienteServiceImpl implements ClienteService{
     public Cliente buscarClientePorNombreEmpresa(String nombreEmpresa) {
         return this.clienteDao.buscarClientePorNombreEmpresa(nombreEmpresa);
     }
+
+    /*@Override
+    public void addConvenio(Cliente cliente, Convenio convenio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }*/
 }

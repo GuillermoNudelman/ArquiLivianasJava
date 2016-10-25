@@ -45,11 +45,6 @@ public class CamionetaDaoHibTemplateImpl implements CamionetaDao {
 
     @Override
     public void editarCamioneta(Camioneta camioneta) {
-    /*
-        Camioneta c = buscarCamionetaPorCodigo(camioneta.getId());
-        this.hibernateTemplate.delete(c);
-        this.hibernateTemplate.save(camioneta);
-    
-        this.hibernateTemplate.update(camioneta);*/
+        this.hibernateTemplate.update(camioneta);
     }
 }

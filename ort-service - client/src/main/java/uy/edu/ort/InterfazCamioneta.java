@@ -69,6 +69,8 @@ public final class InterfazCamioneta {
                         camioneta.setKmsRecorridos(esPositivo(in));
                         System.out.println("Kilometros restantes para realizar service: ");
                         camioneta.setKmsProxService(esPositivo(in));
+                        
+                        //TODO ESTO HABRIA QUE CAMBIARLO POR EDITAR
                         camionetaService.removeCamioneta(camioneta);
                         camionetaService.addCamioneta(camioneta);
                         //camionetaService.editarCamioneta(camioneta);

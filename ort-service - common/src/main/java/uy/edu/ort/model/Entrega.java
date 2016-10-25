@@ -14,12 +14,9 @@ public class Entrega extends EntidadGenerica{
     private Date fechaEntrega;
     
     @OneToOne
-    @JoinColumn(name="camioneta_fk")
     private Camioneta camioneta;
     
-    @OneToMany
-    private List<Paquete> listaPaquetes;
-
+   
     @Column
     private int distanciaRecorrerKm;
     
@@ -29,11 +26,10 @@ public class Entrega extends EntidadGenerica{
     public Entrega() {
     }
 
-    public Entrega(String codigo, Date fechaEntrega, Camioneta camioneta, List<Paquete> listaPaquetes,  int distanciaRecorrerKm, int importeEntrega) {
+    public Entrega(String codigo, Date fechaEntrega, Camioneta camioneta, int distanciaRecorrerKm, int importeEntrega) {
         this.codigo = codigo;
         this.fechaEntrega = fechaEntrega;
         this.camioneta = camioneta;
-        this.listaPaquetes = listaPaquetes; 
         this.distanciaRecorrerKm = distanciaRecorrerKm;
         this.importeEntrega = importeEntrega;
         
@@ -100,6 +96,7 @@ public class Entrega extends EntidadGenerica{
         return true;
     }
 
+    
     /*
     @Override
     public int hashCode() {
@@ -108,5 +105,6 @@ public class Entrega extends EntidadGenerica{
         return hash;
     }
 */
+
 }
 
