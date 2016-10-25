@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import org.springframework.context.ApplicationContext;
+import static uy.edu.ort.MainUserService.ExisteCamioneta_PesoYDistancia;
+import static uy.edu.ort.MainUserService.ExistePaqueteSinEntrega;
 import static uy.edu.ort.MainUserService.ListarCamionetas_PesoYDistancia;
 import static uy.edu.ort.MainUserService.ListarEntregas;
 import static uy.edu.ort.MainUserService.ListarPaquetes;
@@ -49,58 +51,72 @@ public final class InterfazEntrega {
             opcion = validarOpcion(menu.length);
             switch (opcion) {
                 case 1: {
-                    Entrega entrega = new Entrega();
-                    System.out.println("Código: ");
-                    entrega.setCodigo(in.nextLine());
-                    System.out.println("Fecha de entrega (ej. 31-12-2016): ");
-                    entrega.setFechaEntrega(esFecha(in.nextLine()));
-                    System.out.println("Distancia a recorrer para realizar la entrega: ");
-                    int distanciaARecorrer = (int) esPositivo(in);
-                    entrega.setDistanciaRecorrerKm(distanciaARecorrer);
-                    
-
-                    //logica para solicitar paquetes
-                    System.out.println("Paquete/s a incluir en la entrega (Si selecciona mas de uno, debe separarlos con un guión '-'): ");
                     List<Paquete> listadoPaquetes = paqueteService.listPaquetes();
-                    ListarPaquetesSinEntrega(listadoPaquetes);
-                    String codigoPaquetes = in.nextLine();
-                    List<Paquete> listadoPaquetesAAgregar = agregarPaquetes(codigoPaquetes, listadoPaquetes, paqueteService);
-                    
-                    //logica para calcular peso total y monto total
-                    int pesoTotal = 0;
-                    int importeEntrega = 0;
-                    for (Paquete p : listadoPaquetesAAgregar) {
-                        pesoTotal += p.getPeso();
-                        importeEntrega += p.getCosto() - p.getDescuento();
-                    }
-                    
-                    System.out.println("El importe total de la entrega teniendo en cuenta los costos y descuentos de cada paquete es: " + importeEntrega);
-                    entrega.setImporteEntrega(importeEntrega);
-                    
-                    System.out.println("El peso total de los paquetes es: " + pesoTotal);
-
-                    //logica para solicitar las camionetas que cumplan los requisitos de peso, distancia, etc.
-                    System.out.println("Código de la camioneta que realiza la entrega (se muestra un listado con las camionetas que cumplen los requisitos de peso y distancia): ");
                     List<Camioneta> listadoCamionetas = camionetaService.listCamioneta();
-                    ListarCamionetas_PesoYDistancia(listadoCamionetas, pesoTotal, entrega.getDistanciaRecorrerKm());
-                    String codigoCamioneta = in.nextLine();
-                    boolean esCamioneta = esCamionetaUtil(codigoCamioneta, listadoCamionetas, pesoTotal, entrega.getDistanciaRecorrerKm());
-                    Camioneta camionetaAsociado = new Camioneta();
-                    boolean camionetaFueAgregada = false;
-                    if (esCamioneta) {
-                        camionetaAsociado = camionetaService.buscarCamioneta(codigoCamioneta);
-                        entrega.setCamioneta(camionetaAsociado);
-                        camionetaFueAgregada = true;
-                    }
+                    if (ExistePaqueteSinEntrega(listadoPaquetes)) {
+                        if (!listadoCamionetas.isEmpty()) {
+                            Entrega entrega = new Entrega();
+                            System.out.println("Código: ");
+                            entrega.setCodigo(in.nextLine());
+                            System.out.println("Fecha de entrega (ej. 31-12-2016): ");
+                            entrega.setFechaEntrega(esFecha(in.nextLine()));
+                            System.out.println("Distancia a recorrer para realizar la entrega: ");
+                            int distanciaARecorrer = (int) esPositivo(in);
+                            entrega.setDistanciaRecorrerKm(distanciaARecorrer);
 
-                    entregaService.addEntrega(entrega);
-                    
-                    //actualizar paquetes y camioneta
-                    asociarPaquetesAEntrega(listadoPaquetesAAgregar, entrega, paqueteService);
-                    if (camionetaFueAgregada) {
-                        agregarKmsACamioneta(camionetaAsociado, distanciaARecorrer, camionetaService);
+                            //logica para solicitar paquetes
+                            System.out.println("Paquete/s a incluir en la entrega (Si selecciona mas de uno, debe separarlos con un guión '-'): ");
+                            listadoPaquetes = paqueteService.listPaquetes();
+                            ListarPaquetesSinEntrega(listadoPaquetes);
+                            String codigoPaquetes = in.nextLine();
+                            List<Paquete> listadoPaquetesAAgregar = agregarPaquetes(codigoPaquetes, listadoPaquetes, paqueteService);
+
+                            //logica para calcular peso total y monto total
+                            int pesoTotal = 0;
+                            int importeEntrega = 0;
+                            for (Paquete p : listadoPaquetesAAgregar) {
+                                pesoTotal += p.getPeso();
+                                importeEntrega += p.getCosto() - p.getDescuento();
+                            }
+
+                            System.out.println("El importe total de la entrega teniendo en cuenta los costos y descuentos de cada paquete es: " + importeEntrega);
+                            entrega.setImporteEntrega(importeEntrega);
+
+                            System.out.println("El peso total de los paquetes es: " + pesoTotal);
+
+                            //logica para solicitar las camionetas que cumplan los requisitos de peso, distancia, etc.
+                            if (ExisteCamioneta_PesoYDistancia(listadoCamionetas, pesoTotal, entrega.getDistanciaRecorrerKm())) {
+
+                                System.out.println("Código de la camioneta que realiza la entrega (se muestra un listado con las camionetas que cumplen los requisitos de peso y distancia): ");
+                                boolean esCamioneta =false;
+                                Camioneta camionetaAsociado = new Camioneta();
+                                while(!esCamioneta){
+                                    listadoCamionetas = camionetaService.listCamioneta();
+                                    ListarCamionetas_PesoYDistancia(listadoCamionetas, pesoTotal, entrega.getDistanciaRecorrerKm());
+                                    String codigoCamioneta = in.nextLine();
+                                    esCamioneta = esCamionetaUtil(codigoCamioneta, listadoCamionetas, pesoTotal, entrega.getDistanciaRecorrerKm());
+                                    if (esCamioneta) {
+                                        camionetaAsociado = camionetaService.buscarCamioneta(codigoCamioneta);
+                                        entrega.setCamioneta(camionetaAsociado);
+                                    }
+                                    else{
+                                        System.out.println("Código de camioneta incorrecto, reingrese");
+                                    }
+                                }
+                                entregaService.addEntrega(entrega);
+
+                                //actualizar paquetes y camioneta
+                                asociarPaquetesAEntrega(listadoPaquetesAAgregar, entrega, paqueteService);
+                                agregarKmsACamioneta(camionetaAsociado, distanciaARecorrer, camionetaService);
+                            } else {
+                                System.out.println("No es posible ingresar la entrega ya que no hay camionetas que cumplan los requisitos necesarios.");
+                            }
+                        } else {
+                            System.out.println("No es posible ingresar entregas ya que aun no existen camionetas.");
+                        }
+                    } else {
+                        System.out.println("No es posible ingresar entregas ya que aun no existen paquetes, o todos fueron asignados previamente a una entrega.");
                     }
-                    
                     break;
                 }
                 case 2: {

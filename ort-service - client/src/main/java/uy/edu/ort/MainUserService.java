@@ -124,9 +124,6 @@ public class MainUserService {
                 esCliente = true;
             }
         }
-        if (!esCliente) {
-            System.out.println("El nombre de empresa ingresado no está registrado. No se asignará empresa.");
-        }
         return esCliente;
     }
 
@@ -145,6 +142,17 @@ public class MainUserService {
         }
     }
     
+    public static boolean ExisteCamioneta_PesoYDistancia(List<Camioneta> listCamionetas, int peso, int distancia) {
+        boolean existe = false;
+        for (Camioneta c : listCamionetas) {
+            int distanciaTotal = (int) (c.getKmsRecorridos() + distancia);
+            if (c.getCapacidadKgs() >= peso && c.getKmsProxService() >= distanciaTotal) {
+                existe=true;
+            }
+        }
+        return existe;
+    }
+
     public static void ListarCamionetas_PesoYDistancia(List<Camioneta> listCamionetas, int peso, int distancia) {
         for (Camioneta c : listCamionetas) {
             int distanciaTotal = (int) (c.getKmsRecorridos() + distancia);
@@ -155,7 +163,6 @@ public class MainUserService {
             }
         }
     }
-    
 
     public static void ListarPaquetes(List<Paquete> listPaquetes) {
         for (Paquete paquete : listPaquetes) {
@@ -169,10 +176,10 @@ public class MainUserService {
             System.out.println("Nombre de la empresa de destino: " + paquete.getCliente().getNombreEmpresa());
         }
     }
-    
+
     public static void ListarPaquetesSinEntrega(List<Paquete> listPaquetes) {
         for (Paquete paquete : listPaquetes) {
-            if (paquete.getEntrega()==null){
+            if (paquete.getEntrega() == null) {
                 System.out.println("");
                 System.out.println("Código: " + paquete.getCodigo());
                 System.out.println("Fecha de creación: " + paquete.getFechaCreacion().toString());
@@ -183,6 +190,16 @@ public class MainUserService {
                 System.out.println("Nombre de la empresa de destino: " + paquete.getCliente().getNombreEmpresa());
             }
         }
+    }
+
+    public static boolean ExistePaqueteSinEntrega(List<Paquete> listPaquetes) {
+        boolean existe = false;
+        for (Paquete paquete : listPaquetes) {
+            if (paquete.getEntrega() == null) {
+                existe = true;
+            }
+        }
+        return existe;
     }
 
     public static void ListarEntregas(List<Entrega> listEntregas, List<Paquete> listPaquetes) {
@@ -196,7 +213,7 @@ public class MainUserService {
             System.out.println("Paquetes: ");
             for (Paquete p : listPaquetes) {
                 if (p.getEntrega().getCodigo().equals(entrega.getCodigo())) {
-                    System.out.println("    Paquete: " + p.getCodigo());                    
+                    System.out.println("    Paquete: " + p.getCodigo());
                 }
             }
         }
@@ -214,12 +231,12 @@ public class MainUserService {
         }
         return esCamioneta;
     }
-    
+
     public static boolean esCamionetaUtil(String codigoCamioneta, List<Camioneta> listCamioneta, int peso, int distancia) {
         boolean esCamioneta = false;
         for (Camioneta c : listCamioneta) {
             int distanciaTotal = (int) (c.getKmsRecorridos() + distancia);
-            if (c.getCodigo().equals(codigoCamioneta) && c.getCapacidadKgs()>=peso && c.getKmsProxService() >= distanciaTotal) {
+            if (c.getCodigo().equals(codigoCamioneta) && c.getCapacidadKgs() >= peso && c.getKmsProxService() >= distanciaTotal) {
                 esCamioneta = true;
             }
         }

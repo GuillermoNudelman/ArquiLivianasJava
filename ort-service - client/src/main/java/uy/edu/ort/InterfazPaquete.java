@@ -46,59 +46,64 @@ public final class InterfazPaquete {
             opcion = validarOpcion(menu.length);
             switch (opcion) {
                 case 1: {
-                    Paquete paquete = new Paquete();
-                    System.out.println("Código: ");
-                    paquete.setCodigo(in.nextLine());
-                    System.out.println("Fecha de creación (ej. 31-12-2016): ");
-                    paquete.setFechaCreacion(esFecha(in.nextLine()));
-
-                    System.out.println("Costo: ");
-                    int costoDePaquete = (int) esPositivo(in);
-                    paquete.setCosto(costoDePaquete);
-
-                    System.out.println("Nombre de la empresa de destino (se muestra un listado con las opciones): ");
                     List<Cliente> listadoClientes = clienteService.listCliente();
-                    ListarClientes(listadoClientes);
-                    String nombreCliente = in.nextLine();
-                    boolean esCliente = esUnCliente(nombreCliente, listadoClientes);
-                    boolean clienteFueAgregado = false;
-                    int descuento = 0;
-                    if (esCliente) {
-                        Cliente clienteAsociado = clienteService.buscarClientePorNombreEmpresa(nombreCliente);
-                        paquete.setCliente(clienteAsociado);
+                    if (!listadoClientes.isEmpty()) {
+                        Paquete paquete = new Paquete();
+                        System.out.println("Código: ");
+                        paquete.setCodigo(in.nextLine());
+                        System.out.println("Fecha de creación (ej. 31-12-2016): ");
+                        paquete.setFechaCreacion(esFecha(in.nextLine()));
 
-                        //logica para descuentos con convenio
-                        //TODO asignar lista de convenios bien.
-                        //List<Convenio> convenios =  new ArrayList<Convenio>(); 
-                        //clienteAsociado.getListaConvenios();
-                        List<Convenio> convenios = convenioService.listConvenio();
-                        if (existeConvenioLibre(convenios, clienteAsociado.getNombreEmpresa())) {
-                            Convenio convenioLibre = obtenerPrimerConvenioLibre(convenios, clienteAsociado.getNombreEmpresa());
-                            convenioLibre.setEstaEnUso(true);
-                            descuento = convenioLibre.getImporteInicialConvenio() - convenioLibre.getImporteActualConvenio();
+                        System.out.println("Costo: ");
+                        int costoDePaquete = (int) esPositivo(in);
+                        paquete.setCosto(costoDePaquete);
 
-                            if (costoDePaquete < descuento) {
-                                descuento = costoDePaquete;
+                        System.out.println("Nombre de la empresa de destino (se muestra un listado con las opciones): ");
+                        listadoClientes = clienteService.listCliente();
+                        ListarClientes(listadoClientes);
+                        String nombreCliente = in.nextLine();
+                        boolean esCliente = esUnCliente(nombreCliente, listadoClientes);
+                        boolean clienteFueAgregado = false;
+                        int descuento = 0;
+                        if (esCliente) {
+                            Cliente clienteAsociado = clienteService.buscarClientePorNombreEmpresa(nombreCliente);
+                            paquete.setCliente(clienteAsociado);
+
+                            //logica para descuentos con convenio
+                            //TODO asignar lista de convenios bien.
+                            //List<Convenio> convenios =  new ArrayList<Convenio>(); 
+                            //clienteAsociado.getListaConvenios();
+                            List<Convenio> convenios = convenioService.listConvenio();
+                            if (existeConvenioLibre(convenios, clienteAsociado.getNombreEmpresa())) {
+                                Convenio convenioLibre = obtenerPrimerConvenioLibre(convenios, clienteAsociado.getNombreEmpresa());
+                                convenioLibre.setEstaEnUso(true);
+                                descuento = convenioLibre.getImporteInicialConvenio() - convenioLibre.getImporteActualConvenio();
+
+                                if (costoDePaquete < descuento) {
+                                    descuento = costoDePaquete;
+                                }
+
+                                //TODO ACTUALIZAR CONVENIO
+                                paquete.setConvenio(convenioLibre);
+
+                                //REVISAR ESTO
+                                //TODO no actualia bien el importeactual de convenio.. algo raro
+                                int impActual = convenioLibre.getImporteActualConvenio();
+                                convenioLibre.setImporteActualConvenio(costoDePaquete + impActual);
+                                convenioService.editarConvenio(convenioLibre);
                             }
-
-                            //TODO ACTUALIZAR CONVENIO
-                            paquete.setConvenio(convenioLibre);
-
-                            //REVISAR ESTO
-                            //TODO no actualia bien el importeactual de convenio.. algo raro
-                            
-                            int impActual = convenioLibre.getImporteActualConvenio();
-                            convenioLibre.setImporteActualConvenio(costoDePaquete + impActual);
-                            convenioService.editarConvenio(convenioLibre);
                         }
+                        System.out.println("Descuento obtenido por convenio (no estoy teniendo en cuenta lo del 20%): " + descuento);
+                        paquete.setDescuento(descuento);
+                        System.out.println("Peso: ");
+                        paquete.setPeso((int) esPositivo(in));
+                        System.out.println("Descripción: ");
+                        paquete.setDescripcion(in.nextLine());
+                        paqueteService.addPaquete(paquete);
+
+                    } else {
+                        System.out.println("No es posible ingresar paquetes ya que aun no existen clientes.");
                     }
-                    System.out.println("Descuento obtenido por convenio (no estoy teniendo en cuenta lo del 20%): " + descuento);
-                    paquete.setDescuento(descuento);
-                    System.out.println("Peso: ");
-                    paquete.setPeso((int) esPositivo(in));
-                    System.out.println("Descripción: ");
-                    paquete.setDescripcion(in.nextLine());
-                    paqueteService.addPaquete(paquete);
                     break;
                 }
 

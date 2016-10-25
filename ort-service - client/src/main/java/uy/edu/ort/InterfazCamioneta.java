@@ -13,13 +13,12 @@ import uy.edu.ort.service.CamionetaService;
  * @author ptrecca
  */
 public final class InterfazCamioneta {
-    
-    
-    public static void CamionetaInferfaz(ApplicationContext applicationContext){
-        
+
+    public static void CamionetaInferfaz(ApplicationContext applicationContext) {
+
         CamionetaService camionetaService = (CamionetaService) applicationContext.getBean("camionetaService");
-         
-        String[] menu = {"Ingresar Camioneta","Editar Camionieta","Eliminar Camioneta", "Listar Camionetas",  "Volver"};
+
+        String[] menu = {"Ingresar Camioneta", "Editar Camionieta", "Eliminar Camioneta", "Listar Camionetas", "Volver"};
         int opcion = 0;
         Scanner in = new Scanner(System.in);
         while (opcion != menu.length) {
@@ -28,39 +27,61 @@ public final class InterfazCamioneta {
             for (int i = 0; i < menu.length; i++) {
                 System.out.println((i + 1) + " - " + menu[i]);
             }
-            opcion = validarOpcion(menu.length);            
+            opcion = validarOpcion(menu.length);
             switch (opcion) {
                 case 1: {
                     Camioneta camioneta = new Camioneta();
-                    System.out.println("Codigo :");
-                    camioneta.setCodigo(in.nextLine());
-                    System.out.println("Placa :");
+
+                    String codigoIngresado = "";
+                    boolean codigoLibre = false;
+                    System.out.println("Codigo: ");
+                    while (!codigoLibre) {
+                        codigoIngresado = in.nextLine();
+                        codigoLibre = (camionetaService.buscarCamioneta(codigoIngresado) == null);
+                        if (!codigoLibre) {
+                            System.out.println("Codigo en uso. Reingrese: ");
+                        }
+                    }
+                    camioneta.setCodigo(codigoIngresado);
+
+                    System.out.println("Placa: ");
                     camioneta.setPlaca(in.nextLine());
-                    System.out.println("Capacidad :");
+                    System.out.println("Capacidad: ");
                     camioneta.setCapacidadKgs(esPositivo(in));
-                    System.out.println("Kilometros Recorridos :");
+                    System.out.println("Kilometros Recorridos: ");
                     camioneta.setKmsRecorridos(esPositivo(in));
-                    System.out.println("Kilometros restantes para realizar service:");
-                    camioneta.setKmsProxService(esPositivo(in));                    
+                    System.out.println("Kilometros restantes para realizar service: ");
+                    camioneta.setKmsProxService(esPositivo(in));
                     camionetaService.addCamioneta(camioneta);
                     break;
                 }
-                case 2: {                   
+                case 2: {
                     System.out.println("Codigo: ");
                     Camioneta camioneta = camionetaService.buscarCamioneta(in.nextLine());
-                    if(camioneta == null){
+                    if (camioneta == null) {
                         System.out.println("No existe una camioneta con ese codigo.");
-                    }else{
+                    } else {
                         System.out.println("datos de Camioneta a modificar: ");
                         System.out.println("Codigo: " + camioneta.getCodigo());
                         System.out.println("Placa: " + camioneta.getPlaca());
                         System.out.println("Capacidad: " + camioneta.getCapacidadKgs());
                         System.out.println("Kilometros Recorridos: " + camioneta.getKmsRecorridos());
-                        System.out.println("Kilometros restantes para realizar service: "  + camioneta.getKmsProxService());
+                        System.out.println("Kilometros restantes para realizar service: " + camioneta.getKmsProxService());
                         System.out.println("");
                         System.out.println("Modificación de datos: ");
+
+                        String codigoIngresado = "";
+                        boolean codigoLibre = false;
                         System.out.println("Codigo: ");
-                        camioneta.setCodigo(in.nextLine());
+                        while (!codigoLibre) {
+                            codigoIngresado = in.nextLine();
+                            codigoLibre = (camionetaService.buscarCamioneta(codigoIngresado) == null);
+                            if (!codigoLibre) {
+                                System.out.println("Codigo en uso. Reingrese: ");
+                            }
+                        }
+                        camioneta.setCodigo(codigoIngresado);
+
                         System.out.println("Placa: ");
                         camioneta.setPlaca(in.nextLine());
                         System.out.println("Capacidad: ");
@@ -69,7 +90,7 @@ public final class InterfazCamioneta {
                         camioneta.setKmsRecorridos(esPositivo(in));
                         System.out.println("Kilometros restantes para realizar service: ");
                         camioneta.setKmsProxService(esPositivo(in));
-                        
+
                         //TODO ESTO HABRIA QUE CAMBIARLO POR EDITAR
                         camionetaService.removeCamioneta(camioneta);
                         camionetaService.addCamioneta(camioneta);
@@ -77,12 +98,12 @@ public final class InterfazCamioneta {
                     }
                     break;
                 }
-                case 3: {                   
+                case 3: {
                     System.out.println("Codigo :");
                     Camioneta camioneta = camionetaService.buscarCamioneta(in.nextLine());
-                    if(camioneta == null){
+                    if (camioneta == null) {
                         System.out.println("No existe una camioneta con ese codigo.");
-                    }else{
+                    } else {
                         camionetaService.removeCamioneta(camioneta);
                         System.out.println("La camioneta ha sido eliminada con exito.");
                     }
@@ -96,9 +117,9 @@ public final class InterfazCamioneta {
                         if (entrada != "") {
                             proxService = Long.valueOf(entrada);
                         }
-                    } catch (NumberFormatException e) {  
+                    } catch (NumberFormatException e) {
                         System.out.println("Número invalido, no se aplicará este filtro.");
-                     } 
+                    }
                     List<Camioneta> camionetas = camionetaService.listCamioneta();
                     for (Camioneta c : camionetas) {
                         if (c.getKmsProxService() <= proxService) {
@@ -106,14 +127,15 @@ public final class InterfazCamioneta {
                             System.out.println("Placa: " + c.getPlaca());
                             System.out.println("Capacidad: " + c.getCapacidadKgs());
                             System.out.println("Kilometros Recorridos: " + c.getKmsRecorridos());
-                            System.out.println("Kilometros restantes para realizar service: "  + c.getKmsProxService());
+                            System.out.println("Kilometros restantes para realizar service: " + c.getKmsProxService());
                             System.out.println("");
                         }
                     }
                     break;
                 }
-                default :{}
+                default: {
+                }
             }
         }
-    }   
+    }
 }
