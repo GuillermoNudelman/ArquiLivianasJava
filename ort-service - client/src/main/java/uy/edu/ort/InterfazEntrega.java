@@ -42,7 +42,7 @@ public final class InterfazEntrega {
         PaqueteService paqueteService = (PaqueteService) applicationContext.getBean("paqueteService");
         ConvenioService convenioService = (ConvenioService) applicationContext.getBean("convenioService");
 
-        String[] menu = {"Ingresar Entrega", "Listar Entregas","Reporte Entrega Por Mes","Reporte Entrega Por Mes PDF","Reporte Entrega Por Mes Y Camioneta","Reporte Entrega Por Mes Y Camioneta PDF", "Volver"};
+        String[] menu = {"Ingresar Entrega", "Listar Entregas", "Reporte Entrega Por Mes", "Reporte Entrega Por Mes PDF", "Reporte Entrega Por Mes Y Camioneta", "Reporte Entrega Por Mes Y Camioneta PDF", "Volver"};
         int opcion = 0;
         Scanner in = new Scanner(System.in);
         while (opcion != menu.length) {
@@ -86,8 +86,20 @@ public final class InterfazEntrega {
                             System.out.println("Paquete/s a incluir en la entrega (Si selecciona mas de uno, debe separarlos con un guión '-'): ");
                             listadoPaquetes = paqueteService.listPaquetes();
                             ListarPaquetesSinEntrega(listadoPaquetes);
-                            String codigoPaquetes = in.nextLine();
-                            List<Paquete> listadoPaquetesAAgregar = agregarPaquetes(codigoPaquetes, listadoPaquetes, paqueteService);
+                            System.out.println("Ingresar el codigo de paquetes separados por - (ej: pq1-pq2-pq3)");
+                            String codigoPaquetes = "";
+                            List<Paquete> listadoPaquetesAAgregar = new ArrayList<Paquete>();
+                            while (codigoPaquetes == "") {
+                                codigoPaquetes = in.nextLine();
+                                if (codigoPaquetes == "") {
+                                    System.out.println("Debe ingresar al menos un paquete.");
+                                }
+                                listadoPaquetesAAgregar = agregarPaquetes(codigoPaquetes, listadoPaquetes, paqueteService);
+                                if(listadoPaquetesAAgregar.size() != codigoPaquetes.split("-").length){
+                                    codigoPaquetes = "";
+                                    System.out.println("Alguno de los paquetes ingresados no existen Intente nuevamente.");
+                                }
+                            }
 
                             //logica para calcular peso total y monto total
                             int pesoTotal = 0;
@@ -121,6 +133,8 @@ public final class InterfazEntrega {
                                     }
                                 }
                                 entregaService.addEntrega(entrega);
+                                
+                                entrega = entregaService.buscarEntrega(entrega.getCodigo());
 
                                 //actualizar paquetes y camioneta
                                 asociarPaquetesAEntrega(listadoPaquetesAAgregar, entrega, paqueteService, convenioService);
@@ -142,14 +156,20 @@ public final class InterfazEntrega {
                 }
                 case 3: {
                     System.out.println("Ingrese un mes (MM)");
-                    int mes = (int)esPositivo(in);
+                    int mes = (int) esPositivo(in);
                     ListarEntregas(entregaService.listEntregaPorMes(mes), paqueteService.listPaquetes());
                     break;
                 }
                 case 5: {
                     System.out.println("Ingrese un mes (MM)");
-                    int mes = (int)esPositivo(in);
-                    //ListarEntregas(entregaService.listEntregaPorMesYCamioneta(mes), paqueteService.listPaquetes());
+                    int mes = (int) esPositivo(in);
+                    List<Camioneta> listadoCamionetas = camionetaService.listCamioneta();
+                    for (Camioneta camioneta : listadoCamionetas) {
+                        System.out.println(camioneta);
+                    }
+                    String codigoCamioneta = in.nextLine();
+
+                    ListarEntregas(entregaService.listEntregaPorMesYCamioneta(mes, codigoCamioneta), paqueteService.listPaquetes());
                     break;
                 }
                 default: {
@@ -179,11 +199,13 @@ public final class InterfazEntrega {
 
             //actualizar convenio del paquete si importes son = los borro, sino los dejo 'sin usar'.
             Convenio c = p.getConvenio();
-            c.setEstaEnUso(false);
-            if (c.getImporteActualConvenio() == c.getImporteInicialConvenio()) {
-                convenioService.removeConvenio(c);
-            } else {
-                convenioService.editarConvenio(c);
+            if(c != null){
+                c.setEstaEnUso(false);
+                if (c.getImporteActualConvenio() == c.getImporteInicialConvenio()) {
+                    convenioService.removeConvenio(c);
+                } else {
+                    convenioService.editarConvenio(c);
+                }
             }
         }
     }

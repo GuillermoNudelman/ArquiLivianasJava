@@ -237,8 +237,10 @@ public class MainClient {
             System.out.println("Distancia: " + entrega.getDistanciaRecorrerKm());
             System.out.println("Paquetes: ");
             for (Paquete p : listPaquetes) {
-                if (p.getEntrega().getCodigo().equals(entrega.getCodigo())) {
-                    System.out.println("    Paquete: " + p.getCodigo());
+                if(p.getEntrega() != null){
+                    if (p.getEntrega().getCodigo().equals(entrega.getCodigo())) {
+                        System.out.println("    Paquete: " + p.getCodigo());
+                    }
                 }
             }
         }
