@@ -6,6 +6,10 @@ import java.util.List;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import uy.edu.ort.model.LogTrazabilidad;
 
+/**
+ * Implementacion de LogTrazabilidadDao, 
+ * a una base de datos mysql utilizando hibernate
+ */
 public class LogTrazabilidadDaoImp implements LogTrazabilidadDao {
 
     private HibernateTemplate hibernateTemplate;

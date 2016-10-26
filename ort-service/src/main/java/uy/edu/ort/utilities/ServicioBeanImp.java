@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  guarda la lista de beans inicialidados en el sistema
+ *  Guarda la lista de beans inicialidados en el sistema
  * 
  */
 public class ServicioBeanImp implements ServicioBean{

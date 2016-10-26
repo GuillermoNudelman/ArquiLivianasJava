@@ -4,6 +4,11 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.BeansException;
 import uy.edu.ort.utilities.ServicioBean;
 
+/**
+ * Esta clase implementa la interfaz BeanPostProcessor, en el metodo after bean initialization
+ * se guarda en un servicio el nombre del Bean y se imprime el mismo
+ * 
+ */
 public class BeanPost implements BeanPostProcessor {
     
    private ServicioBean servicioBean;

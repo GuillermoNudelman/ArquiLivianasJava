@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import uy.edu.ort.model.Camioneta;
 
+/**
+ *  Implementacion de CamionetaDao, 
+ * a una base de datos mysql utilizando hibernate
+ */
 public class CamionetaDaoHibTemplateImpl implements CamionetaDao {
 
     private HibernateTemplate hibernateTemplate;

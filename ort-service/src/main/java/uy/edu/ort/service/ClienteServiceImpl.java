@@ -7,6 +7,10 @@ import uy.edu.ort.model.Cliente;
 import javax.transaction.Transactional;
 import uy.edu.ort.model.Convenio;
 
+/**
+ * Implementacion de la interfaz ClienteService
+ * 
+ */
 public class ClienteServiceImpl implements ClienteService{
 
     private ClienteDao clienteDao;

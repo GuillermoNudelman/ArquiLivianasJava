@@ -12,8 +12,8 @@ import uy.edu.ort.dao.LogTrazabilidadDao;
 import uy.edu.ort.model.LogTrazabilidad;
 
 /**
- *
- * @author ptrecca
+ * Implementacion de la interfaz LogTrazabilidadService
+ * 
  */
 public class LogTrazabilidadServiceImp implements LogTrazabilidadService{
 

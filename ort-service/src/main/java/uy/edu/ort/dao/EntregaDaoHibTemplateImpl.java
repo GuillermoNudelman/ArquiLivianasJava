@@ -5,7 +5,8 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import uy.edu.ort.model.Entrega;
 
 /**
- * Implementa EntregaDao con Hibernate
+ * Implementacion de EntregaDao, 
+ * a una base de datos mysql utilizando hibernate
  * 
  */
 public class EntregaDaoHibTemplateImpl implements EntregaDao {

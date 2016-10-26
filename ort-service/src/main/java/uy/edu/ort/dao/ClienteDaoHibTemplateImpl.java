@@ -6,6 +6,10 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import uy.edu.ort.model.Cliente;
 import uy.edu.ort.model.Convenio;
 
+/**
+ *  Implementacion de ClienteDao, 
+ * a una base de datos mysql utilizando hibernate
+ */
 public class ClienteDaoHibTemplateImpl implements ClienteDao{
      private HibernateTemplate hibernateTemplate;
      

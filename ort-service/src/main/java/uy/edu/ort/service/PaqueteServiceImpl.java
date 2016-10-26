@@ -5,6 +5,10 @@ import javax.transaction.Transactional;
 import uy.edu.ort.dao.PaqueteDao;
 import uy.edu.ort.model.Paquete;
 
+/**
+ * Implementacion de la interfaz PaqueteService
+ * 
+ */
 public class PaqueteServiceImpl implements PaqueteService {
 
     private PaqueteDao paqueteDao;

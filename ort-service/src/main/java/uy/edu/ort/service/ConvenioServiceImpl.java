@@ -4,6 +4,10 @@ import javax.transaction.Transactional;
 import uy.edu.ort.dao.ConvenioDao;
 import uy.edu.ort.model.Convenio;
 
+/**
+ * Implementacion de la interfaz ConvenioService
+ * 
+ */
 public class ConvenioServiceImpl implements ConvenioService {
 
     private ConvenioDao convenioDao;

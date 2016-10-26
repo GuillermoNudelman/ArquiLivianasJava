@@ -4,6 +4,10 @@ import java.util.List;
 import uy.edu.ort.model.Cliente;
 import uy.edu.ort.model.Convenio;
 
+/**
+ * Interfaz del cliente para 
+ * que sea persistida en una base de datos
+ */
 public interface ClienteDao {
     
     void addCliente(Cliente cliente);

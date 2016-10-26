@@ -6,6 +6,10 @@ import uy.edu.ort.model.Camioneta;
 
 import javax.transaction.Transactional;
 
+/**
+ * Implementacion de la interfaz CamionetaService
+ * 
+ */
 public class CamionetaServiceImpl implements CamionetaService {
 
     private CamionetaDao camionetaDao;

@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import uy.edu.ort.model.LogTrazabilidad;
 
+/**
+ * Interfaz de la entidad LogTrazabilidad para 
+ * que sea persistida en una base de datos
+ */
 public interface LogTrazabilidadDao {
 
     void addLogTrazabilidad(LogTrazabilidad logTrazabilidad);

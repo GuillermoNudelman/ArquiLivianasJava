@@ -4,6 +4,10 @@ import java.util.List;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import uy.edu.ort.model.Paquete;
 
+/**
+ *  Implementacion de PaqueteDao, 
+ * a una base de datos mysql utilizando hibernate
+ */
 public class PaqueteDaoHibTemplateImpl implements PaqueteDao{
     
     private HibernateTemplate hibernateTemplate;

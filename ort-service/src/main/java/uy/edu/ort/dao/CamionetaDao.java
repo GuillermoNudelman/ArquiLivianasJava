@@ -3,6 +3,10 @@ package uy.edu.ort.dao;
 import java.util.List;
 import uy.edu.ort.model.Camioneta;
 
+/**
+ * Interfaz de la entidad camioneta para 
+ * que sea persistida en una base de datos
+ */
 public interface CamionetaDao {
 
     void addCamioneta(Camioneta camioneta);
