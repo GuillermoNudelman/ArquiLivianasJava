@@ -16,4 +16,6 @@ public interface EntregaDao {
     void editarEntrega(Entrega entrega);
 
     public List<Entrega> listEntregaPorMes(int mes);
+
+    public List<Entrega> listEntregaPorMesYCamioneta(int mes, String codigoCamioneta);
 }

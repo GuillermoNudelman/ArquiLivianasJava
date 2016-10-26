@@ -50,5 +50,12 @@ public class EntregaDaoHibTemplateImpl implements EntregaDao {
         List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("select e from Entrega e where month(e.fechaEntrega) = ?", params);
         return entregas;
     }
+
+    @Override
+    public List<Entrega> listEntregaPorMesYCamioneta(int mes, String codigoCamioneta) {
+        Object[] params  = {mes,codigoCamioneta };        
+        List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("SELECT e FROM Entrega e where month(e.fechaEntrega) = ? and e.camioneta in (select c from Camioneta c	where c.codigo = ?)", params);
+        return entregas;
+    }
 }
 

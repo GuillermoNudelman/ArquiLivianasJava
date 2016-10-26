@@ -39,7 +39,7 @@ public final class InterfazEntrega {
         CamionetaService camionetaService = (CamionetaService) applicationContext.getBean("camionetaService");
         PaqueteService paqueteService = (PaqueteService) applicationContext.getBean("paqueteService");
 
-        String[] menu = {"Ingresar Entrega", "Listar Entregas","Reporte Entrega Por Mes","Reporte Entrega Por Mes PDF","Reporte Entrega Por Mes Y Camioneta","Reporte Entrega Por Mes Y Camioneta PDF", "Volver"};
+        String[] menu = {"Ingresar Entrega", "Listar Entregas", "Reporte Entrega Por Mes", "Reporte Entrega Por Mes PDF", "Reporte Entrega Por Mes Y Camioneta", "Reporte Entrega Por Mes Y Camioneta PDF", "Volver"};
         int opcion = 0;
         Scanner in = new Scanner(System.in);
         while (opcion != menu.length) {
@@ -139,14 +139,21 @@ public final class InterfazEntrega {
                 }
                 case 3: {
                     System.out.println("Ingrese un mes (MM)");
-                    int mes = (int)esPositivo(in);
+                    int mes = (int) esPositivo(in);
                     ListarEntregas(entregaService.listEntregaPorMes(mes), paqueteService.listPaquetes());
                     break;
                 }
                 case 5: {
                     System.out.println("Ingrese un mes (MM)");
-                    int mes = (int)esPositivo(in);
-                    //ListarEntregas(entregaService.listEntregaPorMesYCamioneta(mes), paqueteService.listPaquetes());
+                    int mes = (int) esPositivo(in);
+
+                    List<Camioneta> listadoCamionetas = camionetaService.listCamioneta();
+                    for (Camioneta camioneta : listadoCamionetas) {
+                        System.out.println(camioneta);
+                    }
+                    String codigoCamioneta = in.nextLine();
+
+                    ListarEntregas(entregaService.listEntregaPorMesYCamioneta(mes, codigoCamioneta), paqueteService.listPaquetes());
                     break;
                 }
                 default: {
