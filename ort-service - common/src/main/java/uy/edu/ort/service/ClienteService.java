@@ -4,6 +4,10 @@ import java.util.List;
 import uy.edu.ort.model.Cliente;
 import uy.edu.ort.model.Convenio;
 
+/**
+ * Esta interfaz es utilizada para manejar la entidad cliente
+ * 
+ */
 public interface ClienteService {
     
     public void addCliente(Cliente cliente);

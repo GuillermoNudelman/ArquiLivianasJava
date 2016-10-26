@@ -45,5 +45,10 @@
         <property name="serviceUrl" value="rmi://localhost:1199/BeanService" />
         <property name="serviceInterface" value="uy.edu.ort.utilities.ServicioBean" />
     </bean>
+    
+    <bean id="usuarioService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+        <property name="serviceUrl" value="rmi://localhost:1199/UsuarioService" />
+        <property name="serviceInterface" value="uy.edu.ort.utilities.UsuarioService" />
+    </bean>
         
 </beans>

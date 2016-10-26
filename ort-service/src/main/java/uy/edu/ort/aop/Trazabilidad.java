@@ -4,6 +4,7 @@ import java.util.Date;
 import org.aspectj.lang.ProceedingJoinPoint;
 import uy.edu.ort.model.LogTrazabilidad;
 import uy.edu.ort.utilities.LogTrazabilidadService;
+import uy.edu.ort.utilities.UsuarioService;
 
 /*
 * Esta clase se ejecuta cuando cualquier metodo de cualquier clase dentro de la carpeta
@@ -13,10 +14,16 @@ import uy.edu.ort.utilities.LogTrazabilidadService;
 public class Trazabilidad {
        
     private LogTrazabilidadService logTrazabilidadService;
+    
+    private UsuarioService usuarioService;
 
     public void setLogTrazabilidadService(LogTrazabilidadService logTrazabilidadService) {
         this.logTrazabilidadService = logTrazabilidadService;
     }
+
+    public void setUsuarioService(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }    
     
     public Object metodoAround(ProceedingJoinPoint pjp) {
         Object ret = null;
@@ -33,7 +40,7 @@ public class Trazabilidad {
             LogTrazabilidad logTrazabilidad = new LogTrazabilidad();
             logTrazabilidad.setFechaOperacion(date);
             logTrazabilidad.setNombreOperacion(pjp.getSignature().getName());
-            logTrazabilidad.setUsuario("pepe");
+            logTrazabilidad.setUsuario(usuarioService.getNombre());
             logTrazabilidad.setTiempoEjecucion(time);
             logTrazabilidadService.addLogTrazabilidad(logTrazabilidad);
 

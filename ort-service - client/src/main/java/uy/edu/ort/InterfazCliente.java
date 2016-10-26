@@ -8,9 +8,9 @@ package uy.edu.ort;
 import java.util.List;
 import java.util.Scanner;
 import org.springframework.context.ApplicationContext;
-import static uy.edu.ort.MainUserService.esFecha;
-import static uy.edu.ort.MainUserService.esPositivo;
-import static uy.edu.ort.MainUserService.validarOpcion;
+import static uy.edu.ort.MainClient.esFecha;
+import static uy.edu.ort.MainClient.esPositivo;
+import static uy.edu.ort.MainClient.validarOpcion;
 import uy.edu.ort.model.Cliente;
 import uy.edu.ort.service.ClienteService;
 

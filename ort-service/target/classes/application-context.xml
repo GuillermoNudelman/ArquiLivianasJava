@@ -21,8 +21,24 @@
 
     <bean id="trazabilidadBean" class="uy.edu.ort.aop.Trazabilidad">
         <property name="logTrazabilidadService" ref="logTrazabilidadService" />
-    </bean>    
+        <property name="usuarioService" ref="usuarioService" />
+    </bean> 
     
+     <!-- Beans Usuario -->
+     
+     <bean id="usuarioServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <!-- puede tener cualquier nombre-->
+        <property name="serviceName" value="UsuarioService" />
+        <property name="service" ref="usuarioService" />
+        <property name="serviceInterface" value="uy.edu.ort.utilities.UsuarioService" />
+        <!-- default 1099 -->
+        <property name="registryPort" value="1199" />
+    </bean> 
+       
+    <bean id="usuarioService" class="uy.edu.ort.utilities.UsuarioServiceImp" /> 
+    
+     <!-- Beans Service -->
+      
     <bean id="beanPost" class="uy.edu.ort.BeanPost">
         <property name="servicioBean" ref="servicioBean" />
     </bean>

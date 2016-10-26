@@ -14,18 +14,32 @@ import uy.edu.ort.service.PaqueteService;
 import uy.edu.ort.model.Camioneta;
 import uy.edu.ort.model.Entrega;
 import uy.edu.ort.utilities.ServicioBean;
+import uy.edu.ort.utilities.UsuarioService;
 
-public class MainUserService {
+public class MainClient {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
 
-        ServicioBean servicioBean = (ServicioBean) applicationContext.getBean("beanService");
+        //Se inicialisan los beans
+        ServicioBean servicioBean = (ServicioBean) applicationContext.getBean("beanService");        
+        UsuarioService usuarioService = (UsuarioService) applicationContext.getBean("usuarioService");
 
+        //inicializa la variable in del tipo scanner para leer desde la consola
+        Scanner in = new Scanner(System.in);
+        
         System.out.println("Bienvenido a sistema de gestion de Cadetify!");
+        
+        //obtiene el nombre de usuario y lo guarda en consola
+        System.out.println("Ingrese su nombre de usuario: ");
+        String nombre = in.nextLine();
+        usuarioService.guardarNombre(nombre);
+        System.out.println("Muchas gracias!");
+         
+        //inicializa el meni
         String[] menu = {"Manejo Camionetas", "Manejo Convenios", "Manejo Clientes", "Manejo Paquetes", "Manejo Entregas", "Profiling y Estadística", "Beans del sistems", "Terminar"};
         int opcion = 0;
-        Scanner in = new Scanner(System.in);
+        
         while (opcion != menu.length) {
             //muestra menu
             System.out.println("Menu Principal");

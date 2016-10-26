@@ -6,7 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import uy.edu.ort.model.*;
 import uy.edu.ort.service.*;
 
-public class MainUserService {
+public class MainService {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");       
