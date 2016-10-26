@@ -21,9 +21,11 @@ import static uy.edu.ort.MainClient.esUnPaquete;
 import static uy.edu.ort.MainClient.esCamionetaUtil;
 import static uy.edu.ort.MainClient.validarOpcion;
 import uy.edu.ort.model.Camioneta;
+import uy.edu.ort.model.Convenio;
 import uy.edu.ort.model.Paquete;
 import uy.edu.ort.model.Entrega;
 import uy.edu.ort.service.CamionetaService;
+import uy.edu.ort.service.ConvenioService;
 import uy.edu.ort.service.EntregaService;
 import uy.edu.ort.service.PaqueteService;
 
@@ -38,8 +40,9 @@ public final class InterfazEntrega {
         EntregaService entregaService = (EntregaService) applicationContext.getBean("entregaService");
         CamionetaService camionetaService = (CamionetaService) applicationContext.getBean("camionetaService");
         PaqueteService paqueteService = (PaqueteService) applicationContext.getBean("paqueteService");
+        ConvenioService convenioService = (ConvenioService) applicationContext.getBean("convenioService");
 
-        String[] menu = {"Ingresar Entrega", "Listar Entregas", "Reporte Entrega Por Mes", "Reporte Entrega Por Mes PDF", "Reporte Entrega Por Mes Y Camioneta", "Reporte Entrega Por Mes Y Camioneta PDF", "Volver"};
+        String[] menu = {"Ingresar Entrega", "Listar Entregas","Reporte Entrega Por Mes","Reporte Entrega Por Mes PDF","Reporte Entrega Por Mes Y Camioneta","Reporte Entrega Por Mes Y Camioneta PDF", "Volver"};
         int opcion = 0;
         Scanner in = new Scanner(System.in);
         while (opcion != menu.length) {
@@ -120,7 +123,7 @@ public final class InterfazEntrega {
                                 entregaService.addEntrega(entrega);
 
                                 //actualizar paquetes y camioneta
-                                asociarPaquetesAEntrega(listadoPaquetesAAgregar, entrega, paqueteService);
+                                asociarPaquetesAEntrega(listadoPaquetesAAgregar, entrega, paqueteService, convenioService);
                                 agregarKmsACamioneta(camionetaAsociado, distanciaARecorrer, camionetaService);
                             } else {
                                 System.out.println("No es posible ingresar la entrega ya que no hay camionetas que cumplan los requisitos necesarios.");
@@ -139,21 +142,14 @@ public final class InterfazEntrega {
                 }
                 case 3: {
                     System.out.println("Ingrese un mes (MM)");
-                    int mes = (int) esPositivo(in);
+                    int mes = (int)esPositivo(in);
                     ListarEntregas(entregaService.listEntregaPorMes(mes), paqueteService.listPaquetes());
                     break;
                 }
                 case 5: {
                     System.out.println("Ingrese un mes (MM)");
-                    int mes = (int) esPositivo(in);
-
-                    List<Camioneta> listadoCamionetas = camionetaService.listCamioneta();
-                    for (Camioneta camioneta : listadoCamionetas) {
-                        System.out.println(camioneta);
-                    }
-                    String codigoCamioneta = in.nextLine();
-
-                    ListarEntregas(entregaService.listEntregaPorMesYCamioneta(mes, codigoCamioneta), paqueteService.listPaquetes());
+                    int mes = (int)esPositivo(in);
+                    //ListarEntregas(entregaService.listEntregaPorMesYCamioneta(mes), paqueteService.listPaquetes());
                     break;
                 }
                 default: {
@@ -176,11 +172,19 @@ public final class InterfazEntrega {
         return paquetesAgregar;
     }
 
-    private static void asociarPaquetesAEntrega(List<Paquete> listadoPaquetesAAgregar, Entrega entrega, PaqueteService paqueteService) {
+    private static void asociarPaquetesAEntrega(List<Paquete> listadoPaquetesAAgregar, Entrega entrega, PaqueteService paqueteService, ConvenioService convenioService) {
         for (Paquete p : listadoPaquetesAAgregar) {
             p.setEntrega(entrega);
             paqueteService.editarPaquete(p);
+
             //actualizar convenio del paquete si importes son = los borro, sino los dejo 'sin usar'.
+            Convenio c = p.getConvenio();
+            c.setEstaEnUso(false);
+            if (c.getImporteActualConvenio() == c.getImporteInicialConvenio()) {
+                convenioService.removeConvenio(c);
+            } else {
+                convenioService.editarConvenio(c);
+            }
         }
     }
 

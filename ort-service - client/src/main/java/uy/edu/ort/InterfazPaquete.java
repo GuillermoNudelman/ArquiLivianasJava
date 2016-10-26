@@ -84,7 +84,6 @@ public final class InterfazPaquete {
                             paquete.setCliente(clienteAsociado);
 
                             //logica para descuentos con convenio
-                            //TODO no se tiene en cuenta el dto de 20%
                             List<Convenio> convenios = convenioService.listConvenio();
                             if (existeConvenioLibre(convenios, clienteAsociado.getNombreEmpresa())) {
                                 Convenio convenioLibre = obtenerPrimerConvenioLibre(convenios, clienteAsociado.getNombreEmpresa());
@@ -100,7 +99,12 @@ public final class InterfazPaquete {
                                 convenioService.editarConvenio(convenioLibre);
                             }
                         }
-                        System.out.println("Descuento obtenido por convenio (no estoy teniendo en cuenta lo del 20%): " + descuento);
+                        if (descuento>0) {
+                            int costoConDto = (int) ((costoDePaquete*0.2) + costoDePaquete);
+                            System.out.println("Se utilizó un convenio, se realizará un20% de descuento en el costo. Costo: " + costoConDto);
+                            paquete.setCosto(costoConDto);
+                        }
+                        System.out.println("Descuento obtenido por convenio: " + descuento);
                         paquete.setDescuento(descuento);
                         System.out.println("Peso: ");
                         paquete.setPeso((int) esPositivo(in));
