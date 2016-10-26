@@ -1,0 +1,45 @@
+package uy.edu.ort.aop;
+
+import java.util.Date;
+import org.aspectj.lang.ProceedingJoinPoint;
+import uy.edu.ort.model.LogTrazabilidad;
+import uy.edu.ort.utilities.LogTrazabilidadService;
+
+/*
+* Esta clase se ejecuta cuando cualquier metodo de cualquier clase dentro de la carpeta
+* ort.edu.uy.service, se ejecuta y guarda en la base de datos el usuario que la ejecuto, la fecha
+* y el tiempo que demoró en ejecutarse
+*/
+public class Trazabilidad {
+       
+    private LogTrazabilidadService logTrazabilidadService;
+
+    public void setLogTrazabilidadService(LogTrazabilidadService logTrazabilidadService) {
+        this.logTrazabilidadService = logTrazabilidadService;
+    }
+    
+    public Object metodoAround(ProceedingJoinPoint pjp) {
+        Object ret = null;
+        try {
+
+            long beginExec = System.nanoTime();
+            
+            ret = pjp.proceed();
+            long endExec = System.nanoTime();
+            long time = endExec - beginExec;
+
+            Date date = new Date();
+           
+            LogTrazabilidad logTrazabilidad = new LogTrazabilidad();
+            logTrazabilidad.setFechaOperacion(date);
+            logTrazabilidad.setNombreOperacion(pjp.getSignature().getName());
+            logTrazabilidad.setUsuario("pepe");
+            logTrazabilidad.setTiempoEjecucion(time);
+            logTrazabilidadService.addLogTrazabilidad(logTrazabilidad);
+
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return ret;
+    }
+}

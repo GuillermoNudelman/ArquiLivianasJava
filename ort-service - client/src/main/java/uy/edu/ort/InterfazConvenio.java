@@ -47,15 +47,18 @@ public final class InterfazConvenio {
                     if (!listadoClientes.isEmpty()) {
                         System.out.println("Recuerde que el 'importe actual' del convenio se inicializa en 0, y va aumentando a medida que se hace uso del convenio. Cuando se alcanza el 'monto inicial', el convenio se elimina.");
                         Convenio convenio = new Convenio();
-
                         String codigoIngresado = "";
                         boolean codigoLibre = false;
                         System.out.println("Codigo: ");
                         while (!codigoLibre) {
                             codigoIngresado = in.nextLine();
-                            codigoLibre = (convenioService.buscarConvenio(codigoIngresado) == null);
-                            if (!codigoLibre) {
-                                System.out.println("Codigo en uso. Reingrese: ");
+                            if (!codigoIngresado.trim().equals("")) {
+                                codigoLibre = (convenioService.buscarConvenio(codigoIngresado) == null);
+                                if (!codigoLibre) {
+                                    System.out.println("Codigo en uso. Reingrese: ");
+                                }
+                            } else {
+                                System.out.println("Codigo invalido. Reingrese: ");
                             }
                         }
                         convenio.setCodigo(codigoIngresado);
@@ -78,7 +81,7 @@ public final class InterfazConvenio {
                                 System.out.println("Nombre de la empresa incorrecto. Reingrese (se muestra un listado con las opciones): ");
                             }
                         }
-                        
+
                         System.out.println("Importe Inicial: ");
                         convenio.setImporteInicialConvenio((int) esPositivo(in));
 
@@ -147,7 +150,7 @@ public final class InterfazConvenio {
                             }
                         }
                         convenio.setCliente(clienteAsociado);
-                        
+
                         System.out.println("Importe Inicial: ");
                         convenio.setImporteInicialConvenio((int) esPositivo(in));
                         System.out.println("Importe Actual: ");

@@ -35,5 +35,15 @@
         <property name="serviceUrl" value="rmi://localhost:1199/PaqueteService" />
         <property name="serviceInterface" value="uy.edu.ort.service.PaqueteService" />
     </bean>
+    
+    <bean id="logTrazabilidadService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+        <property name="serviceUrl" value="rmi://localhost:1199/LogTrazabilidadService" />
+        <property name="serviceInterface" value="uy.edu.ort.utilities.LogTrazabilidadService" />
+    </bean>
+    
+    <bean id="beanService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+        <property name="serviceUrl" value="rmi://localhost:1199/BeanService" />
+        <property name="serviceInterface" value="uy.edu.ort.utilities.ServicioBean" />
+    </bean>
         
 </beans>

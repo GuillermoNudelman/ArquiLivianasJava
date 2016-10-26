@@ -99,7 +99,7 @@ public final class InterfazCamioneta {
                         System.out.println("Kilometros restantes para realizar service: ");
                         camioneta.setKmsProxService(esPositivo(in));
 
-                        //TODO testear si anda esto
+                        //TODO ESTO NO FUNCIONA
                         camionetaService.editarCamioneta(camioneta);
                     }
                     break;

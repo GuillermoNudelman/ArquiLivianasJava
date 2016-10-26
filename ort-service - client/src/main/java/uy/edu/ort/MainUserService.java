@@ -13,16 +13,17 @@ import uy.edu.ort.model.Paquete;
 import uy.edu.ort.service.PaqueteService;
 import uy.edu.ort.model.Camioneta;
 import uy.edu.ort.model.Entrega;
+import uy.edu.ort.utilities.ServicioBean;
 
 public class MainUserService {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
 
-        PaqueteService paqueteService = (PaqueteService) applicationContext.getBean("paqueteService");
+        ServicioBean servicioBean = (ServicioBean) applicationContext.getBean("beanService");
 
         System.out.println("Bienvenido a sistema de gestion de Cadetify!");
-        String[] menu = {"Manejo Camionetas", "Manejo Convenios", "Manejo Clientes", "Manejo Paquetes", "Manejo Entregas", "Terminar"};
+        String[] menu = {"Manejo Camionetas", "Manejo Convenios", "Manejo Clientes", "Manejo Paquetes", "Manejo Entregas", "Profiling y Estadística", "Beans del sistems", "Terminar"};
         int opcion = 0;
         Scanner in = new Scanner(System.in);
         while (opcion != menu.length) {
@@ -53,9 +54,19 @@ public class MainUserService {
                     InterfazEntrega.EntregaInferfaz(applicationContext);
                     break;
                 }
+                case 6: {
+                    InterfazEstadisticas.EstadisticasInferfaz(applicationContext);
+                    break;
+                }
+                case 7: {
+                    List<String> listaBean = servicioBean.getBeans();
+                    for (String bean : listaBean) {
+                        System.out.println(bean);
+                    }
+                    break;
+                }
                 default: {
                 }
-
             }
         }
     }
@@ -103,7 +114,7 @@ public class MainUserService {
         boolean fechaCorrecta = false;
         Date date = new Date();
         while (!fechaCorrecta) {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             String dateInString = fecha;
             try {
                 date = formatter.parse(dateInString);
@@ -141,13 +152,13 @@ public class MainUserService {
             System.out.println("Placa de la camioneta: " + c.getPlaca());
         }
     }
-    
+
     public static boolean ExisteCamioneta_PesoYDistancia(List<Camioneta> listCamionetas, int peso, int distancia) {
         boolean existe = false;
         for (Camioneta c : listCamionetas) {
             int distanciaTotal = (int) (c.getKmsRecorridos() + distancia);
             if (c.getCapacidadKgs() >= peso && c.getKmsProxService() >= distanciaTotal) {
-                existe=true;
+                existe = true;
             }
         }
         return existe;

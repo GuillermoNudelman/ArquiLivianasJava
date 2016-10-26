@@ -11,7 +11,33 @@
           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
    
-        
+    <aop:config>
+        <aop:aspect id="trazabilidad" ref="trazabilidadBean">
+            <aop:pointcut id="businessServicePC"
+                          expression="execution(* uy.edu.ort.service.*.*(..))"/>
+            <aop:around pointcut-ref="businessServicePC" method="metodoAround"/>
+        </aop:aspect>
+    </aop:config>
+
+    <bean id="trazabilidadBean" class="uy.edu.ort.aop.Trazabilidad">
+        <property name="logTrazabilidadService" ref="logTrazabilidadService" />
+    </bean>    
+    
+    <bean id="beanPost" class="uy.edu.ort.BeanPost">
+        <property name="servicioBean" ref="servicioBean" />
+    </bean>
+    
+    <bean id="beanServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <!-- puede tener cualquier nombre-->
+        <property name="serviceName" value="BeanService" />
+        <property name="service" ref="servicioBean" />
+        <property name="serviceInterface" value="uy.edu.ort.utilities.ServicioBean" />
+        <!-- default 1099 -->
+        <property name="registryPort" value="1199" />
+    </bean> 
+    
+    <bean id="servicioBean" class="uy.edu.ort.utilities.ServicioBeanImp" />   
+    
     <!-- Beans Cliente -->
     
     <bean id="clienteServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">
@@ -109,7 +135,26 @@
 
     <bean id="convenioDao" class="uy.edu.ort.dao.ConvenioDaoHibTemplateImpl">
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
-    </bean>     
+    </bean> 
+    
+    <!-- Beans logTrazabilidad -->
+    
+    <bean id="logTrazabilidadServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <!-- puede tener cualquier nombre-->
+        <property name="serviceName" value="LogTrazabilidadService" />
+        <property name="service" ref="logTrazabilidadService" />
+        <property name="serviceInterface" value="uy.edu.ort.utilities.LogTrazabilidadService" />
+        <!-- default 1099 -->
+        <property name="registryPort" value="1199" />
+    </bean>
+        
+    <bean id="logTrazabilidadService" class="uy.edu.ort.utilities.LogTrazabilidadServiceImp">
+        <property name="logTrazabilidadDao" ref="logTrazabilidadDao"/>
+    </bean>
+
+    <bean id="logTrazabilidadDao" class="uy.edu.ort.dao.LogTrazabilidadDaoImp">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>       
 
     <!-- Hibernate Template -->
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
@@ -127,6 +172,7 @@
                 <value>uy.edu.ort.model.Camioneta</value>
                 <value>uy.edu.ort.model.Entrega</value>
                 <value>uy.edu.ort.model.Convenio</value>
+                <value>uy.edu.ort.model.LogTrazabilidad</value>
             </list>
         </property>
         
@@ -158,5 +204,7 @@
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    </bean>   
+    
+    
 </beans>
