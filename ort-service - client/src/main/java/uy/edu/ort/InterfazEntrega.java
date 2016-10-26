@@ -56,8 +56,23 @@ public final class InterfazEntrega {
                     if (ExistePaqueteSinEntrega(listadoPaquetes)) {
                         if (!listadoCamionetas.isEmpty()) {
                             Entrega entrega = new Entrega();
-                            System.out.println("Código: ");
-                            entrega.setCodigo(in.nextLine());
+
+                            String codigoIngresado = "";
+                            boolean codigoLibre = false;
+                            System.out.println("Codigo: ");
+                            while (!codigoLibre) {
+                                codigoIngresado = in.nextLine();
+                                if (!codigoIngresado.trim().equals("")) {
+                                    codigoLibre = (entregaService.buscarEntrega(codigoIngresado) == null);
+                                    if (!codigoLibre) {
+                                        System.out.println("Codigo en uso. Reingrese: ");
+                                    }
+                                } else {
+                                    System.out.println("Codigo invalido. Reingrese: ");
+                                }
+                            }
+                            entrega.setCodigo(codigoIngresado);
+
                             System.out.println("Fecha de entrega (ej. 31-12-2016): ");
                             entrega.setFechaEntrega(esFecha(in.nextLine()));
                             System.out.println("Distancia a recorrer para realizar la entrega: ");
@@ -88,9 +103,9 @@ public final class InterfazEntrega {
                             if (ExisteCamioneta_PesoYDistancia(listadoCamionetas, pesoTotal, entrega.getDistanciaRecorrerKm())) {
 
                                 System.out.println("Código de la camioneta que realiza la entrega (se muestra un listado con las camionetas que cumplen los requisitos de peso y distancia): ");
-                                boolean esCamioneta =false;
+                                boolean esCamioneta = false;
                                 Camioneta camionetaAsociado = new Camioneta();
-                                while(!esCamioneta){
+                                while (!esCamioneta) {
                                     listadoCamionetas = camionetaService.listCamioneta();
                                     ListarCamionetas_PesoYDistancia(listadoCamionetas, pesoTotal, entrega.getDistanciaRecorrerKm());
                                     String codigoCamioneta = in.nextLine();
@@ -98,8 +113,7 @@ public final class InterfazEntrega {
                                     if (esCamioneta) {
                                         camionetaAsociado = camionetaService.buscarCamioneta(codigoCamioneta);
                                         entrega.setCamioneta(camionetaAsociado);
-                                    }
-                                    else{
+                                    } else {
                                         System.out.println("Código de camioneta incorrecto, reingrese");
                                     }
                                 }

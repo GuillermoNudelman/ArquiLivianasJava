@@ -46,11 +46,5 @@ public class EntregaServiceImpl implements EntregaService {
     public void editarEntrega(Entrega entrega) {
           this.entregaDao.editarEntrega(entrega);
     }
-
-    @Override
-    @Transactional
-    public void sumarDistancia(Entrega entrega, int distancia){
-    //TODO
-    }
 }
 

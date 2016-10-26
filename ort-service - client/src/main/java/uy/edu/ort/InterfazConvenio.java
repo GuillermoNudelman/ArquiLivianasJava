@@ -59,24 +59,26 @@ public final class InterfazConvenio {
                             }
                         }
                         convenio.setCodigo(codigoIngresado);
-
                         System.out.println("Fecha de creación (ej. 31-12-2016): ");
                         convenio.setFechaCreacion(esFecha(in.nextLine()));
                         System.out.println("Nombre de la empresa (se muestra un listado con las opciones): ");
                         boolean esCliente = false;
+                        String nombreCliente = "";
+                        Cliente clienteAsociado = new Cliente();
                         while (!esCliente) {
                             listadoClientes = clienteService.listCliente();
                             ListarClientes(listadoClientes);
-                            String nombreCliente = in.nextLine();
+                            nombreCliente = in.nextLine();
                             esCliente = esUnCliente(nombreCliente, listadoClientes);
                             boolean clienteFueAgregado = false;
                             if (esCliente) {
-                                Cliente clienteAsociado = clienteService.buscarClientePorNombreEmpresa(nombreCliente);
+                                clienteAsociado = clienteService.buscarClientePorNombreEmpresa(nombreCliente);
                                 convenio.setCliente(clienteAsociado);
                             } else {
                                 System.out.println("Nombre de la empresa incorrecto. Reingrese (se muestra un listado con las opciones): ");
                             }
                         }
+                        
                         System.out.println("Importe Inicial: ");
                         convenio.setImporteInicialConvenio((int) esPositivo(in));
 
@@ -93,6 +95,7 @@ public final class InterfazConvenio {
                     break;
                 }
                 case 2: {
+                    List<Cliente> listadoClientes = clienteService.listCliente();
                     System.out.println("Codigo: ");
                     Convenio convenio = convenioService.buscarConvenio(in.nextLine());
                     if (convenio == null) {
@@ -101,12 +104,9 @@ public final class InterfazConvenio {
                         System.out.println("datos de Convenio a modificar: ");
                         System.out.println("Código: " + convenio.getCodigo());
                         System.out.println("Fecha de creación: " + convenio.getFechaCreacion().toString());
-
-                        //TODO NOMBRE D EEMPRESA
-                        System.out.println("VOLVER A ELEGIR NOMBRE DE EMPRESA");
                         System.out.println("Nombre de la empresa: " + convenio.getCliente().getNombreEmpresa());
                         System.out.println("Importe inicial: " + convenio.getImporteInicialConvenio());
-                        //System.out.println("Importe actual: " + convenio.getImporteActualConvenio());
+                        System.out.println("Importe actual: " + convenio.getImporteActualConvenio());
                         System.out.println("");
 
                         System.out.println("Modificación de datos: ");
@@ -116,34 +116,43 @@ public final class InterfazConvenio {
                         System.out.println("Codigo: ");
                         while (!codigoLibre) {
                             codigoIngresado = in.nextLine();
-                            codigoLibre = (convenioService.buscarConvenio(codigoIngresado) == null);
-                            if (!codigoLibre) {
-                                System.out.println("Codigo en uso. Reingrese: ");
+                            if (!codigoIngresado.trim().equals("")) {
+                                codigoLibre = (convenioService.buscarConvenio(codigoIngresado) == null);
+                                if (!codigoLibre) {
+                                    System.out.println("Codigo en uso. Reingrese: ");
+                                }
+                            } else {
+                                System.out.println("Codigo invalido. Reingrese: ");
                             }
                         }
                         convenio.setCodigo(codigoIngresado);
 
                         System.out.println("Fecha de creación (ej. 31-12-2016): ");
                         convenio.setFechaCreacion(esFecha(in.nextLine()));
-
                         System.out.println("Nombre de la empresa (se muestra un listado con las opciones): ");
-                        List<Cliente> listadoClientes = clienteService.listCliente();
-                        ListarClientes(listadoClientes);
+                        boolean esCliente = false;
                         String nombreCliente = in.nextLine();
-                        boolean esCliente = esUnCliente(nombreCliente, listadoClientes);
-                        if (esCliente) {
-                            Cliente clienteAsociado = clienteService.buscarClientePorNombreEmpresa(nombreCliente);
-                            // convenio.setCliente(clienteAsociado);
+                        Cliente clienteAsociado = new Cliente();
+                        while (!esCliente) {
+                            listadoClientes = clienteService.listCliente();
+                            ListarClientes(listadoClientes);
+                            nombreCliente = in.nextLine();
+                            esCliente = esUnCliente(nombreCliente, listadoClientes);
+                            boolean clienteFueAgregado = false;
+                            if (esCliente) {
+                                clienteAsociado = clienteService.buscarClientePorNombreEmpresa(nombreCliente);
+                                convenio.setCliente(clienteAsociado);
+                            } else {
+                                System.out.println("Nombre de la empresa incorrecto. Reingrese (se muestra un listado con las opciones): ");
+                            }
                         }
-
+                        convenio.setCliente(clienteAsociado);
+                        
                         System.out.println("Importe Inicial: ");
                         convenio.setImporteInicialConvenio((int) esPositivo(in));
                         System.out.println("Importe Actual: ");
                         convenio.setImporteActualConvenio((int) esPositivo(in));
-
-                        //todo chequear estoo de abajo!!
-                        convenioService.removeConvenio(convenio);
-                        convenioService.addConvenio(convenio);
+                        convenioService.editarConvenio(convenio);
                     }
                     break;
                 }

@@ -31,7 +31,6 @@ public final class InterfazPaquete {
 
         PaqueteService paqueteService = (PaqueteService) applicationContext.getBean("paqueteService");
         ClienteService clienteService = (ClienteService) applicationContext.getBean("clienteService");
-        //TODO VER SI BORRAR EL CLIENTESERVICE
         ConvenioService convenioService = (ConvenioService) applicationContext.getBean("convenioService");
 
         String[] menu = {"Ingresar Paquete", "Editar Paquete", "Eliminar Paquete", "Listar Paquetes", "Volver"};
@@ -49,8 +48,23 @@ public final class InterfazPaquete {
                     List<Cliente> listadoClientes = clienteService.listCliente();
                     if (!listadoClientes.isEmpty()) {
                         Paquete paquete = new Paquete();
-                        System.out.println("Código: ");
-                        paquete.setCodigo(in.nextLine());
+
+                        String codigoIngresado = "";
+                        boolean codigoLibre = false;
+                        System.out.println("Codigo: ");
+                        while (!codigoLibre) {
+                            codigoIngresado = in.nextLine();
+                            if (!codigoIngresado.trim().equals("")) {
+                                codigoLibre = (paqueteService.buscarPaquete(codigoIngresado) == null);
+                                if (!codigoLibre) {
+                                    System.out.println("Codigo en uso. Reingrese: ");
+                                }
+                            } else {
+                                System.out.println("Codigo invalido. Reingrese: ");
+                            }
+                        }
+                        paquete.setCodigo(codigoIngresado);
+
                         System.out.println("Fecha de creación (ej. 31-12-2016): ");
                         paquete.setFechaCreacion(esFecha(in.nextLine()));
 
@@ -70,9 +84,7 @@ public final class InterfazPaquete {
                             paquete.setCliente(clienteAsociado);
 
                             //logica para descuentos con convenio
-                            //TODO asignar lista de convenios bien.
-                            //List<Convenio> convenios =  new ArrayList<Convenio>(); 
-                            //clienteAsociado.getListaConvenios();
+                            //TODO no se tiene en cuenta el dto de 20%
                             List<Convenio> convenios = convenioService.listConvenio();
                             if (existeConvenioLibre(convenios, clienteAsociado.getNombreEmpresa())) {
                                 Convenio convenioLibre = obtenerPrimerConvenioLibre(convenios, clienteAsociado.getNombreEmpresa());
@@ -82,14 +94,9 @@ public final class InterfazPaquete {
                                 if (costoDePaquete < descuento) {
                                     descuento = costoDePaquete;
                                 }
-
-                                //TODO ACTUALIZAR CONVENIO
                                 paquete.setConvenio(convenioLibre);
-
-                                //REVISAR ESTO
-                                //TODO no actualia bien el importeactual de convenio.. algo raro
                                 int impActual = convenioLibre.getImporteActualConvenio();
-                                convenioLibre.setImporteActualConvenio(costoDePaquete + impActual);
+                                convenioLibre.setImporteActualConvenio(descuento + impActual);
                                 convenioService.editarConvenio(convenioLibre);
                             }
                         }
@@ -198,7 +205,6 @@ public final class InterfazPaquete {
     }
 
     public static boolean existeConvenioLibre(List<Convenio> convenios, String nombreEmpresaASociada) {
-        //TODO FALLA SI NO TIENE CLIENTE ASOCIADO
         boolean convenioEncontrado = false;
         for (Convenio c : convenios) {
             if (!c.isEstaEnUso() && !convenioEncontrado && c.getCliente().getNombreEmpresa().equals(nombreEmpresaASociada)) {

@@ -37,10 +37,14 @@ public final class InterfazCamioneta {
                     System.out.println("Codigo: ");
                     while (!codigoLibre) {
                         codigoIngresado = in.nextLine();
-                        codigoLibre = (camionetaService.buscarCamioneta(codigoIngresado) == null);
-                        if (!codigoLibre) {
-                            System.out.println("Codigo en uso. Reingrese: ");
-                        }
+                            if (!codigoIngresado.trim().equals("")) {
+                                codigoLibre = (camionetaService.buscarCamioneta(codigoIngresado) == null);
+                                if (!codigoLibre) {
+                                    System.out.println("Codigo en uso. Reingrese: ");
+                                }
+                            } else {
+                                System.out.println("Codigo invalido. Reingrese: ");
+                            }
                     }
                     camioneta.setCodigo(codigoIngresado);
 
@@ -75,9 +79,13 @@ public final class InterfazCamioneta {
                         System.out.println("Codigo: ");
                         while (!codigoLibre) {
                             codigoIngresado = in.nextLine();
-                            codigoLibre = (camionetaService.buscarCamioneta(codigoIngresado) == null);
-                            if (!codigoLibre) {
-                                System.out.println("Codigo en uso. Reingrese: ");
+                            if (!codigoIngresado.trim().equals("")) {
+                                codigoLibre = (camionetaService.buscarCamioneta(codigoIngresado) == null);
+                                if (!codigoLibre) {
+                                    System.out.println("Codigo en uso. Reingrese: ");
+                                }
+                            } else {
+                                System.out.println("Codigo invalido. Reingrese: ");
                             }
                         }
                         camioneta.setCodigo(codigoIngresado);
@@ -91,10 +99,8 @@ public final class InterfazCamioneta {
                         System.out.println("Kilometros restantes para realizar service: ");
                         camioneta.setKmsProxService(esPositivo(in));
 
-                        //TODO ESTO HABRIA QUE CAMBIARLO POR EDITAR
-                        camionetaService.removeCamioneta(camioneta);
-                        camionetaService.addCamioneta(camioneta);
-                        //camionetaService.editarCamioneta(camioneta);
+                        //TODO testear si anda esto
+                        camionetaService.editarCamioneta(camioneta);
                     }
                     break;
                 }
@@ -114,7 +120,7 @@ public final class InterfazCamioneta {
                     System.out.println("Cantidad maxima de kilometros para realizar próximo service (dejar en blanco si no se usa filtro):");
                     try {
                         String entrada = in.nextLine();
-                        if (entrada != "") {
+                        if (!entrada.equals("")) {
                             proxService = Long.valueOf(entrada);
                         }
                     } catch (NumberFormatException e) {

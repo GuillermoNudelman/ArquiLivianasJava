@@ -14,7 +14,4 @@ public interface EntregaService {
     public Entrega buscarEntrega(String codigo);
     
     public void editarEntrega(Entrega entrega);
-    
-    public void sumarDistancia(Entrega entrega, int distancia);
-    
 }

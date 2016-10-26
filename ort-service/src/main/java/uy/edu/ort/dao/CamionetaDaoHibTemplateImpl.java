@@ -37,14 +37,6 @@ public class CamionetaDaoHibTemplateImpl implements CamionetaDao {
         return camionetas.isEmpty() ? null : camionetas.get(0);
     }
     
-    //TODO CHEQUEAR QUE ESTE NO SE USA, O QUE SE USA BIEN, BUSCA POR ID NO POR CODIGO
-    @Override
-    public Camioneta buscarCamionetaPorCodigo(int idCamioneta) {
-        Object[] params  = {idCamioneta};        
-        List<Camioneta> camionetas = (List<Camioneta>) hibernateTemplate.find("select c from Camioneta c where c.id = ?", params);
-        return camionetas.isEmpty() ? null : camionetas.get(0);
-    }
-
     @Override
     public void editarCamioneta(Camioneta camioneta) {
         this.hibernateTemplate.update(camioneta);

@@ -14,6 +14,4 @@ public interface EntregaDao {
     Entrega buscarEntrega(String codigo);
     
     void editarEntrega(Entrega entrega);
-    
-    void sumarDistancia(Entrega entrega, int distancia);
 }

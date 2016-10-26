@@ -37,14 +37,7 @@ public class EntregaDaoHibTemplateImpl implements EntregaDao {
 
     @Override
     public void editarEntrega(Entrega entrega) {
-        //TODO
         this.hibernateTemplate.update(entrega);
-    }
-    
-    
-    @Override
-    public void sumarDistancia(Entrega entrega, int distancia){
-    //TODO
     }
 }
 

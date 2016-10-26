@@ -19,7 +19,8 @@ import uy.edu.ort.service.ClienteService;
  * @author Guillermo
  */
 public final class InterfazCliente {
-        public static void ClienteInferfaz(ApplicationContext applicationContext){
+
+    public static void ClienteInferfaz(ApplicationContext applicationContext) {
         ClienteService clienteService = (ClienteService) applicationContext.getBean("clienteService");
         String[] menu = {"Ingresar Cliente", "Editar Cliente", "Eliminar Cliente", "Listar Clientes", "Volver"};
         int opcion = 0;
@@ -30,12 +31,27 @@ public final class InterfazCliente {
             for (int i = 0; i < menu.length; i++) {
                 System.out.println((i + 1) + " - " + menu[i]);
             }
-            opcion = validarOpcion(menu.length);            
+            opcion = validarOpcion(menu.length);
             switch (opcion) {
                 case 1: {
                     Cliente cliente = new Cliente();
+
+                    String nombreEmpresaIngresado = "";
+                    boolean nombreLibre = false;
                     System.out.println("Nombre de la Empresa: ");
-                    cliente.setNombreEmpresa(in.nextLine());
+                    while (!nombreLibre) {
+                        nombreEmpresaIngresado = in.nextLine();
+                        if (!nombreEmpresaIngresado.trim().equals("")) {
+                            nombreLibre = (clienteService.buscarClientePorNombreEmpresa(nombreEmpresaIngresado) == null);
+                            if (!nombreLibre) {
+                                System.out.println("Nombre de Empresa en uso. Reingrese: ");
+                            }
+                        } else {
+                            System.out.println("Nombre de Empresa invalido. Reingrese: ");
+                        }
+                    }
+                    cliente.setNombreEmpresa(nombreEmpresaIngresado);
+                    
                     System.out.println("Dirección: ");
                     cliente.setDireccion(in.nextLine());
                     System.out.println("Teléfono: ");
@@ -48,28 +64,44 @@ public final class InterfazCliente {
                 case 2: {
                     System.out.println("Nombre de la Empresa: ");
                     Cliente cliente = clienteService.buscarClientePorNombreEmpresa(in.nextLine());
-                    if(cliente == null){
+                    if (cliente == null) {
                         System.out.println("No existe el cliente ingresado.");
-                    }else{
+                    } else {
                         System.out.println("Ingrese datos a modificar");
+                        String nombreEmpresaIngresado = "";
+                        boolean nombreLibre = false;
+                        System.out.println("Nombre de la Empresa: ");
+                        while (!nombreLibre) {
+                            nombreEmpresaIngresado = in.nextLine();
+                            if (!nombreEmpresaIngresado.trim().equals("")) {
+                                nombreLibre = (clienteService.buscarClientePorNombreEmpresa(nombreEmpresaIngresado) == null);
+                                if (!nombreLibre) {
+                                    System.out.println("Nombre de Empresa en uso. Reingrese: ");
+                                }
+                            } else {
+                                System.out.println("Nombre de Empresa invalido. Reingrese: ");
+                            }
+                        }
+                        cliente.setNombreEmpresa(nombreEmpresaIngresado);
+                        
                         System.out.println("Dirección: ");
                         cliente.setDireccion(in.nextLine());
                         System.out.println("Teléfono: ");
                         cliente.setTelefono((int) esPositivo(in));
                         System.out.println("Nombre de contacto: ");
-                        cliente.setNombreContacto(in.nextLine());       
+                        cliente.setNombreContacto(in.nextLine());
                         clienteService.removeCliente(cliente);
                         clienteService.addCliente(cliente);
                         //camionetaService.editarCamioneta(camioneta);
                     }
                     break;
                 }
-                case 3: {                   
+                case 3: {
                     System.out.println("Ingrese nombre de la empresa: ");
                     Cliente cliente = clienteService.buscarClientePorNombreEmpresa(in.nextLine());
-                    if(cliente == null){
+                    if (cliente == null) {
                         System.out.println("No existe un cliente con ese nombre de empresa.");
-                    }else{
+                    } else {
                         clienteService.removeCliente(cliente);
                         System.out.println("El cliente ha sido eliminado con exito.");
                     }
@@ -86,7 +118,8 @@ public final class InterfazCliente {
                     }
                     break;
                 }
-                default :{}
+                default: {
+                }
             }
         }
     }
