@@ -6,6 +6,10 @@ import javax.transaction.Transactional;
 import uy.edu.ort.dao.EntregaDao;
 import uy.edu.ort.model.Entrega;
 
+/**
+ * Implementacion de la interfaz EntregaService
+ * 
+ */
 public class EntregaServiceImpl implements EntregaService {
 
     private EntregaDao entregaDao;
@@ -45,6 +49,11 @@ public class EntregaServiceImpl implements EntregaService {
     @Transactional
     public void editarEntrega(Entrega entrega) {
           this.entregaDao.editarEntrega(entrega);
+    }
+
+    @Override
+    public List<Entrega> listEntregaPorMes(int mes) {
+        return this.entregaDao.listEntregaPorMes(mes);
     }
 }
 

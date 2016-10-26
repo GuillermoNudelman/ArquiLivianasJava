@@ -18,4 +18,6 @@ public interface EntregaService {
     public Entrega buscarEntrega(String codigo);
     
     public void editarEntrega(Entrega entrega);
+
+    public List<Entrega> listEntregaPorMes(int mes);
 }

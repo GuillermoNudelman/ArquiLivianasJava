@@ -4,6 +4,10 @@ import java.util.List;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import uy.edu.ort.model.Entrega;
 
+/**
+ * Implementa EntregaDao con Hibernate
+ * 
+ */
 public class EntregaDaoHibTemplateImpl implements EntregaDao {
 
     private HibernateTemplate hibernateTemplate;
@@ -38,6 +42,13 @@ public class EntregaDaoHibTemplateImpl implements EntregaDao {
     @Override
     public void editarEntrega(Entrega entrega) {
         this.hibernateTemplate.update(entrega);
+    }
+
+    @Override
+    public List<Entrega> listEntregaPorMes(int mes) {        
+        Object[] params  = {mes};        
+        List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("select e from Entrega e where month(e.fechaEntrega) = ?", params);
+        return entregas;
     }
 }
 
