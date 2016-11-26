@@ -26,7 +26,7 @@
                 </p>
                 <p>
                     <form:label for="telefono" path="telefono">Telefono</form:label><br/>
-                    <form:input path="telefono" required= "required" />
+                    <form:input path="telefono" required= "required"  />
                 </p>
                 <p>
                     <input type="submit" value="Agregar Cliente" />

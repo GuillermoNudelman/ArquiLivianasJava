@@ -41,7 +41,7 @@ public class ChoferController {
             this.choferService.addChofer(chofer);
             return "chofer/vistaPreviaChoferes";
         } else {
-            result.reject("", "El nombre de contacto no puede ser vacio");
+            result.reject("", "El codigo no puede ser vacio");
             return "chofer/formularioNuevoChofer";
         }
     }

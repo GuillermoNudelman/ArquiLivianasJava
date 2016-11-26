@@ -10,7 +10,7 @@
     <div>
         <form:form modelAttribute="cliente" action="listadoClientes" method="get">
             <fieldset>
-                <legend>La cliente fue agregada correctamente</legend>
+                <legend>El cliente fue agregado correctamente</legend>
                 <p>
                     <form:label for="nombreContacto" path="nombreContacto">Nombre de contacto</form:label><br/>
                     <form:input path="nombreContacto" disabled="true" />

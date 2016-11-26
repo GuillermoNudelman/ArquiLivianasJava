@@ -39,6 +39,14 @@ public class ConvenioDaoHibTemplateImpl implements ConvenioDao {
         List<Convenio> convenios = (List<Convenio>) hibernateTemplate.find("select c from Convenio c where c.codigo = ?", params);
         return convenios.isEmpty() ? null : convenios.get(0);
     }
+    
+    @Override
+    public Convenio buscarConvenioPorId(Long id) {
+        int idInt = id.intValue();
+        Object[] params  = {idInt};        
+        List<Convenio> convenios = (List<Convenio>) hibernateTemplate.find("select c from Convenio c where c.id = ?", params);
+        return convenios.isEmpty() ? null : convenios.get(0);
+    }
 
     @Override
     public void editarConvenio(Convenio convenio) {

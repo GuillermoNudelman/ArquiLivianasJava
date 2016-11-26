@@ -17,6 +17,8 @@ public interface ConvenioService {
     
     public Convenio buscarConvenio(String codigo);
     
+    public Convenio buscarConvenioPorId(Long id);
+    
     void editarConvenio(Convenio convenio);
 }
 

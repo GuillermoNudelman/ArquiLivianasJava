@@ -17,6 +17,8 @@ public interface ConvenioDao {
 
     Convenio buscarConvenio(String codigo);
     
+    Convenio buscarConvenioPorId(Long id);    
+    
     void editarConvenio(Convenio convenio);
 }
 

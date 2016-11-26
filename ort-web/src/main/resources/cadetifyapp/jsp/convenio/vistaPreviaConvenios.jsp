@@ -8,20 +8,24 @@
 
 <html>
     <div>
-        <form:form modelAttribute="chofer" action="listadoChoferes" method="get">
+        <form:form modelAttribute="convenio" action="listadoConvenios" method="get">
             <fieldset>
-                <legend>El chofer fue agregado correctamente</legend>
+                <legend>El convenio fue agregado correctamente</legend>
                 <p>
                     <form:label for="codigo" path="codigo">Codigo</form:label><br/>
                     <form:input path="codigo" disabled="true" />
                 </p>
                 <p>
-                    <form:label for="nombre" path="nombre">Nombre</form:label><br/>
-                    <form:input path="nombre" disabled="true" />
+                    <form:label for="fechaCreacion" path="fechaCreacion">Fecha de creacion</form:label><br/>
+                    <form:input path="fechaCreacion" disabled="true" />
                 </p>
                 <p>
-                    <form:label for="libretaDeConducir" path="libretaDeConducir">Libreta de conducir</form:label><br/>
-                    <form:input path="libretaDeConducir" disabled="true" />
+                    <form:label for="importeInicialConvenio" path="importeInicialConvenio">Importe inicial del convenio</form:label><br/>
+                    <form:input path="importeInicialConvenio" disabled="true" />
+                </p>
+                <p>
+                    <form:label for="importeActualConvenio" path="importeActualConvenio">Importe actual del convenio</form:label><br/>
+                    <form:input path="importeActualConvenio" disabled="true" />
                 </p>
                 <p>
                     <input type="submit" value="Volver" />

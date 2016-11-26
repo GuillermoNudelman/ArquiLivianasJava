@@ -10,7 +10,7 @@
     <div>
         <form:form modelAttribute="chofer" action="listadoChoferes" method="get">
             <fieldset>
-                <legend>La chofer fue agregada correctamente</legend>
+                <legend>El chofer fue agregado correctamente</legend>
                 <p>
                     <form:label for="codigo" path="codigo">Codigo</form:label><br/>
                     <form:input path="codigo" disabled="true" />

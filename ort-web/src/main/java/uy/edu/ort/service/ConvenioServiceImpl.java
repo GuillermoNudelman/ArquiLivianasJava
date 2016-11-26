@@ -43,6 +43,11 @@ public class ConvenioServiceImpl implements ConvenioService {
         return this.convenioDao.buscarConvenio(codigo);
     }
     
+    @Override
+    @Transactional
+    public Convenio buscarConvenioPorId(Long id) {
+        return this.convenioDao.buscarConvenioPorId(id);
+    }
     
     @Override
     @Transactional
