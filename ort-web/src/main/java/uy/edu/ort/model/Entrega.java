@@ -15,24 +15,29 @@ public class Entrega extends EntidadGenerica{
     
     @OneToOne
     private Camioneta camioneta;
+       
+    @OneToOne
+    private Chofer chofer;
     
-   
     @Column
     private int distanciaRecorrerKm;
     
     @Column
     private int importeEntrega;
     
+    private List<Paquete> listaPaquetes;
+    
     public Entrega() {
     }
 
-    public Entrega(String codigo, Date fechaEntrega, Camioneta camioneta, int distanciaRecorrerKm, int importeEntrega) {
+    public Entrega(String codigo, Date fechaEntrega, Camioneta camioneta, int distanciaRecorrerKm, int importeEntrega, Chofer cofer, List<Paquete> listaPaquetes) {
         this.codigo = codigo;
         this.fechaEntrega = fechaEntrega;
         this.camioneta = camioneta;
         this.distanciaRecorrerKm = distanciaRecorrerKm;
         this.importeEntrega = importeEntrega;
-        
+        this.chofer = chofer;
+        this.listaPaquetes = listaPaquetes;
     }
 
     public String getCodigo() {
@@ -75,7 +80,21 @@ public class Entrega extends EntidadGenerica{
         this.importeEntrega = importeEntrega;
     }
 
-    
+    public List<Paquete> getListaPaquetes() {
+        return listaPaquetes;
+    }
+
+    public void setListaPaquetes(List<Paquete> listaPaquetes) {
+        this.listaPaquetes = listaPaquetes;
+    }    
+
+    public Chofer getChofer() {
+        return chofer;
+    }
+
+    public void setChofer(Chofer chofer) {
+        this.chofer = chofer;
+    }
 
     public String toString() {
         return "Code  : " + codigo;
@@ -95,16 +114,6 @@ public class Entrega extends EntidadGenerica{
         }
         return true;
     }
-
-    
-    /*
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + (this.code != null ? this.code.hashCode() : 0);
-        return hash;
-    }
-*/
 
 }
 

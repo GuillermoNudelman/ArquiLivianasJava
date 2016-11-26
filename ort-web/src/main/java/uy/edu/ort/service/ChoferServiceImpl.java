@@ -7,6 +7,8 @@ package uy.edu.ort.service;
 
 import java.util.List;
 import javax.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import uy.edu.ort.dao.ChoferDao;
 import uy.edu.ort.model.Chofer;
 
@@ -14,8 +16,8 @@ import uy.edu.ort.model.Chofer;
  *
  * @author ptrecca
  */
-public class ChoferServiceImpl implements ChoferService{
-    
+public class ChoferServiceImpl implements ChoferService {
+
     private ChoferDao choferDao;
 
     public void setChoferDao(ChoferDao choferDao) {
@@ -24,17 +26,20 @@ public class ChoferServiceImpl implements ChoferService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "camioneta", allEntries = true)
     public void addChofer(Chofer chofer) {
         this.choferDao.addChofer(chofer);
     }
 
     @Override
     @Transactional
+    @CacheEvict(value = "camioneta", allEntries = true)
     public void removeChofer(Chofer chofer) {
-         this.choferDao.removeChofer(chofer);
+        this.choferDao.removeChofer(chofer);
     }
 
     @Override
+    @Cacheable("chofer")
     public List<Chofer> listChofer() {
         return this.choferDao.listChofer();
     }
@@ -48,11 +53,12 @@ public class ChoferServiceImpl implements ChoferService{
     public Chofer buscarChoferPorId(Long id) {
         return this.choferDao.buscarChoferPorId(id);
     }
-    
+
     @Override
     @Transactional
+    @CacheEvict(value = "camioneta", allEntries = true)
     public void editarChofer(Chofer chofer) {
         this.choferDao.editarChofer(chofer);
     }
-    
+
 }
