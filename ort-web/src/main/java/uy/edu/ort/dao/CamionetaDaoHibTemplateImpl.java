@@ -52,6 +52,6 @@ public class CamionetaDaoHibTemplateImpl implements CamionetaDao {
     @Override
     public void editarCamioneta(Camioneta camioneta) {
         //TODO ESTO ESTABA EN UPDATE PERO NO GUARDABA, LLEGABA BIEN EL DATO NUEVO PERO NO ANDABA
-        this.hibernateTemplate.saveOrUpdate(camioneta);
+        this.hibernateTemplate.update(camioneta);
     }
 }

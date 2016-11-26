@@ -75,8 +75,4 @@ public class Chofer extends EntidadGenerica{
         }
         return true;
     }
-
-    
-    
-        
 }

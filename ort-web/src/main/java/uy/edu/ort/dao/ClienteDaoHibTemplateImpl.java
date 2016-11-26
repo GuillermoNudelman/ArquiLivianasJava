@@ -36,15 +36,7 @@ public class ClienteDaoHibTemplateImpl implements ClienteDao{
 
     @Override
     public void editarCliente(Cliente cliente) {
-        /*for (Convenio convenio: cliente.getListaConvenios()) {
-            Object[] params  = {cliente.getNombreEmpresa(),convenio};
-            hibernateTemplate.sa
-        }   */
-        
-        
-        //this.hibernateTemplate.update(cliente);
-        removeCliente(cliente);
-        addCliente(cliente);
+        this.hibernateTemplate.update(cliente);
     }
     
     @Override

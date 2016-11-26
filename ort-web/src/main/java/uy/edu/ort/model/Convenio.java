@@ -13,12 +13,6 @@ public class Convenio extends EntidadGenerica{
     @Column
     private Date fechaCreacion;
     
-    /*
-    @OneToOne
-    @JoinColumn(name="cliente_fk")
-    private Cliente cliente;
-    */
-    
     @Column
     private int importeInicialConvenio;
     

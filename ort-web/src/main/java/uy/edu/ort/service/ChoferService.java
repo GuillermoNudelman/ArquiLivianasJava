@@ -22,6 +22,8 @@ public interface ChoferService {
     
     public Chofer buscarChoferPorCodigo(String codigo);
     
+    Chofer buscarChoferPorId(Long id);
+    
     public void editarChofer(Chofer chofer);
     
 }

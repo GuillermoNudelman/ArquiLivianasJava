@@ -49,6 +49,7 @@ public class CamionetaServiceImpl implements CamionetaService {
     }
 
     @Override
+    @Transactional
     public void editarCamioneta(Camioneta camioneta) {
         this.camionetaDao.editarCamioneta(camioneta);
     }

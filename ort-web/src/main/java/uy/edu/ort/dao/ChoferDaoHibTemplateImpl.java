@@ -28,6 +28,7 @@ public class ChoferDaoHibTemplateImpl implements ChoferDao{
 
     @Override
     public void removeChofer(Chofer chofer) {
+        //TODO NO ESTA BORRANDO
         this.hibernateTemplate.delete(chofer);
     }
 
@@ -43,10 +44,18 @@ public class ChoferDaoHibTemplateImpl implements ChoferDao{
         List<Chofer> choferes = (List<Chofer>) hibernateTemplate.find("select c from Chofer c where c.codigo = ?", params);
         return choferes.isEmpty() ? null : choferes.get(0);
     }
+    
+    @Override
+    public Chofer buscarChoferPorId(Long id) {
+        int idEnInt = id.intValue();
+        Object[] params  = {idEnInt};      
+        List<Chofer> choferes = (List<Chofer>) hibernateTemplate.find("select c from Chofer c where c.id = ?", params);
+        return choferes.isEmpty() ? null : choferes.get(0);
+    }
 
     @Override
     public void editarChofer(Chofer chofer) {
+        //TODO ESTO ESTABA EN UPDATE PERO NO GUARDABA, LLEGABA BIEN EL DATO NUEVO PERO NO ANDABA
          this.hibernateTemplate.update(chofer);
     }
-    
 }

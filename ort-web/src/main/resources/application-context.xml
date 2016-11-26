@@ -71,6 +71,16 @@
     </bean>
     
     
+         <!-- Beans Chofer -->   
+       
+    <bean id="choferService" class="uy.edu.ort.service.ChoferServiceImpl">
+        <property name="choferDao" ref="choferDao"/>
+    </bean>
+
+    <bean id="choferDao" class="uy.edu.ort.dao.ChoferDaoHibTemplateImpl">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>   
+    
     
     <!-- Beans Entrega -->    
         
@@ -117,6 +127,7 @@
                 <value>uy.edu.ort.model.Cliente</value>
                 <value>uy.edu.ort.model.Paquete</value>
                 <value>uy.edu.ort.model.Camioneta</value>
+                <value>uy.edu.ort.model.Chofer</value>
                 <value>uy.edu.ort.model.Entrega</value>
                 <value>uy.edu.ort.model.Convenio</value>
                 <value>uy.edu.ort.model.LogTrazabilidad</value>

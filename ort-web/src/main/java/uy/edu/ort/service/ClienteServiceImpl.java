@@ -42,6 +42,7 @@ public class ClienteServiceImpl implements ClienteService{
     
     
     @Override
+    @Transactional
     public void editarCliente(Cliente cliente) {
           this.clienteDao.editarCliente(cliente);
     }

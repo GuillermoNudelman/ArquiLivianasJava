@@ -11,7 +11,7 @@
         <form:form modelAttribute="cliente" action="clienteAgregado" method="post">
             <form:errors path="*" />
             <fieldset>
-                <legend>Agregar nueva cliente</legend>
+                <legend>Agregar nuevo cliente</legend>
                 <p>
                     <form:label for="nombreContacto" path="nombreContacto">Nombre de contacto</form:label><br/>
                     <form:input path="nombreContacto" required= "required" />

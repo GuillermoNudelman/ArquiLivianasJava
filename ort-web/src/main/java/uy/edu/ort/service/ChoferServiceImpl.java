@@ -29,6 +29,7 @@ public class ChoferServiceImpl implements ChoferService{
     }
 
     @Override
+    @Transactional
     public void removeChofer(Chofer chofer) {
          this.choferDao.removeChofer(chofer);
     }
@@ -44,6 +45,12 @@ public class ChoferServiceImpl implements ChoferService{
     }
 
     @Override
+    public Chofer buscarChoferPorId(Long id) {
+        return this.choferDao.buscarChoferPorId(id);
+    }
+    
+    @Override
+    @Transactional
     public void editarChofer(Chofer chofer) {
         this.choferDao.editarChofer(chofer);
     }

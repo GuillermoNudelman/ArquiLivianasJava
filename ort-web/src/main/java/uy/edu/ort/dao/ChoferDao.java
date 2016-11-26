@@ -22,6 +22,8 @@ public interface ChoferDao {
     
     Chofer buscarChoferPorCodigo(String codigo);
     
+    Chofer buscarChoferPorId(Long id);
+    
     void editarChofer(Chofer chofer);
     
     

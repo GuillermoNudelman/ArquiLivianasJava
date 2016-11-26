@@ -89,11 +89,4 @@ public class Camioneta extends EntidadGenerica{
         }
         return true;
     }
-
-    /*@Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + (this.codigo != null ? this.codigo.hashCode() : 0);
-        return hash;
-    }*/
 }
