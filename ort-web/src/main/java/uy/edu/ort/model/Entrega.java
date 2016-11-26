@@ -25,6 +25,8 @@ public class Entrega extends EntidadGenerica{
     @Column
     private int importeEntrega;
     
+    @OneToMany
+    @JoinColumn(name="entrega")
     private List<Paquete> listaPaquetes;
     
     public Entrega() {

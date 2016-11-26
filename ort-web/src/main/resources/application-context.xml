@@ -47,6 +47,16 @@
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>   
     
+     <!-- Beans Chofer -->   
+       
+    <bean id="choferService" class="uy.edu.ort.service.ChoferServiceImpl">
+        <property name="choferDao" ref="choferDao"/>
+    </bean>
+
+    <bean id="choferDao" class="uy.edu.ort.dao.ChoferDaoHibTemplateImpl">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>   
+    
     <!-- Beans Paquete -->
     
         
@@ -70,16 +80,6 @@
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>
     
-    
-         <!-- Beans Chofer -->   
-       
-    <bean id="choferService" class="uy.edu.ort.service.ChoferServiceImpl">
-        <property name="choferDao" ref="choferDao"/>
-    </bean>
-
-    <bean id="choferDao" class="uy.edu.ort.dao.ChoferDaoHibTemplateImpl">
-        <property name="hibernateTemplate" ref="hibernateTemplate"/>
-    </bean>   
     
     
     <!-- Beans Entrega -->    
@@ -127,10 +127,10 @@
                 <value>uy.edu.ort.model.Cliente</value>
                 <value>uy.edu.ort.model.Paquete</value>
                 <value>uy.edu.ort.model.Camioneta</value>
-                <value>uy.edu.ort.model.Chofer</value>
                 <value>uy.edu.ort.model.Entrega</value>
                 <value>uy.edu.ort.model.Convenio</value>
                 <value>uy.edu.ort.model.LogTrazabilidad</value>
+                <value>uy.edu.ort.model.Chofer</value>
             </list>
         </property>
         
@@ -140,8 +140,8 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">create</prop>
-                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+                <!--<prop key="hibernate.hbm2ddl.auto">create</prop>-->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
     </bean>

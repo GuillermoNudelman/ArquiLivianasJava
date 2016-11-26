@@ -36,7 +36,7 @@ public class CamionetaServiceImpl implements CamionetaService {
 
     @Override
     @Transactional
-    @Cacheable("camioneta")
+    //@Cacheable("camioneta")
     public List<Camioneta> listCamioneta() {
         return this.camionetaDao.listCamionetas();
     }
