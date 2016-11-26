@@ -17,8 +17,8 @@
                     <form:input path="codigo" required= "required" />
                 </p>
                 <p>
-                    <form:label for="fechaCreacion" path="fechaCreacion">Fecha de creacion</form:label><br/>
-                    <form:input path="fechaCreacion" required= "required" type="date"/>
+                    <form:label for="fechaCreacionString" path="fechaCreacionString">Fecha de creacion</form:label><br/>
+                    <form:input path="fechaCreacionString" required= "required" type="date" />
                 </p>
                 <p>
                     <form:label for="importeInicialConvenio" path="importeInicialConvenio">Importe inicial del convenio</form:label><br/>
@@ -27,6 +27,12 @@
                 <p>
                     <form:label for="importeActualConvenio" path="importeActualConvenio">Importe actual del convenio</form:label><br/>
                     <form:input path="importeActualConvenio" required= "required" type="number" min="0" />
+                </p>
+                <p>
+                    <label for="idCliente">Ingrese el id del cliente</label>
+                    <br/>
+                    <input id="idCliente" type="text" name="idCliente" required= "required" type="number" min="0" />
+                    <br/>
                 </p>
                 <p>
                     <input type="submit" value="Agregar Convenio" />

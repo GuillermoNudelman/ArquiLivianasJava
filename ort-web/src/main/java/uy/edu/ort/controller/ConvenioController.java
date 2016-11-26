@@ -1,8 +1,13 @@
 package uy.edu.ort.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +28,7 @@ public class ConvenioController {
 
     @Autowired
     private ConvenioService convenioService;
-    
+
     @Autowired
     private ClienteService clienteService;
 
@@ -42,14 +47,36 @@ public class ConvenioController {
     }
 
     @RequestMapping(value = "/convenioAgregado", method = RequestMethod.POST)
-    public String agregar(Convenio convenio, BindingResult result) {
-        if (!convenio.getCodigo().equals("")) {
-            this.convenioService.addConvenio(convenio);
-            return "convenio/vistaPreviaConvenios";
+    public String agregar(@RequestParam("idCliente") int idCliente, Convenio convenio, BindingResult result) {
+        Long idCl = Long.valueOf(idCliente);
+        Cliente c = clienteService.buscarClientePorId(idCl);
+        if (c != null) {
+            if (!convenio.getCodigo().equals("")) {
+                convenio.setCliente(c);
+                Date fechaCreacion = obtenerFecha(convenio.getFechaCreacionString());
+                convenio.setFechaCreacion(fechaCreacion);
+                this.convenioService.addConvenio(convenio);
+                return "convenio/vistaPreviaConvenios";
+            } else {
+                result.reject("", "El codigo no puede ser vacio");
+                return "convenio/formularioNuevoConvenio";
+            }
         } else {
-            result.reject("", "El codigo no puede ser vacio");
+            result.reject("", "El id del cliente es incorrecto");
             return "convenio/formularioNuevoConvenio";
         }
+    }
+
+    private Date obtenerFecha(String fechaString) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = null;
+        try {
+            startDate = df.parse(fechaString);
+            String newDateString = df.format(startDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return startDate;
     }
 
     @RequestMapping(value = "/editar", method = RequestMethod.GET)
@@ -60,11 +87,21 @@ public class ConvenioController {
     }
 
     @RequestMapping(value = "/modificar", method = RequestMethod.POST)
-    public String modificar(Convenio convenio, BindingResult result, Model model) {
-        this.convenioService.editarConvenio(convenio);
-        List<Convenio> convenios = convenioService.listConvenio();
-        model.addAttribute("convenios", convenios);
-        return "convenio/listadoConvenios";
+    public String modificar(@RequestParam("idCliente") int idCliente, Convenio convenio, BindingResult result, Model model) {
+        Long idCl = Long.valueOf(idCliente);
+        Cliente c = clienteService.buscarClientePorId(idCl);
+        if (c != null) {
+            convenio.setCliente(c);
+            Date fechaCreacion = obtenerFecha(convenio.getFechaCreacionString());
+            convenio.setFechaCreacion(fechaCreacion);
+            this.convenioService.editarConvenio(convenio);
+            List<Convenio> convenios = convenioService.listConvenio();
+            model.addAttribute("convenios", convenios);
+            return "convenio/listadoConvenios";
+        } else {
+            result.reject("", "El id del cliente es incorrecto");
+            return "convenio/editarConvenio";
+        }
     }
 
     @RequestMapping(value = "/eliminar", method = RequestMethod.GET)
