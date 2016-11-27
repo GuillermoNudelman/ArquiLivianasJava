@@ -1,6 +1,7 @@
 package uy.edu.ort.utilities;
 
 import java.util.List;
+import uy.edu.ort.model.Beans;
 
 /**
  *
@@ -8,8 +9,8 @@ import java.util.List;
  */
 public interface ServicioBean {
     
-    void addBean(String bean);
+    void addBean(Beans bean);
     
-    List<String> getBeans();    
+    List<Beans> getBeans();    
     
 }

@@ -23,5 +23,7 @@ public interface LogTrazabilidadDao {
     LogTrazabilidad servicioMasUsado(Date date);
 
     LogTrazabilidad servicioMenosUsado(Date date);
+    
+    List<LogTrazabilidad> listaLogs();
 
 }

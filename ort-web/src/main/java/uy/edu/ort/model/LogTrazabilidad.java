@@ -5,33 +5,45 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-public class LogTrazabilidad extends EntidadGenerica{
+public class LogTrazabilidad extends EntidadGenerica {
 
     @Column
     private String usuario;
-    
+
     @Column
-    @Temporal(value= TemporalType.DATE)
+    @Temporal(value = TemporalType.DATE)
     private Date fechaOperacion;
-    
+
     @Column
     private String nombreOperacion;
-    
+
+    @Column
+    private String parametros;
+
     @Column
     private long tiempoEjecucion;
-    
+
     public LogTrazabilidad() {
     }
 
-    public LogTrazabilidad(String usuario, Date fechaOperacion, String nombreOperacion, long tiempoEjecucion) {
+    public LogTrazabilidad(String usuario, Date fechaOperacion, String nombreOperacion, long tiempoEjecucion, String parametros) {
         this.usuario = usuario;
         this.fechaOperacion = fechaOperacion;
-        this.nombreOperacion = nombreOperacion;  
+        this.nombreOperacion = nombreOperacion;
         this.tiempoEjecucion = tiempoEjecucion;
-    }    
+        this.parametros = parametros;
+    }
 
     public String getUsuario() {
         return usuario;
+    }
+
+    public String getParametros() {
+        return parametros;
+    }
+
+    public void setParametros(String parametros) {
+        this.parametros = parametros;
     }
 
     public long getTiempoEjecucion() {
@@ -63,9 +75,9 @@ public class LogTrazabilidad extends EntidadGenerica{
     }
 
     public String toString() {
-        return "Usuario: " + usuario + " Operacion: " + nombreOperacion;
-    }   
-    
+        return "Operacion: " + nombreOperacion + " Usuario: " + usuario;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -74,9 +86,8 @@ public class LogTrazabilidad extends EntidadGenerica{
         if (getClass() != obj.getClass()) {
             return false;
         }
-       
+
         return true;
     }
-    
-}
 
+}

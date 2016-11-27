@@ -207,7 +207,11 @@ public class PaqueteController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<Paquete> list() {
-        return paqueteService.listPaquetes();
+        List<Paquete> lista = paqueteService.listPaquetes();
+        for(Paquete paquete : lista){
+            paquete.setEntrega(null);
+        }
+        return lista;
     }
 
     public static boolean existeConvenioLibre(List<Convenio> convenios, String nombreEmpresaASociada) {

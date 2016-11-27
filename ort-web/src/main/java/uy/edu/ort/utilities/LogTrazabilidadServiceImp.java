@@ -13,19 +13,19 @@ import uy.edu.ort.model.LogTrazabilidad;
 
 /**
  * Implementacion de la interfaz LogTrazabilidadService
- * 
+ *
  */
-public class LogTrazabilidadServiceImp implements LogTrazabilidadService{
+public class LogTrazabilidadServiceImp implements LogTrazabilidadService {
 
     private LogTrazabilidadDao logTrazabilidadDao;
 
     public void setLogTrazabilidadDao(LogTrazabilidadDao logTrazabilidadDao) {
         this.logTrazabilidadDao = logTrazabilidadDao;
     }
-    
+
     @Override
     public void addLogTrazabilidad(LogTrazabilidad logTrazabilidad) {
-          this.logTrazabilidadDao.addLogTrazabilidad(logTrazabilidad);
+        this.logTrazabilidadDao.addLogTrazabilidad(logTrazabilidad);
     }
 
     @Override
@@ -50,13 +50,17 @@ public class LogTrazabilidadServiceImp implements LogTrazabilidadService{
 
     @Override
     public LogTrazabilidad servicioMasUsado(Date date) {
-         return this.logTrazabilidadDao.servicioMasUsado(date);
+        return this.logTrazabilidadDao.servicioMasUsado(date);
     }
 
     @Override
     public LogTrazabilidad servicioMenosUsado(Date date) {
         return this.logTrazabilidadDao.servicioMenosUsado(date);
     }
-   
-    
+
+    @Override
+    public List<LogTrazabilidad> listaLogs() {
+        return this.logTrazabilidadDao.listaLogs();
+    }
+
 }

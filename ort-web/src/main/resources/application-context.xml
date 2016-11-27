@@ -24,17 +24,29 @@
         <property name="usuarioService" ref="usuarioService" />
     </bean> 
     
-     <!-- Beans Usuario -->
+      
+    <!-- Beans Usuario -->
             
     <bean id="usuarioService" class="uy.edu.ort.utilities.UsuarioServiceImp" /> 
     
-     <!-- Beans Service -->
+    <!-- Beans Service -->
       
     <bean id="beanPost" class="uy.edu.ort.BeanPost">
         <property name="servicioBean" ref="servicioBean" />
-    </bean>    
+        <property name="clusterService" ref="clusterService" />
+    </bean>  
     
-    <bean id="servicioBean" class="uy.edu.ort.utilities.ServicioBeanImp" />   
+    <!-- Beans Cluster -->
+            
+    <bean id="clusterService" class="uy.edu.ort.utilities.ClusterServiceImp" />   
+    
+    <bean id="servicioBean" class="uy.edu.ort.utilities.ServicioBeanImp" >
+        <property name="beansDao" ref="beansDao"/>
+    </bean>   
+    
+    <bean id="beansDao" class="uy.edu.ort.dao.BeansDaoHibTemplateImpl">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>   
     
     <!-- Beans Cliente -->
     
@@ -47,7 +59,7 @@
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>   
     
-     <!-- Beans Chofer -->   
+    <!-- Beans Chofer -->   
        
     <bean id="choferService" class="uy.edu.ort.service.ChoferServiceImpl">
         <property name="choferDao" ref="choferDao"/>
@@ -131,6 +143,7 @@
                 <value>uy.edu.ort.model.Convenio</value>
                 <value>uy.edu.ort.model.LogTrazabilidad</value>
                 <value>uy.edu.ort.model.Chofer</value>
+                <value>uy.edu.ort.model.Beans</value>
             </list>
         </property>
         

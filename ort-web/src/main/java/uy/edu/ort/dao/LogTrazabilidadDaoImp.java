@@ -7,8 +7,8 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import uy.edu.ort.model.LogTrazabilidad;
 
 /**
- * Implementacion de LogTrazabilidadDao, 
- * a una base de datos mysql utilizando hibernate
+ * Implementacion de LogTrazabilidadDao, a una base de datos mysql utilizando
+ * hibernate
  */
 public class LogTrazabilidadDaoImp implements LogTrazabilidadDao {
 
@@ -125,9 +125,15 @@ public class LogTrazabilidadDaoImp implements LogTrazabilidadDao {
     private LogTrazabilidad crearLogTrazabilidad(Object[] obj) {
 
         LogTrazabilidad log = new LogTrazabilidad();
-        log.setNombreOperacion((String) obj[0]);        
-        log.setTiempoEjecucion((long)obj[1]);
+        log.setNombreOperacion((String) obj[0]);
+        log.setTiempoEjecucion((long) obj[1]);
         return log;
+    }
+
+    @Override
+    public List<LogTrazabilidad> listaLogs() {
+        List<LogTrazabilidad> listaObtenida = (List<LogTrazabilidad>) hibernateTemplate.find("SELECT l FROM LogTrazabilidad l order by l.fechaOperacion");
+        return listaObtenida;
     }
 
 }

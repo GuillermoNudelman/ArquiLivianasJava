@@ -36,11 +36,17 @@ public class Trazabilidad {
             long time = endExec - beginExec;
 
             Date date = new Date();
+            
+            String arguments = "-";
+             for (final Object argument : pjp.getArgs()) {
+                arguments += " "+argument +" -";
+            }
            
             LogTrazabilidad logTrazabilidad = new LogTrazabilidad();
             logTrazabilidad.setFechaOperacion(date);
             logTrazabilidad.setNombreOperacion(pjp.getSignature().getName());
             logTrazabilidad.setUsuario(usuarioService.getNombre());
+            logTrazabilidad.setParametros(arguments);
             logTrazabilidad.setTiempoEjecucion(time);
             logTrazabilidadService.addLogTrazabilidad(logTrazabilidad);
 
