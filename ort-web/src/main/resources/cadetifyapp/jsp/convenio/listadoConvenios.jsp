@@ -16,6 +16,7 @@
             <th>Fecha de creacion</th>
             <th>Importe inicial del convenio</th>
             <th>Importe actual del convenio</th>
+            <th>Id del cliente</th>
             <th>Editar</th>
             <th>Eliminar</th>
 
@@ -35,6 +36,9 @@
                     </td>
                     <td>
                         ${convenio.importeActualConvenio}
+                    </td>
+                    <td>
+                        ${convenio.idCliente}
                     </td>
                     <td>
                         <spring:url value="editar?idConvenio={idConvenio}" var="editarUrl">

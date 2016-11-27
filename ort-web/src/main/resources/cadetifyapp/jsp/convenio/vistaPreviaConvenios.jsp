@@ -28,6 +28,10 @@
                     <form:input path="importeActualConvenio" disabled="true" />
                 </p>
                 <p>
+                    <form:label for="idCliente" path="idCliente">Id del cliente</form:label><br/>
+                    <form:input path="idCliente" disabled="true" />
+                </p>
+                <p>
                     <input type="submit" value="Volver" />
                 </p>
             </fieldset>

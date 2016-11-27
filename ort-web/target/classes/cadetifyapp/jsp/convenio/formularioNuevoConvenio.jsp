@@ -29,10 +29,8 @@
                     <form:input path="importeActualConvenio" required= "required" type="number" min="0" />
                 </p>
                 <p>
-                    <label for="idCliente">Ingrese el id del cliente</label>
-                    <br/>
-                    <input id="idCliente" type="text" name="idCliente" required= "required" type="number" min="0" />
-                    <br/>
+                    <form:label for="idCliente" path="idCliente">Id del cliente</form:label><br/>
+                    <form:input path="idCliente" required= "required" type="number" min="0" />
                 </p>
                 <p>
                     <input type="submit" value="Agregar Convenio" />

@@ -83,6 +83,8 @@ public class ConvenioController {
     public String editar(@RequestParam("idConvenio") Long idConvenio, Model model) {
         Convenio convenio = this.convenioService.buscarConvenioPorId(idConvenio);
         model.addAttribute(convenio);
+        int idCliente = convenio.getCliente().getId();
+        model.addAttribute(idCliente);
         return "convenio/editarConvenio";
     }
 

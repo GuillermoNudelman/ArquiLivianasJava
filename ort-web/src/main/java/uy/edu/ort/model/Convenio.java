@@ -35,6 +35,8 @@ public class Convenio extends EntidadGenerica{
     @ManyToOne(fetch=FetchType.EAGER)
     private Cliente cliente;
     
+    private int idCliente;
+    
     public Convenio() {
     }
 
@@ -99,6 +101,14 @@ public class Convenio extends EntidadGenerica{
 
     public void setEstaEnUso(boolean estaEnUso) {
         this.estaEnUso = estaEnUso;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
     
     
