@@ -17,5 +17,7 @@ public interface PaqueteDao {
     
     Paquete buscarPaquete(String codigo);
     
+    Paquete buscarPaquetePorId(Long idPaquete);
+    
     void editarPaquete(Paquete paquete);
 }

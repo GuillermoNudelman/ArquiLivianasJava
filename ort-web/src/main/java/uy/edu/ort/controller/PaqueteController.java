@@ -1,18 +1,26 @@
 package uy.edu.ort.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import uy.edu.ort.model.Cliente;
 import uy.edu.ort.model.Convenio;
 import uy.edu.ort.model.Paquete;
 import uy.edu.ort.service.ClienteService;
 import uy.edu.ort.service.ConvenioService;
+import uy.edu.ort.service.PaqueteService;
 import uy.edu.ort.service.PaqueteService;
 
 /**
@@ -28,9 +36,91 @@ public class PaqueteController {
 
     @Autowired
     private ClienteService clienteService;
-
+    
     @Autowired
     private ConvenioService convenioService;
+    
+    @RequestMapping(value = "/listadoPaquetes", method = RequestMethod.GET)
+    public String lista(Paquete paquete, BindingResult result, Model model) {
+        List<Paquete> paquetes = paqueteService.listPaquetes();
+        model.addAttribute("paquetes", paquetes);
+        return "paquete/listadoPaquetes";
+    }
+
+    @RequestMapping(value = "/formularioNuevoPaquete", method = RequestMethod.GET)
+    public String paqueteForm(Model model) {
+        Paquete paquete = new Paquete();
+        model.addAttribute(paquete);
+        return "paquete/formularioNuevoPaquete";
+    }
+
+    @RequestMapping(value = "/paqueteAgregado", method = RequestMethod.POST)
+    public String agregar(@RequestParam("idCliente") int idCliente, Paquete paquete, BindingResult result) {
+        Long idCl = Long.valueOf(idCliente);
+        Cliente c = clienteService.buscarClientePorId(idCl);
+        if (c != null) {
+            if (!paquete.getCodigo().equals("")) {
+                paquete.setCliente(c);
+                Date fechaCreacion = obtenerFecha(paquete.getFechaCreacionString());
+                paquete.setFechaCreacion(fechaCreacion);
+                this.paqueteService.addPaquete(paquete);
+                return "paquete/vistaPreviaPaquetes";
+            } else {
+                result.reject("", "El codigo no puede ser vacio");
+                return "paquete/formularioNuevoPaquete";
+            }
+        } else {
+            result.reject("", "El id del cliente es incorrecto");
+            return "paquete/formularioNuevoPaquete";
+        }
+    }
+
+    private Date obtenerFecha(String fechaString) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = null;
+        try {
+            startDate = df.parse(fechaString);
+            String newDateString = df.format(startDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return startDate;
+    }
+
+    @RequestMapping(value = "/editar", method = RequestMethod.GET)
+    public String editar(@RequestParam("idPaquete") Long idPaquete, Model model) {
+        Paquete paquete = this.paqueteService.buscarPaquetePorId(idPaquete);
+        model.addAttribute(paquete);
+        return "paquete/editarPaquete";
+    }
+
+    @RequestMapping(value = "/modificar", method = RequestMethod.POST)
+    public String modificar(@RequestParam("idCliente") int idCliente, Paquete paquete, BindingResult result, Model model) {
+        Long idCl = Long.valueOf(idCliente);
+        Cliente c = clienteService.buscarClientePorId(idCl);
+        if (c != null) {
+            paquete.setCliente(c);
+            Date fechaCreacion = obtenerFecha(paquete.getFechaCreacionString());
+            paquete.setFechaCreacion(fechaCreacion);
+            this.paqueteService.editarPaquete(paquete);
+            List<Paquete> paquetes = paqueteService.listPaquetes();
+            model.addAttribute("paquetes", paquetes);
+            return "paquete/listadoPaquetes";
+        } else {
+            result.reject("", "El id del cliente es incorrecto");
+            return "paquete/editarPaquete";
+        }
+    }
+
+    @RequestMapping(value = "/eliminar", method = RequestMethod.GET)
+    public String eliminar(@RequestParam("idPaquete") Long idPaquete, Model model) {
+        Paquete paquete = this.paqueteService.buscarPaquetePorId(idPaquete);
+        this.paqueteService.removePaquete(paquete);
+
+        List<Paquete> paquetes = paqueteService.listPaquetes();
+        model.addAttribute("paquetes", paquetes);
+        return "paquete/listadoPaquetes";
+    }
 
     @RequestMapping( method = RequestMethod.POST)
     @ResponseBody

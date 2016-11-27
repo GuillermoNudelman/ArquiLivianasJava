@@ -40,6 +40,15 @@ public class PaqueteDaoHibTemplateImpl implements PaqueteDao{
     }
 
     @Override
+    public Paquete buscarPaquetePorId(Long idPaquete) {
+        int idPaq = idPaquete.intValue();
+        Object[] params  = {idPaq};        
+        List<Paquete> paquetes = (List<Paquete>) hibernateTemplate.find("select p from Paquete p where p.id = ?", params);
+        return paquetes.isEmpty() ? null : paquetes.get(0);
+    }
+    
+    ;
+    @Override
     public void editarPaquete(Paquete paquete) {
         this.hibernateTemplate.update(paquete);
     }

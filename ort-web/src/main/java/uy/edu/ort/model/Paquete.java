@@ -13,6 +13,8 @@ public class Paquete extends EntidadGenerica {
     @Column
     private Date fechaCreacion;
 
+    private String fechaCreacionString;
+    
     @Column
     private int costo;
 
@@ -29,11 +31,8 @@ public class Paquete extends EntidadGenerica {
     @JoinColumn(name = "cliente_fk")
     private Cliente cliente;
 
-    /*
-    @OneToOne
-    @JoinColumn(name = "entrega_fk")
-    private Entrega entrega;
-     */
+    private int idCliente;
+    
     @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private Entrega entrega;
 
@@ -90,6 +89,22 @@ public class Paquete extends EntidadGenerica {
 
     public String getDescripcion() {
         return descripcion;
+    }
+
+    public String getFechaCreacionString() {
+        return fechaCreacionString;
+    }
+
+    public void setFechaCreacionString(String fechaCreacionString) {
+        this.fechaCreacionString = fechaCreacionString;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     public void setDescripcion(String descripcion) {

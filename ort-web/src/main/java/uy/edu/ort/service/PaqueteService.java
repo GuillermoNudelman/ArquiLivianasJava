@@ -16,6 +16,8 @@ public interface PaqueteService {
     public List<Paquete> listPaquetes();
     
     public Paquete buscarPaquete(String codigo);
-
+    
+    public Paquete buscarPaquetePorId(Long idPaquete);
+    
     public void editarPaquete(Paquete paquete);
 }

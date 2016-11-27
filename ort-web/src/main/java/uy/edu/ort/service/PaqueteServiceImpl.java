@@ -44,6 +44,12 @@ public class PaqueteServiceImpl implements PaqueteService {
         return this.paqueteDao.buscarPaquete(codigo);
     }
     
+    @Override
+    @Transactional
+    public Paquete buscarPaquetePorId(Long idPaquete) {
+        return this.paqueteDao.buscarPaquetePorId(idPaquete);
+    }
+    
     
     @Override
     @Transactional
