@@ -60,5 +60,10 @@ public class EntregaServiceImpl implements EntregaService {
     public List<Entrega> listEntregaPorMesYCamioneta(int mes, String codigoCamioneta) {
         return this.entregaDao.listEntregaPorMesYCamioneta(mes, codigoCamioneta);
     }
+
+    @Override
+    public List<Entrega> listEntregaPorMesCamionetaYChofer(int mes, String camioneta, String chofer) {
+       return this.entregaDao.listEntregaPorMesCamionetaYChofer(mes, camioneta, chofer);
+    }
 }
 

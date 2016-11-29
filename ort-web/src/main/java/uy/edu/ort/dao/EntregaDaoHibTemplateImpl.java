@@ -1,13 +1,13 @@
 package uy.edu.ort.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import uy.edu.ort.model.Entrega;
 
 /**
- * Implementacion de EntregaDao, 
- * a una base de datos mysql utilizando hibernate
- * 
+ * Implementacion de EntregaDao, a una base de datos mysql utilizando hibernate
+ *
  */
 public class EntregaDaoHibTemplateImpl implements EntregaDao {
 
@@ -32,10 +32,10 @@ public class EntregaDaoHibTemplateImpl implements EntregaDao {
         List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("select e from Entrega e");
         return entregas;
     }
-    
+
     @Override
     public Entrega buscarEntrega(String codigo) {
-        Object[] params  = {codigo};        
+        Object[] params = {codigo};
         List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("select e from Entrega e where e.codigo = ?", params);
         return entregas.isEmpty() ? null : entregas.get(0);
     }
@@ -46,17 +46,32 @@ public class EntregaDaoHibTemplateImpl implements EntregaDao {
     }
 
     @Override
-    public List<Entrega> listEntregaPorMes(int mes) {        
-        Object[] params  = {mes};        
+    public List<Entrega> listEntregaPorMes(int mes) {
+        Object[] params = {mes};
         List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("select e from Entrega e where month(e.fechaEntrega) = ?", params);
-        return entregas;
+        return removerListaPaquetes(entregas);
     }
 
     @Override
     public List<Entrega> listEntregaPorMesYCamioneta(int mes, String codigoCamioneta) {
-        Object[] params  = {mes,codigoCamioneta };        
+        Object[] params = {mes, codigoCamioneta};
         List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("SELECT e FROM Entrega e where month(e.fechaEntrega) = ? and e.camioneta in (select c from Camioneta c	where c.codigo = ?)", params);
-        return entregas;
+        return removerListaPaquetes(entregas);
+    }
+
+    @Override
+    public List<Entrega> listEntregaPorMesCamionetaYChofer(int mes, String camioneta, String chofer) {
+        Object[] params = {mes, camioneta, chofer};
+        List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("SELECT e FROM Entrega e where month(e.fechaEntrega) = ? and e.camioneta in (select c from Camioneta c	where c.codigo = ?) and e.chofer in (select c from Chofer c where c.codigo = ?)", params);
+        return removerListaPaquetes(entregas);
+    }
+
+    public List<Entrega> removerListaPaquetes(List<Entrega> lista) {
+        List<Entrega> listaEntregas = new ArrayList<Entrega>();
+        for (Entrega e : lista) {
+            e.setListaPaquetes(null);
+            listaEntregas.add(e);
+        }
+        return listaEntregas;
     }
 }
-
