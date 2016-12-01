@@ -49,7 +49,38 @@
             <input type="submit" value="Volver"/>
         </form:form>
     </div>
+    <div>
+        <h2>Clientes</h2>
+        <table border="1">
+            <thead>
+            <th>Id</th>
+            <th>Nombre de contacto</th>
+            <th>Nombre de la empresa</th>
+            <th>Direccion</th>
+            <th>Telefono</th>
 
+                <c:forEach var="cliente" items="${clientes}">
+                <tr>
+                    <td>
+                        ${cliente.id}
+                    </td>
+                    <td>
+                        ${cliente.nombreContacto}
+                    </td>
+                    <td>
+                        ${cliente.nombreEmpresa}
+                    </td>
+                    <td>
+                        ${cliente.direccion}
+                    </td>
+                    <td>
+                        ${cliente.telefono}
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+        <br/>
+    </div>
 </html>
 
 

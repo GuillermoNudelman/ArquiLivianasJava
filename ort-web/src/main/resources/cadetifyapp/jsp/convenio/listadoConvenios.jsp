@@ -38,7 +38,7 @@
                         ${convenio.importeActualConvenio}
                     </td>
                     <td>
-                        ${convenio.idCliente}
+                        ${convenio.cliente.getId()}
                     </td>
                     <td>
                         <spring:url value="editar?idConvenio={idConvenio}" var="editarUrl">

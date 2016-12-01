@@ -36,10 +36,10 @@ public class PaqueteController {
 
     @Autowired
     private ClienteService clienteService;
-    
+
     @Autowired
     private ConvenioService convenioService;
-    
+
     @RequestMapping(value = "/listadoPaquetes", method = RequestMethod.GET)
     public String lista(Paquete paquete, BindingResult result, Model model) {
         List<Paquete> paquetes = paqueteService.listPaquetes();
@@ -51,11 +51,15 @@ public class PaqueteController {
     public String paqueteForm(Model model) {
         Paquete paquete = new Paquete();
         model.addAttribute(paquete);
+
+        List<Cliente> clientes = clienteService.listCliente();
+        model.addAttribute("clientes", clientes);
+
         return "paquete/formularioNuevoPaquete";
     }
 
     @RequestMapping(value = "/paqueteAgregado", method = RequestMethod.POST)
-    public String agregar(@RequestParam("idCliente") int idCliente, Paquete paquete, BindingResult result) {
+    public String agregar(@RequestParam("idCliente") int idCliente, Paquete paquete, BindingResult result, Model model) {
         Long idCl = Long.valueOf(idCliente);
         Cliente c = clienteService.buscarClientePorId(idCl);
         if (c != null) {
@@ -66,10 +70,18 @@ public class PaqueteController {
                 this.paqueteService.addPaquete(paquete);
                 return "paquete/vistaPreviaPaquetes";
             } else {
+
+                List<Cliente> clientes = clienteService.listCliente();
+                model.addAttribute("clientes", clientes);
+
                 result.reject("", "El codigo no puede ser vacio");
                 return "paquete/formularioNuevoPaquete";
             }
         } else {
+
+            List<Cliente> clientes = clienteService.listCliente();
+            model.addAttribute("clientes", clientes);
+
             result.reject("", "El id del cliente es incorrecto");
             return "paquete/formularioNuevoPaquete";
         }
@@ -91,6 +103,10 @@ public class PaqueteController {
     public String editar(@RequestParam("idPaquete") Long idPaquete, Model model) {
         Paquete paquete = this.paqueteService.buscarPaquetePorId(idPaquete);
         model.addAttribute(paquete);
+
+        List<Cliente> clientes = clienteService.listCliente();
+        model.addAttribute("clientes", clientes);
+
         return "paquete/editarPaquete";
     }
 
@@ -122,7 +138,7 @@ public class PaqueteController {
         return "paquete/listadoPaquetes";
     }
 
-    @RequestMapping( method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public String save(@RequestBody List<Paquete> paquetes) {
         String resultado = "";
@@ -208,7 +224,7 @@ public class PaqueteController {
     @ResponseBody
     public List<Paquete> list() {
         List<Paquete> lista = paqueteService.listPaquetes();
-        for(Paquete paquete : lista){
+        for (Paquete paquete : lista) {
             paquete.setEntrega(null);
         }
         return lista;

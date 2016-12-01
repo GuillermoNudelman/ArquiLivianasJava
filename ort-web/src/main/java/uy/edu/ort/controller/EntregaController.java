@@ -1,15 +1,23 @@
 package uy.edu.ort.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import uy.edu.ort.model.Camioneta;
 import uy.edu.ort.model.Chofer;
+import uy.edu.ort.model.Cliente;
 import uy.edu.ort.model.Convenio;
 import uy.edu.ort.model.Entrega;
 import uy.edu.ort.model.Paquete;
@@ -41,6 +49,109 @@ public class EntregaController {
 
     @Autowired
     private ChoferService choferService;
+
+    @RequestMapping(value = "/listadoEntregas", method = RequestMethod.GET)
+    public String lista(Entrega entrega, BindingResult result, Model model) {
+        List<Entrega> entregas = entregaService.listEntrega();
+        model.addAttribute("entregas", entregas);
+        return "entrega/listadoEntregas";
+    }
+
+    @RequestMapping(value = "/formularioNuevaEntrega", method = RequestMethod.GET)
+    public String entregaForm(Model model) {
+        Entrega entrega = new Entrega();
+        Camioneta camioneta = new Camioneta();
+        entrega.setCamioneta(camioneta);
+        model.addAttribute(entrega);
+
+        List<Camioneta> camionetas = camionetaService.listCamioneta();
+        model.addAttribute("camionetas", camionetas);
+
+        List<Chofer> choferes = choferService.listChofer();
+        model.addAttribute("choferes", choferes);
+
+        List<Paquete> paquetes = paqueteService.listPaquetes();
+        model.addAttribute("paquetes", paquetes);
+
+        return "entrega/formularioNuevaEntrega";
+    }
+
+    @RequestMapping(value = "/entregaAgregada", method = RequestMethod.POST)
+    public String agregar(Entrega entrega, BindingResult result) {
+        
+        List<Paquete> paquetes = obtenerListadoPaquetes(entrega.getListaPaquetesString());
+        if (paquetes != null) {
+            Long idC = Long.valueOf(entrega.getIdCamioneta());
+            Camioneta camioneta = camionetaService.buscarCamionetaPorId(idC);
+            if (camioneta != null) {
+                Long idChofer = Long.valueOf(entrega.getIdChofer());
+                Chofer chofer = choferService.buscarChoferPorId(idChofer);
+                if (chofer != null) {
+                    entrega.setChofer(chofer);
+                    if (!entrega.getCodigo().equals("")) {
+                        entrega.setCamioneta(camioneta);
+                        Date fechaEntrega = obtenerFecha(entrega.getFechaEntregaString());
+                        entrega.setFechaEntrega(fechaEntrega);
+                        this.entregaService.addEntrega(entrega);
+                        agregarEntregaAPaquetes(paquetes,entrega);
+                        return "entrega/vistaPreviaEntregas";
+                    } else {
+                        result.reject("", "El codigo no puede ser vacio");
+                        return "entrega/formularioNuevaEntrega";
+                    }
+                } else {
+                    result.reject("", "El id del chofer es incorrecto");
+                    return "entrega/formularioNuevaEntrega";
+                }
+            } else {
+                result.reject("", "El id de la camioneta es incorrecto");
+                return "entrega/formularioNuevaEntrega";
+            }
+        } else {
+            result.reject("", "El listado de id de paquetes ingresados es incorrecto (al menos uno de ellos).");
+            return "entrega/formularioNuevaEntrega";
+        }
+    }
+
+    private void agregarEntregaAPaquetes(List<Paquete> paquetes, Entrega entrega){
+        for (int i = 0; i < paquetes.size(); i++) {
+            Paquete paqNuevo = paquetes.get(i);
+            paqNuevo.setEntrega(entrega);
+            paqueteService.editarPaquete(paqNuevo);
+        }
+    }
+    
+    private Date obtenerFecha(String fechaString) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = null;
+        try {
+            startDate = df.parse(fechaString);
+            String newDateString = df.format(startDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return startDate;
+    }
+
+    private List<Paquete> obtenerListadoPaquetes(String listaPaquetesString) {
+        try {
+            String[] idPaquetes = listaPaquetesString.split("-");
+            List<Paquete> paquetes = new ArrayList<Paquete>();
+            for (int i = 0; i < idPaquetes.length; i++) {
+                Paquete p = paqueteService.buscarPaquetePorId(Long.parseLong(idPaquetes[i]));
+                if (p != null) {
+                    if (!paquetes.contains(p)) {
+                        paquetes.add(p);
+                    }
+                } else {
+                    return null;
+                }
+            }
+            return paquetes;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
@@ -132,17 +243,17 @@ public class EntregaController {
         List<Paquete> listaPaquetes = paqueteService.listPaquetes();
         List<Entrega> listaaux = new ArrayList<Entrega>();
         for (Entrega e : listaEntregas) {
-            e.setListaPaquetes(obtenerPaquetesEntrega(listaPaquetes,e));
+            e.setListaPaquetes(obtenerPaquetesEntrega(listaPaquetes, e));
             listaaux.add(e);
-        }        
+        }
         return listaaux;
     }
-    
-    public List<Paquete> obtenerPaquetesEntrega(List<Paquete> listaPaquetes, Entrega entrega){
+
+    public List<Paquete> obtenerPaquetesEntrega(List<Paquete> listaPaquetes, Entrega entrega) {
         List<Paquete> listaaux = new ArrayList<Paquete>();
         for (Paquete p : listaPaquetes) {
-            if(p.getEntrega() != null){
-                if(p.getEntrega().equals(entrega)){
+            if (p.getEntrega() != null) {
+                if (p.getEntrega().equals(entrega)) {
                     p.setEntrega(null);
                     listaaux.add(p);
                 }

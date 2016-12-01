@@ -43,11 +43,15 @@ public class ConvenioController {
     public String convenioForm(Model model) {
         Convenio convenio = new Convenio();
         model.addAttribute(convenio);
+
+        List<Cliente> clientes = clienteService.listCliente();
+        model.addAttribute("clientes", clientes);
+
         return "convenio/formularioNuevoConvenio";
     }
 
     @RequestMapping(value = "/convenioAgregado", method = RequestMethod.POST)
-    public String agregar(@RequestParam("idCliente") int idCliente, Convenio convenio, BindingResult result) {
+    public String agregar(@RequestParam("idCliente") int idCliente, Convenio convenio, BindingResult result, Model model) {
         Long idCl = Long.valueOf(idCliente);
         Cliente c = clienteService.buscarClientePorId(idCl);
         if (c != null) {
@@ -58,10 +62,18 @@ public class ConvenioController {
                 this.convenioService.addConvenio(convenio);
                 return "convenio/vistaPreviaConvenios";
             } else {
+
+                List<Cliente> clientes = clienteService.listCliente();
+                model.addAttribute("clientes", clientes);
+
                 result.reject("", "El codigo no puede ser vacio");
                 return "convenio/formularioNuevoConvenio";
             }
         } else {
+
+            List<Cliente> clientes = clienteService.listCliente();
+            model.addAttribute("clientes", clientes);
+
             result.reject("", "El id del cliente es incorrecto");
             return "convenio/formularioNuevoConvenio";
         }
@@ -83,6 +95,10 @@ public class ConvenioController {
     public String editar(@RequestParam("idConvenio") Long idConvenio, Model model) {
         Convenio convenio = this.convenioService.buscarConvenioPorId(idConvenio);
         model.addAttribute(convenio);
+        
+        List<Cliente> clientes = clienteService.listCliente();
+        model.addAttribute("clientes", clientes);
+        
         return "convenio/editarConvenio";
     }
 
@@ -99,6 +115,9 @@ public class ConvenioController {
             model.addAttribute("convenios", convenios);
             return "convenio/listadoConvenios";
         } else {
+            List<Cliente> clientes = clienteService.listCliente();
+            model.addAttribute("clientes", clientes);
+            
             result.reject("", "El id del cliente es incorrecto");
             return "convenio/editarConvenio";
         }

@@ -18,15 +18,10 @@ public class Cliente extends EntidadGenerica{
     @Column
     private String telefono;
     
-    /*
-    @OneToMany(fetch=FetchType.EAGER)
-    private List<Convenio> listaConvenios;
-*/
-
     public Cliente() {
     }
 
-    public Cliente(String nombreContacto, String nombreEmpresa, String direccion, String telefono/*, List<Convenio> listaConvenios*/) {
+    public Cliente(String nombreContacto, String nombreEmpresa, String direccion, String telefono) {
         this.nombreContacto = nombreContacto;
         this.nombreEmpresa = nombreEmpresa;
         this.direccion = direccion;

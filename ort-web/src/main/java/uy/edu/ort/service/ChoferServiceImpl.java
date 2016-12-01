@@ -26,14 +26,14 @@ public class ChoferServiceImpl implements ChoferService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "camioneta", allEntries = true)
+    @CacheEvict(value = "chofer", allEntries = true)
     public void addChofer(Chofer chofer) {
         this.choferDao.addChofer(chofer);
     }
 
     @Override
     @Transactional
-    @CacheEvict(value = "camioneta", allEntries = true)
+    @CacheEvict(value = "chofer", allEntries = true)
     public void removeChofer(Chofer chofer) {
         this.choferDao.removeChofer(chofer);
     }
@@ -56,7 +56,7 @@ public class ChoferServiceImpl implements ChoferService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "camioneta", allEntries = true)
+    @CacheEvict(value = "chofer", allEntries = true)
     public void editarChofer(Chofer chofer) {
         this.choferDao.editarChofer(chofer);
     }

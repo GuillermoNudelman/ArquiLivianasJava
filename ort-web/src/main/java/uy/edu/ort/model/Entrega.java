@@ -5,30 +5,36 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-public class Entrega extends EntidadGenerica{
+public class Entrega extends EntidadGenerica {
 
     @Column
     private String codigo;
-    
+
     @Column
     private Date fechaEntrega;
-    
+
+    private String fechaEntregaString;
+
     @OneToOne
     private Camioneta camioneta;
-       
+    private int idCamioneta;
+
     @OneToOne
     private Chofer chofer;
-    
+    private int idChofer;
+
     @Column
     private int distanciaRecorrerKm;
-    
+
     @Column
     private int importeEntrega;
-    
+
     @OneToMany
-    @JoinColumn(name="entrega")
+    @JoinColumn(name = "entrega")
     private List<Paquete> listaPaquetes;
-    
+
+    private String listaPaquetesString;
+
     public Entrega() {
     }
 
@@ -88,7 +94,7 @@ public class Entrega extends EntidadGenerica{
 
     public void setListaPaquetes(List<Paquete> listaPaquetes) {
         this.listaPaquetes = listaPaquetes;
-    }    
+    }
 
     public Chofer getChofer() {
         return chofer;
@@ -96,6 +102,38 @@ public class Entrega extends EntidadGenerica{
 
     public void setChofer(Chofer chofer) {
         this.chofer = chofer;
+    }
+
+    public String getFechaEntregaString() {
+        return fechaEntregaString;
+    }
+
+    public void setFechaEntregaString(String fechaEntregaString) {
+        this.fechaEntregaString = fechaEntregaString;
+    }
+
+    public int getIdCamioneta() {
+        return idCamioneta;
+    }
+
+    public void setIdCamioneta(int idCamioneta) {
+        this.idCamioneta = idCamioneta;
+    }
+
+    public int getIdChofer() {
+        return idChofer;
+    }
+
+    public void setIdChofer(int idChofer) {
+        this.idChofer = idChofer;
+    }
+
+    public String getListaPaquetesString() {
+        return listaPaquetesString;
+    }
+
+    public void setListaPaquetesString(String listaPaquetesString) {
+        this.listaPaquetesString = listaPaquetesString;
     }
 
     public String toString() {
@@ -116,6 +154,4 @@ public class Entrega extends EntidadGenerica{
         }
         return true;
     }
-
 }
-

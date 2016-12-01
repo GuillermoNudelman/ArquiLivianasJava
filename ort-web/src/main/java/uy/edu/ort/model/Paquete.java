@@ -12,7 +12,7 @@ public class Paquete extends EntidadGenerica {
 
     @Column
     private Date fechaCreacion;
-
+    
     private String fechaCreacionString;
     
     @Column

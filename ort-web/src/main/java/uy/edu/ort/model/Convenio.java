@@ -14,14 +14,6 @@ public class Convenio extends EntidadGenerica{
     private Date fechaCreacion;
     
     private String fechaCreacionString;
-
-    public String getFechaCreacionString() {
-        return fechaCreacionString;
-    }
-
-    public void setFechaCreacionString(String fechaCreacionString) {
-        this.fechaCreacionString = fechaCreacionString;
-    }
     
     @Column
     private int importeInicialConvenio;
@@ -111,5 +103,11 @@ public class Convenio extends EntidadGenerica{
         this.idCliente = idCliente;
     }
     
-    
+    public String getFechaCreacionString() {
+        return fechaCreacionString;
+    }
+
+    public void setFechaCreacionString(String fechaCreacionString) {
+        this.fechaCreacionString = fechaCreacionString;
+    }
 }
