@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import uy.edu.ort.exceptions.ReferenciaNoEncontradaException;
 import uy.edu.ort.model.Camioneta;
 import uy.edu.ort.model.Chofer;
 import uy.edu.ort.model.Cliente;
@@ -78,7 +79,46 @@ public class EntregaController {
 
     @RequestMapping(value = "/entregaAgregada", method = RequestMethod.POST)
     public String agregar(Entrega entrega, BindingResult result) {
-        
+
+        //List<Paquete> paquetes = obtenerListadoPaquetes(entrega.getListaPaquetesString());
+        try {
+            Long idC = Long.valueOf(entrega.getIdCamioneta());
+            Camioneta camioneta = camionetaService.buscarCamionetaPorId(idC);
+            if (camioneta != null) {
+                Long idChofer = Long.valueOf(entrega.getIdChofer());
+                Chofer chofer = choferService.buscarChoferPorId(idChofer);
+                if (chofer != null) {
+                    entrega.setChofer(chofer);
+                    if (!entrega.getCodigo().equals("")) {
+                        entrega.setCamioneta(camioneta);
+                        Date fechaEntrega = obtenerFecha(entrega.getFechaEntregaString());
+                        entrega.setFechaEntrega(fechaEntrega);
+                        this.entregaService.addEntrega(entrega);
+                        return "entrega/vistaPreviaEntregas";
+                    } else {
+                        result.reject("", "El codigo no puede ser vacio");
+                        return "entrega/formularioNuevaEntrega";
+                    }
+                } else {
+                    result.reject("", "El id del chofer es incorrecto");
+                    return "entrega/formularioNuevaEntrega";
+                }
+            } else {
+                result.reject("", "El id de la camioneta es incorrecto");
+                return "entrega/formularioNuevaEntrega";
+            }
+        } catch (ReferenciaNoEncontradaException rne) {
+            if (rne.getMessage() == "paquete") {
+                result.reject("", "El listado de id de paquetes ingresados es incorrecto (al menos uno de ellos).");
+                return "entrega/formularioNuevaEntrega";
+            }
+        }
+        return null;
+    }
+/*
+    @RequestMapping(value = "/entregaAgregada", method = RequestMethod.POST)
+    public String agregar2(Entrega entrega, BindingResult result) {
+
         List<Paquete> paquetes = obtenerListadoPaquetes(entrega.getListaPaquetesString());
         if (paquetes != null) {
             Long idC = Long.valueOf(entrega.getIdCamioneta());
@@ -93,7 +133,6 @@ public class EntregaController {
                         Date fechaEntrega = obtenerFecha(entrega.getFechaEntregaString());
                         entrega.setFechaEntrega(fechaEntrega);
                         this.entregaService.addEntrega(entrega);
-                        agregarEntregaAPaquetes(paquetes,entrega);
                         return "entrega/vistaPreviaEntregas";
                     } else {
                         result.reject("", "El codigo no puede ser vacio");
@@ -112,15 +151,7 @@ public class EntregaController {
             return "entrega/formularioNuevaEntrega";
         }
     }
-
-    private void agregarEntregaAPaquetes(List<Paquete> paquetes, Entrega entrega){
-        for (int i = 0; i < paquetes.size(); i++) {
-            Paquete paqNuevo = paquetes.get(i);
-            paqNuevo.setEntrega(entrega);
-            paqueteService.editarPaquete(paqNuevo);
-        }
-    }
-    
+*/
     private Date obtenerFecha(String fechaString) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = null;
