@@ -39,19 +39,12 @@ public class ReportesController {
     @Autowired
     private PaqueteService paqueteService;
 
-    @RequestMapping(value = "/entregasPorMes", method = RequestMethod.GET)
-    public String entregasPorMes(@RequestParam("mes") int mes, Model model) {
-        List<Entrega> entrega = this.entregaService.listEntregaPorMes(mes);
-        model.addAttribute(entrega);
-        return "reportes/entregasPorMes";
-    }
-
     @RequestMapping(value = "/entregasPorMesPDF", method = RequestMethod.GET)
     public String entregasPorMesPDF(@RequestParam("mes") int mes, Model model) {
-        List<Entrega> entrega = this.entregaService.listEntregaPorMes(mes);
-        generarPDFReporteMes(entrega, paqueteService.listPaquetes(), true);
-        model.addAttribute(entrega);
-        return "reportes/entregasPorMesPDF";
+        List<Entrega> entregas = this.entregaService.listEntregaPorMes(mes);
+        generarPDFReporteMes(entregas, paqueteService.listPaquetes(), true);
+        model.addAttribute("entregas", entregas);
+        return "reportes/EntregasPorMesPantYPDF";
     }
 
     @RequestMapping(value = "/entregasPorMesYCamioneta", method = RequestMethod.GET)

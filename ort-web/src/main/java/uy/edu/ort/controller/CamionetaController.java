@@ -1,5 +1,6 @@
 package uy.edu.ort.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,19 @@ public class CamionetaController {
     public String lista(Camioneta camioneta, BindingResult result, Model model) {
         List<Camioneta> camionetas = camionetaService.listCamioneta();
         model.addAttribute("camionetas", camionetas);
+        return "camioneta/listadoCamionetas";
+    }
+    
+    @RequestMapping(value = "/listadoCamionetasProxService", method = RequestMethod.GET)
+    public String lista(@RequestParam("kmsProxService") int kmsProxService, Camioneta camioneta, BindingResult result, Model model) {
+        List<Camioneta> camionetas = camionetaService.listCamioneta();
+        List<Camioneta> camionetasNuevo = new ArrayList<Camioneta>();
+        for (int i = 0; i < camionetas.size(); i++) {
+            if(camionetas.get(i).getKmsProxService()<=kmsProxService) {
+                camionetasNuevo.add(camionetas.get(i));
+            }
+        }
+        model.addAttribute("camionetas", camionetasNuevo);
         return "camioneta/listadoCamionetas";
     }
 

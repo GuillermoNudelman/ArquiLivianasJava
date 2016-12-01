@@ -19,7 +19,6 @@
             <th>Kms faltantes para realizar el proximo service</th>
             <th>Editar</th>
             <th>Eliminar</th>
-
                 <c:forEach var="camioneta" items="${camionetas}">
                 <tr>
                     <td>
