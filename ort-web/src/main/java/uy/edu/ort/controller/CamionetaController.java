@@ -2,6 +2,7 @@ package uy.edu.ort.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +44,7 @@ public class CamionetaController {
     }
 
     @RequestMapping(value = "/formularioNuevaCamioneta", method = RequestMethod.GET)
-    public String camionetaForm(Model model) {
+    public String camionetaForm(Model model, HttpSession session) {
         Camioneta camioneta = new Camioneta();
         model.addAttribute(camioneta);
         return "camioneta/formularioNuevaCamioneta";
