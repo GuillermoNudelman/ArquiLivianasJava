@@ -5,15 +5,28 @@
  */
 package uy.edu.ort.job;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import uy.edu.ort.service.CamionetaService;
 
 /**
  *
  * @author alumnoFI
  */
 @Component
-public class UserJob {
+public class CamionetaJob {
+
+    @Value("${lider}")
+    private boolean esLider;
+
+    @Autowired
+    private MessageChannel processChannel;
+
+    @Autowired
+    private CamionetaService camionetaService;
 
     @Scheduled(cron = "0/10 * * * * ?")
     public void jobMethod() {

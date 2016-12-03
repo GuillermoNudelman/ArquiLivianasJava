@@ -25,6 +25,23 @@ public class EntregaServiceImpl implements EntregaService {
         this.entregaDao = entregaDao;
     }
 
+    public PaqueteService getPaqueteService() {
+        return paqueteService;
+    }
+
+    public void setPaqueteService(PaqueteService paqueteService) {
+        this.paqueteService = paqueteService;
+    }
+
+    public CamionetaService getCamionetaService() {
+        return camionetaService;
+    }
+
+    public void setCamionetaService(CamionetaService camionetaService) {
+        this.camionetaService = camionetaService;
+    }
+    
+
     @Override
     @Transactional
     public void addEntrega(Entrega entrega) {
@@ -42,8 +59,10 @@ public class EntregaServiceImpl implements EntregaService {
         if(entregasDelChoferEnFecha(entrega)>1){
             throw new ReferenciaNoEncontradaException("chofer");
         }
-        agregarEntregaAPaquetes(paquetes, entrega);
         this.entregaDao.addEntrega(entrega);
+        entrega = this.buscarEntrega(entrega.getCodigo());
+        agregarEntregaAPaquetes(paquetes, entrega);
+        
         actualizarKmsCamioneta(entrega);
     }
 
@@ -84,8 +103,8 @@ public class EntregaServiceImpl implements EntregaService {
     }
 
     @Override
-    public List<Entrega> listEntregaPorMesCamionetaYChofer(int mes, String camioneta, String chofer) {
-        return this.entregaDao.listEntregaPorMesCamionetaYChofer(mes, camioneta, chofer);
+    public List<Entrega> listEntregaPorMesCamionetaYChofer(int mes, String chofer) {
+        return this.entregaDao.listEntregaPorMesCamionetaYChofer(mes, chofer);
     }
 
     private List<Paquete> obtenerListadoPaquetesDisponibles(String listaPaquetesString) {
@@ -136,9 +155,8 @@ public class EntregaServiceImpl implements EntregaService {
         return cantEntregasChofer;
     }
     
-    private void actualizarKmsCamioneta(Entrega e){
-        Long idCamioneta = Long.valueOf(e.getIdCamioneta());
-        Camioneta c = camionetaService.buscarCamionetaPorId(idCamioneta);
+    private void actualizarKmsCamioneta(Entrega e){        
+        Camioneta c = camionetaService.buscarCamioneta(e.getCamioneta().getCodigo());
         c.setKmsRecorridos(c.getKmsRecorridos() + e.getDistanciaRecorrerKm());
         camionetaService.editarCamioneta(c);
     }

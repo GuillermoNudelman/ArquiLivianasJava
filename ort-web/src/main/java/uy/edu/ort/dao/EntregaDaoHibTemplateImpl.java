@@ -49,29 +49,20 @@ public class EntregaDaoHibTemplateImpl implements EntregaDao {
     public List<Entrega> listEntregaPorMes(int mes) {
         Object[] params = {mes};
         List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("select e from Entrega e where month(e.fechaEntrega) = ?", params);
-        return removerListaPaquetes(entregas);
+        return entregas;
     }
 
     @Override
     public List<Entrega> listEntregaPorMesYCamioneta(int mes, String codigoCamioneta) {
         Object[] params = {mes, codigoCamioneta};
         List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("SELECT e FROM Entrega e where month(e.fechaEntrega) = ? and e.camioneta in (select c from Camioneta c	where c.codigo = ?)", params);
-        return removerListaPaquetes(entregas);
+        return entregas;
     }
 
     @Override
-    public List<Entrega> listEntregaPorMesCamionetaYChofer(int mes, String camioneta, String chofer) {
-        Object[] params = {mes, camioneta, chofer};
-        List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("SELECT e FROM Entrega e where month(e.fechaEntrega) = ? and e.camioneta in (select c from Camioneta c	where c.codigo = ?) and e.chofer in (select c from Chofer c where c.codigo = ?)", params);
-        return removerListaPaquetes(entregas);
-    }
-
-    public List<Entrega> removerListaPaquetes(List<Entrega> lista) {
-        List<Entrega> listaEntregas = new ArrayList<Entrega>();
-        for (Entrega e : lista) {
-            e.setListaPaquetes(null);
-            listaEntregas.add(e);
-        }
-        return listaEntregas;
+    public List<Entrega> listEntregaPorMesCamionetaYChofer(int mes, String chofer) {
+        Object[] params = {mes, chofer};
+        List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("SELECT e FROM Entrega e where month(e.fechaEntrega) = ? and e.chofer in (select c from Chofer c where c.codigo = ?)", params);
+        return entregas;
     }
 }

@@ -115,7 +115,8 @@ public class EntregaController {
         }
         return null;
     }
-/*
+
+    /*
     @RequestMapping(value = "/entregaAgregada", method = RequestMethod.POST)
     public String agregar2(Entrega entrega, BindingResult result) {
 
@@ -151,7 +152,7 @@ public class EntregaController {
             return "entrega/formularioNuevaEntrega";
         }
     }
-*/
+     */
     private Date obtenerFecha(String fechaString) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = null;
@@ -182,102 +183,6 @@ public class EntregaController {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public String save(@RequestBody List<Entrega> entregas) {
-        String resultado = "";
-        Boolean correcto = true;
-        List<Entrega> entregasAux = new ArrayList<Entrega>();
-        int count = 0;
-        for (Entrega entr : entregas) {
-            if (entr.getCodigo() != null) {
-                int countAux = 0;
-                Boolean existe = false;
-                for (Entrega entr2 : entregas) {
-                    if (entr.getCodigo() == entr2.getCodigo() && countAux != count) {
-                        existe = true;
-                    }
-                    countAux++;
-                }
-                if (existe) {
-                    correcto = false;
-                    resultado += "2 Entregas tienen el mismo nombre.";
-                } else {
-                    List<Paquete> listaPaquetes = tienenCodigoYExistenPaquetes(entr.getListaPaquetes());
-                    if (listaPaquetes != null) {
-                        entr.setListaPaquetes(listaPaquetes);
-                        int pesoTotal = 0;
-                        int importeEntrega = 0;
-                        for (Paquete p : listaPaquetes) {
-                            pesoTotal += p.getPeso();
-                            importeEntrega += p.getCosto() - p.getDescuento();
-                        }
-                        entr.setImporteEntrega(importeEntrega);
-                        Camioneta camionetaAsociada = validarCamioneta(entr);
-                        if (camionetaAsociada != null) {
-                            if (ExisteCamioneta_PesoYDistancia(camionetaAsociada, pesoTotal, entr.getDistanciaRecorrerKm())) {
-                                entr.setCamioneta(camionetaAsociada);
-                                Chofer choferAsociado = validarChofer(entr);
-                                if (choferAsociado != null) {
-                                    entr.setChofer(choferAsociado);
-                                    existe = entregaService.buscarEntrega(entr.getCodigo()) != null;
-                                    if (existe) {
-                                        correcto = false;
-                                        resultado += " Ya existe un entrega con ese nombre " + entr.getCodigo();
-                                    } else {
-                                        entregasAux.add(entr);
-                                    }
-
-                                } else {
-                                    correcto = false;
-                                    resultado += "La entrega debe tene un chofer Valido. ";
-                                }
-                            } else {
-                                correcto = false;
-                                resultado += "La camioneta no es elegible para realizar la entrega. ";
-                            }
-                        } else {
-                            correcto = false;
-                            resultado += "El entrega debe tener una camioneta valida. ";
-                        }
-                    } else {
-                        correcto = false;
-                        resultado += "Uno de los paquetes no existe o no tiene codigo ";
-                    }
-                }
-            } else {
-                resultado += "El codigo puede ser vacio";
-                correcto = false;
-            }
-            count++;
-        }
-
-        if (correcto) {
-            resultado = "Los entregas se agregaron correctamente";
-            for (Entrega entrega : entregasAux) {
-                entregaService.addEntrega(entrega);
-                Entrega newEntrega = entregaService.buscarEntrega(entrega.getCodigo());
-                asociarPaquetesAEntrega(entrega.getListaPaquetes(), newEntrega);
-                agregarKmsACamioneta(entrega.getCamioneta(), entrega.getDistanciaRecorrerKm());
-            }
-        }
-
-        return resultado;
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public List<Entrega> list() {
-        List<Entrega> listaEntregas = entregaService.listEntrega();
-        List<Paquete> listaPaquetes = paqueteService.listPaquetes();
-        List<Entrega> listaaux = new ArrayList<Entrega>();
-        for (Entrega e : listaEntregas) {
-            e.setListaPaquetes(obtenerPaquetesEntrega(listaPaquetes, e));
-            listaaux.add(e);
-        }
-        return listaaux;
     }
 
     public List<Paquete> obtenerPaquetesEntrega(List<Paquete> listaPaquetes, Entrega entrega) {

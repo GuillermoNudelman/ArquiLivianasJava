@@ -29,23 +29,18 @@ public class Entrega extends EntidadGenerica {
     @Column
     private int importeEntrega;
 
-    @OneToMany
-    @JoinColumn(name = "entrega")
-    private List<Paquete> listaPaquetes;
-
     private String listaPaquetesString;
 
     public Entrega() {
     }
 
-    public Entrega(String codigo, Date fechaEntrega, Camioneta camioneta, int distanciaRecorrerKm, int importeEntrega, Chofer cofer, List<Paquete> listaPaquetes) {
+    public Entrega(String codigo, Date fechaEntrega, Camioneta camioneta, int distanciaRecorrerKm, int importeEntrega, Chofer cofer) {
         this.codigo = codigo;
         this.fechaEntrega = fechaEntrega;
         this.camioneta = camioneta;
         this.distanciaRecorrerKm = distanciaRecorrerKm;
         this.importeEntrega = importeEntrega;
-        this.chofer = chofer;
-        this.listaPaquetes = listaPaquetes;
+        this.chofer = chofer;      
     }
 
     public String getCodigo() {
@@ -86,14 +81,6 @@ public class Entrega extends EntidadGenerica {
 
     public void setImporteEntrega(int importeEntrega) {
         this.importeEntrega = importeEntrega;
-    }
-
-    public List<Paquete> getListaPaquetes() {
-        return listaPaquetes;
-    }
-
-    public void setListaPaquetes(List<Paquete> listaPaquetes) {
-        this.listaPaquetes = listaPaquetes;
     }
 
     public Chofer getChofer() {

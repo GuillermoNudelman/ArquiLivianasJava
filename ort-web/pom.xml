@@ -138,11 +138,35 @@
             <version>18.0</version>
         </dependency>
         
-         <dependency>
+        <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
             <version>5.0.6</version>
-        </dependency>      
+        </dependency>  
+        
+        <!--Spring Integration -->
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-core</artifactId>
+            <version>4.0.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-jms</artifactId>
+            <version>4.0.2.RELEASE</version>
+        </dependency>
+        
+        <!--ActiveMQ dependencies -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-pool</artifactId>
+            <version>5.10.0</version>
+        </dependency>            
    
     </dependencies>
 </project>

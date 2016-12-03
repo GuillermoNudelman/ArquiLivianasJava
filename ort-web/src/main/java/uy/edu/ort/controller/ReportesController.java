@@ -64,15 +64,15 @@ public class ReportesController {
 
     @RequestMapping(value = "/entregasPorMesYCamionetaYChofer/{mes}/{camioneta}/{chofer}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Entrega> entregasPorMesYCamionetaYChofer(@PathVariable("mes") int mes, @PathVariable("camioneta") String camioneta, @PathVariable("chofer") String chofer) {
-        List<Entrega> lista = entregaService.listEntregaPorMesCamionetaYChofer(mes, camioneta, chofer);
+    public List<Entrega> entregasPorMesYCamionetaYChofer(@PathVariable("mes") int mes, @PathVariable("chofer") String chofer) {
+        List<Entrega> lista = entregaService.listEntregaPorMesCamionetaYChofer(mes, chofer);
         return lista;
     }
 
     @RequestMapping(value = "/entregasPorMesYCamionetaYChoferPDF/{mes}/{camioneta}/{chofer}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Entrega> entregasPorMesYCamionetaYChoferPDF(@PathVariable("mes") int mes, @PathVariable("camioneta") String camioneta, @PathVariable("chofer") String chofer) {
-        List<Entrega> entrega = entregaService.listEntregaPorMesCamionetaYChofer(mes, camioneta, chofer);
+    public List<Entrega> entregasPorMesYCamionetaYChoferPDF(@PathVariable("mes") int mes, @PathVariable("chofer") String chofer) {
+        List<Entrega> entrega = entregaService.listEntregaPorMesCamionetaYChofer(mes, chofer);
         generarPDFReporteMes(entrega, paqueteService.listPaquetes(), false);
         return entrega;
     }
