@@ -98,12 +98,26 @@
         
     <bean id="entregaService" class="uy.edu.ort.service.EntregaServiceImpl">
         <property name="entregaDao" ref="entregaDao"/>
+        <property name="paqueteService" ref="paqueteService"/>
+        <property name="camionetaService" ref="camionetaService"/>
     </bean>
 
     <bean id="entregaDao" class="uy.edu.ort.dao.EntregaDaoHibTemplateImpl">
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>   
     
+    <!-- Beans ProcesamientoCamioneta -->    
+        
+    <bean id="procesamientoCamionetaService" class="uy.edu.ort.utilities.ProcesamientoCamionetaImpl">
+        <property name="procesamientoCamionetaDao" ref="procesamientoCamionetaDao"/>
+        <property name="paqueteService" ref="paqueteService"/>
+        <property name="camionetaService" ref="camionetaService"/>
+        <property name="entregaService" ref="entregaService"/>
+    </bean>
+
+    <bean id="procesamientoCamionetaDao" class="uy.edu.ort.dao.ProcesamientoCamionetaHibTemplateImpl">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>   
     
     <!-- Beans Convenio -->   
     
@@ -144,6 +158,7 @@
                 <value>uy.edu.ort.model.LogTrazabilidad</value>
                 <value>uy.edu.ort.model.Chofer</value>
                 <value>uy.edu.ort.model.Beans</value>
+                 <value>uy.edu.ort.model.ProcesamientoCamioneta</value>
             </list>
         </property>
         
@@ -155,6 +170,7 @@
                 <prop key="hibernate.show_sql">true</prop>
                 <!--<prop key="hibernate.hbm2ddl.auto">create</prop>-->
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
+        
             </props>
         </property>
     </bean>

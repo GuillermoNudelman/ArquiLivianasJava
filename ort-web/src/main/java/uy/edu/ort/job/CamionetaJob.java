@@ -5,11 +5,15 @@
  */
 package uy.edu.ort.job;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import uy.edu.ort.model.Camioneta;
 import uy.edu.ort.service.CamionetaService;
 
 /**
@@ -27,9 +31,16 @@ public class CamionetaJob {
 
     @Autowired
     private CamionetaService camionetaService;
+    
 
-    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "0 0/50 * * * ?")
     public void jobMethod() {
-        System.out.println("test method asdasd asdasd asd asd asd asd");
+        if (esLider) {
+            List<Camioneta> listaCamionetas = camionetaService.listCamioneta();
+            for (Camioneta camioneta : listaCamionetas) {
+               Message<Camioneta> message = MessageBuilder.withPayload(camioneta).build();
+               processChannel.send(message);
+            }            
+        }
     }
 }
