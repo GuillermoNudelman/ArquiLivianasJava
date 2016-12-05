@@ -100,6 +100,7 @@
         <property name="entregaDao" ref="entregaDao"/>
         <property name="paqueteService" ref="paqueteService"/>
         <property name="camionetaService" ref="camionetaService"/>
+        <property name="convenioService" ref="convenioService"/>
     </bean>
 
     <bean id="entregaDao" class="uy.edu.ort.dao.EntregaDaoHibTemplateImpl">

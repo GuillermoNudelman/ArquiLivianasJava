@@ -78,9 +78,15 @@ public class EntregaController {
     }
 
     @RequestMapping(value = "/entregaAgregada", method = RequestMethod.POST)
-    public String agregar(Entrega entrega, BindingResult result) {
+    public String agregar(Entrega entrega, BindingResult result, Model model) {
+        List<Camioneta> camionetas = camionetaService.listCamioneta();
+        model.addAttribute("camionetas", camionetas);
 
-        //List<Paquete> paquetes = obtenerListadoPaquetes(entrega.getListaPaquetesString());
+        List<Chofer> choferes = choferService.listChofer();
+        model.addAttribute("choferes", choferes);
+
+        List<Paquete> paquetes = paqueteService.listPaquetes();
+        model.addAttribute("paquetes", paquetes);
         try {
             Long idC = Long.valueOf(entrega.getIdCamioneta());
             Camioneta camioneta = camionetaService.buscarCamionetaPorId(idC);
@@ -88,9 +94,9 @@ public class EntregaController {
                 Long idChofer = Long.valueOf(entrega.getIdChofer());
                 Chofer chofer = choferService.buscarChoferPorId(idChofer);
                 if (chofer != null) {
-                    entrega.setChofer(chofer);
                     if (!entrega.getCodigo().equals("")) {
                         entrega.setCamioneta(camioneta);
+                        entrega.setChofer(chofer);
                         Date fechaEntrega = obtenerFecha(entrega.getFechaEntregaString());
                         entrega.setFechaEntrega(fechaEntrega);
                         this.entregaService.addEntrega(entrega);
@@ -110,6 +116,18 @@ public class EntregaController {
         } catch (ReferenciaNoEncontradaException rne) {
             if (rne.getMessage() == "paquete") {
                 result.reject("", "El listado de id de paquetes ingresados es incorrecto (al menos uno de ellos).");
+                return "entrega/formularioNuevaEntrega";
+            }
+            if (rne.getMessage() == "fecha_entrega") {
+                result.reject("", "La fecha de entrega debe ser posterior a hoy");
+                return "entrega/formularioNuevaEntrega";
+            }
+            if (rne.getMessage() == "camioneta") {
+                result.reject("", "La camioneta ingresada no cumple con todos los requisitos necesarios");
+                return "entrega/formularioNuevaEntrega";
+            }
+            if (rne.getMessage() == "chofer") {
+                result.reject("", "El chofer no puede tener mas de 2 entregas en el día");
                 return "entrega/formularioNuevaEntrega";
             }
         }

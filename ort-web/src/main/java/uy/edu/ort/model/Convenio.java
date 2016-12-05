@@ -23,7 +23,7 @@ public class Convenio extends EntidadGenerica{
     
     @Column
     private boolean estaEnUso;
-    
+        
     @ManyToOne(fetch=FetchType.EAGER)
     private Cliente cliente;
     

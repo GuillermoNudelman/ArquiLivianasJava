@@ -21,7 +21,7 @@ public interface EntregaDao {
 
     public List<Entrega> listEntregaPorMes(int mes);
 
-    public List<Entrega> listEntregaPorMesYCamioneta(int mes, String codigoCamioneta);
+    public List<Entrega> listEntregaPorMesYCamioneta(int mes, int codigoCamioneta);
 
-    public List<Entrega> listEntregaPorMesCamionetaYChofer(int mes, String chofer);
+    public List<Entrega> listEntregaPorMesYChofer(int mes, int idChofer);
 }

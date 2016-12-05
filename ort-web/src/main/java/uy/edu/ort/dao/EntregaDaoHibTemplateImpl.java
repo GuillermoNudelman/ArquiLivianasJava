@@ -53,16 +53,16 @@ public class EntregaDaoHibTemplateImpl implements EntregaDao {
     }
 
     @Override
-    public List<Entrega> listEntregaPorMesYCamioneta(int mes, String codigoCamioneta) {
+    public List<Entrega> listEntregaPorMesYCamioneta(int mes, int codigoCamioneta) {
         Object[] params = {mes, codigoCamioneta};
         List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("SELECT e FROM Entrega e where month(e.fechaEntrega) = ? and e.camioneta in (select c from Camioneta c	where c.codigo = ?)", params);
         return entregas;
     }
 
     @Override
-    public List<Entrega> listEntregaPorMesCamionetaYChofer(int mes, String chofer) {
-        Object[] params = {mes, chofer};
-        List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("SELECT e FROM Entrega e where month(e.fechaEntrega) = ? and e.chofer in (select c from Chofer c where c.codigo = ?)", params);
+    public List<Entrega> listEntregaPorMesYChofer(int mes, int idChofer) {
+        Object[] params = {mes, idChofer};
+        List<Entrega> entregas = (List<Entrega>) hibernateTemplate.find("SELECT e FROM Entrega e where month(e.fechaEntrega) = ? and e.chofer in (select c from Chofer c where c.id = ?)", params);
         return entregas;
     }
 }
