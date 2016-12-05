@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import uy.edu.ort.model.Entrega;
 import uy.edu.ort.model.Paquete;
+import uy.edu.ort.model.ProcesamientoCamioneta;
 import uy.edu.ort.service.EntregaService;
 import uy.edu.ort.service.PaqueteService;
+import uy.edu.ort.utilities.ProcesamientoCamionetaService;
 
 /**
  *
@@ -38,6 +40,9 @@ public class ReportesController {
 
     @Autowired
     private PaqueteService paqueteService;
+
+    @Autowired
+    private ProcesamientoCamionetaService procesamientoCamionetaService;
 
     @RequestMapping(value = "/entregasPorMesPDF", method = RequestMethod.GET)
     public String entregasPorMesPDF(@RequestParam("mes") int mes, Model model) {
@@ -75,6 +80,23 @@ public class ReportesController {
         List<Entrega> entrega = entregaService.listEntregaPorMesCamionetaYChofer(mes, chofer);
         generarPDFReporteMes(entrega, paqueteService.listPaquetes(), false);
         return entrega;
+    }
+
+    @RequestMapping(value = "/auditoriaCamionetas", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ProcesamientoCamioneta> auditoriaCamionetas() {
+        List<ProcesamientoCamioneta> auditorias = procesamientoCamionetaService.listaProcesamientoCamioneta();
+        return auditorias;
+    }
+
+    @RequestMapping(value = "/auditoriaCamionetasPDF", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ProcesamientoCamioneta> auditoriaCamionetasPDF() {
+        List<ProcesamientoCamioneta> auditorias = procesamientoCamionetaService.listaProcesamientoCamioneta();
+        if(!auditorias.isEmpty()){
+            generarPDFAuditoria(auditorias);
+        }
+        return auditorias;
     }
 
     public void generarPDFReporteMes(List<Entrega> listEntregas, List<Paquete> listPaquetes, boolean esReporteMesCamioneta) {
@@ -164,6 +186,87 @@ public class ReportesController {
                 table.addCell(cell4);
                 table.addCell(cell5);
                 table.addCell(cell6);
+            }
+
+            document.add(table);
+            document.close();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generarPDFAuditoria(List<ProcesamientoCamioneta> auditorias) {
+        Document document = new Document();
+        try {
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("AuditoriaCamionetas.pdf"));
+            document.open();
+            Font redFont = FontFactory.getFont(FontFactory.COURIER, 12, Font.BOLD, new CMYKColor(0, 255, 0, 0));
+            Paragraph paragraphOne = new Paragraph();
+
+            paragraphOne = new Paragraph("Auditorias Camionetas", redFont);
+
+            document.add(paragraphOne);
+
+            PdfPTable table = new PdfPTable(5); // 6 columns.
+            table.setWidthPercentage(100); //Width 100%
+            table.setSpacingBefore(10f); //Space before table
+            table.setSpacingAfter(10f); //Space after table
+
+            //Set Column widths
+            float[] columnWidths = {1f, 1f, 1f, 1f, 1f};
+            table.setWidths(columnWidths);
+
+            PdfPCell cell1 = new PdfPCell(new Paragraph("Código de Camioneta"));
+            cell1.setBorderColor(BaseColor.GREEN);
+            cell1.setPaddingLeft(10);
+            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            PdfPCell cell2 = new PdfPCell(new Paragraph("Perido procesado"));
+            cell2.setBorderColor(BaseColor.GREEN);
+            cell2.setPaddingLeft(10);
+            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            PdfPCell cell3 = new PdfPCell(new Paragraph("Valido"));
+            cell3.setBorderColor(BaseColor.GREEN);
+            cell3.setPaddingLeft(10);
+            cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            PdfPCell cell4 = new PdfPCell(new Paragraph("Peso total"));
+            cell4.setBorderColor(BaseColor.GREEN);
+            cell4.setPaddingLeft(10);
+            cell4.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            PdfPCell cell5 = new PdfPCell(new Paragraph("Kilometros recorridos"));
+            cell5.setBorderColor(BaseColor.GREEN);
+            cell5.setPaddingLeft(10);
+            cell5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell5.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+            table.addCell(cell1);
+            table.addCell(cell2);
+            table.addCell(cell3);
+            table.addCell(cell4);
+            table.addCell(cell5);
+          
+
+            for (ProcesamientoCamioneta pc : auditorias) {
+                cell1 = new PdfPCell(new Paragraph(pc.getCamioneta().getCodigo()));
+                cell2 = new PdfPCell(new Paragraph(pc.getPeriodo()));
+                cell3 = new PdfPCell(new Paragraph(pc.isValido() ? "Si" : "No"));                
+                cell4 = new PdfPCell(new Paragraph("" + pc.getPesoTransportado()));
+                cell5 = new PdfPCell(new Paragraph("" + pc.getKilometrosRecorridos()));
+               
+                table.addCell(cell1);
+                table.addCell(cell2);
+                table.addCell(cell3);
+                table.addCell(cell4);
+                table.addCell(cell5);
+             
             }
 
             document.add(table);

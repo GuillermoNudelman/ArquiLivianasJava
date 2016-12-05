@@ -23,13 +23,13 @@ public class ProcesamientoCamionetaHibTemplateImpl implements ProcesamientoCamio
 
     @Override
     public void addProcesamientoCamioneta(ProcesamientoCamioneta pcamioneta) {
-         this.hibernateTemplate.save(pcamioneta);
+        this.hibernateTemplate.save(pcamioneta);
     }
 
     @Override
     public List<ProcesamientoCamioneta> listaProcesamientoCamioneta() {
-        List<ProcesamientoCamioneta> camionetasproc = (List<ProcesamientoCamioneta>) hibernateTemplate.find("select p from Paquete p");
-        return camionetasproc;
+        List<ProcesamientoCamioneta> auditoria = (List<ProcesamientoCamioneta>) hibernateTemplate.find("select pc from ProcesamientoCamioneta pc");
+        return auditoria;
     }
 
 }

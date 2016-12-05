@@ -30,7 +30,7 @@ public class BeansDaoHibTemplateImpl implements BeansDao{
 
     @Override
     public List<Beans> listBeans() {
-         List<Beans> beans = (List<Beans>) hibernateTemplate.find("select b from Beans b");
+        List<Beans> beans = (List<Beans>) hibernateTemplate.find("select b from Beans b");
         return beans;
     }
     

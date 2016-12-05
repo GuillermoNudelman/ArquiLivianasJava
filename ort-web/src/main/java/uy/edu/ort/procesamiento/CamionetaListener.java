@@ -8,13 +8,14 @@ package uy.edu.ort.procesamiento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import uy.edu.ort.model.Camioneta;
 import uy.edu.ort.utilities.ProcesamientoCamionetaService;
 
 @Component
-public class ProcessListener {
+public class CamionetaListener {
 
     @Autowired
     private ProcesamientoCamionetaService procesamientoCamionetaService;
@@ -22,12 +23,13 @@ public class ProcessListener {
     @Value("${lider}")
     private boolean esLider;
 
-    
-    public void processMessage(Message<Camioneta> message) {
-        if (esLider) {
+    @Async
+    public void processCamionetaMessage(Message<Camioneta> message) {
+        if (!esLider) {
             Camioneta camioneta = message.getPayload();
             procesamientoCamionetaService.addProcesamientoCamioneta(camioneta);
         }
     }
+    
 
 }

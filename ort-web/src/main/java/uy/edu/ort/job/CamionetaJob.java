@@ -33,7 +33,7 @@ public class CamionetaJob {
     private CamionetaService camionetaService;
     
 
-    @Scheduled(cron = "0 0/50 * * * ?")
+    @Scheduled(cron = "${cron.expression}")
     public void jobMethod() {
         if (esLider) {
             List<Camioneta> listaCamionetas = camionetaService.listCamioneta();

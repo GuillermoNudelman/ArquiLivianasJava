@@ -3,12 +3,19 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:int="http://www.springframework.org/schema/integration"
        xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/integration
 http://www.springframework.org/schema/integration/spring-integration.xsd
 http://www.springframework.org/schema/integration/jms
-http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
+http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
+http://www.springframework.org/schema/integration/ip 
+http://www.springframework.org/schema/integration/ip/spring-integration-ip-2.0.xsd
+http://www.springframework.org/schema/integration
+http://www.springframework.org/schema/integration/spring-integration.xsd
+http://www.springframework.org/schema/task 
+http://www.springframework.org/schema/task/spring-task-3.0.xsd">
     
     <!-- define un channel para comunicar mensajes hacia una jms queue -->
     <int:channel id="processChannel"/>
@@ -17,11 +24,12 @@ http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
         channel="processChannel" destination-name="${queue.process.request}"
         time-to-live="${queue.message.timetolive}" explicit-qos-enabled="true"
         connection-factory="connectionFactory"/>
-    
-    
-    
+     
     <!-- crea un channel para el listener que va a consumir los mensajes -->
-    <int:channel id="processListenerChannel"/>
+    <int:channel id="processListenerChannel">
+        <int:dispatcher task-executor="threadTaskExecutor"/>
+    </int:channel>
+    <task:executor id="threadTaskExecutor" pool-size="2" queue-capacity="50"/>
     <!-- define un adapter que rutea a el processListenerChannel los mensajes que llegan a la queue -->
     <int-jms:inbound-channel-adapter 
         channel="processListenerChannel"
@@ -31,7 +39,7 @@ http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
     <!-- service que sera activado cuando un mensaje llegue a la queue -->
     <int:service-activator 
         id="processServiceActivator" input-channel="processListenerChannel"
-        ref="processListener" method="processMessage"/>
+        ref="camionetaListener" method="processCamionetaMessage"/>
     <!-- pooler -->
     <int:poller id="poller" default="true" fixed-delay="100"/>
     

@@ -58,8 +58,12 @@ public class BatchController {
         List<Van> vans = batch.getVans();
         if (vans != null) {
             for (Van v : vans) {
-                Camioneta cam = transformVanToCamioneta(v);
-                camionetaService.addCamioneta(cam);
+                if (v.getCode() != "") {
+                    Camioneta cam = transformVanToCamioneta(v);
+                    camionetaService.addCamioneta(cam);
+                }else{
+                    return "El codigo en las camionetas es obligatorio";
+                }
             }
         }
         List<Driver> drivers = batch.getDrivers();
@@ -246,8 +250,8 @@ public class BatchController {
         String paquetes = "";
         for (String p : listaPaquetes) {
             int id = 0;
-            for(Paquete pqt : listaPaquetesBD){
-                if(p.equals(pqt.getCodigo())){
+            for (Paquete pqt : listaPaquetesBD) {
+                if (p.equals(pqt.getCodigo())) {
                     id = pqt.getId();
                 }
             }

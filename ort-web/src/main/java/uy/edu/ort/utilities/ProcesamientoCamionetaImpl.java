@@ -29,7 +29,7 @@ public class ProcesamientoCamionetaImpl implements ProcesamientoCamionetaService
     private EntregaService entregaService;
 
     private PaqueteService paqueteService;
-    
+
     private CamionetaService camionetaService;
 
     public void setProcesamientoCamionetaDao(ProcesamientoCamionetaDao procesamientoCamionetaDao) {
@@ -71,14 +71,14 @@ public class ProcesamientoCamionetaImpl implements ProcesamientoCamionetaService
         boolean esValida = true;
         for (Entrega ent : entregasAProcesar) {
             int pesoTransportado = 0;
-            for(Paquete p : paquetes){
-                if(p.getEntrega() != null){
-                    if(p.getEntrega().getCodigo().equals(ent.getCodigo())){
+            for (Paquete p : paquetes) {
+                if (p.getEntrega() != null) {
+                    if (p.getEntrega().getCodigo().equals(ent.getCodigo())) {
                         pesoTransportado += p.getPeso();
                     }
                 }
             }
-            if(pesoTransportado > camioneta.getCapacidadKgs()){
+            if (pesoTransportado > camioneta.getCapacidadKgs()) {
                 esValida = false;
             }
             pesoTotal += pesoTransportado;
@@ -87,8 +87,8 @@ public class ProcesamientoCamionetaImpl implements ProcesamientoCamionetaService
 
         ProcesamientoCamioneta pc = new ProcesamientoCamioneta();
         pc.setCamioneta(camioneta);
-        pc.setKilometrosRecorridos((long)kilometrosRecorridos);
-        pc.setPesoTransportado((long)pesoTotal);
+        pc.setKilometrosRecorridos((long) kilometrosRecorridos);
+        pc.setPesoTransportado((long) pesoTotal);
         pc.setValido(esValida);
         pc.setPeriodo(todayDate.toString() + "hasta" + lastDate.toString());
         this.procesamientoCamionetaDao.addProcesamientoCamioneta(pc);
@@ -96,7 +96,7 @@ public class ProcesamientoCamionetaImpl implements ProcesamientoCamionetaService
 
     @Override
     public List<ProcesamientoCamioneta> listaProcesamientoCamioneta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return this.procesamientoCamionetaDao.listaProcesamientoCamioneta();
     }
 
     public Date addDays(Date d, int days) {
