@@ -179,8 +179,10 @@ public class EstadisticasController {
         for (String usu : listaUsuarioAux) {
             int count = 0;
             for (LogTrazabilidad log : listaLog) {
-                if (log.getUsuario().equals(usu) && log.getFechaOperacion().equals(fecha)) {
-                    count++;
+                if (log.getUsuario() != null) {
+                    if (log.getUsuario().equals(usu) && log.getFechaOperacion().equals(fecha)) {
+                        count++;
+                    }
                 }
             }
             if (count > countMax) {
@@ -210,8 +212,10 @@ public class EstadisticasController {
         for (String usu : listaUsuarioAux) {
             int count = 0;
             for (LogTrazabilidad log : listaLog) {
-                if (log.getUsuario().equals(usu) && log.getFechaOperacion().equals(fecha)) {
-                    count++;
+                if (log.getUsuario() != null) {
+                    if (log.getUsuario().equals(usu) && log.getFechaOperacion().equals(fecha)) {
+                        count++;
+                    }
                 }
             }
             if (countMax == -1) {
@@ -232,12 +236,16 @@ public class EstadisticasController {
 
     private boolean existeUsuarioEnLista(String usuario, List<String> lista) {
         boolean existe = false;
-        if (!lista.isEmpty()) {
-            for (String usu : lista) {
-                if (usuario.equals(usu)) {
-                    existe = true;
+        if (usuario != null) {
+            if (!lista.isEmpty()) {
+                for (String usu : lista) {
+                    if (usuario.equals(usu)) {
+                        existe = true;
+                    }
                 }
             }
+        }else{
+            existe = true;
         }
         return existe;
     }

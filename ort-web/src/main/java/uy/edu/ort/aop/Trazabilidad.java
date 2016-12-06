@@ -1,7 +1,10 @@
 package uy.edu.ort.aop;
 
 import java.util.Date;
+import javax.servlet.http.HttpSession;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import uy.edu.ort.model.LogTrazabilidad;
 import uy.edu.ort.utilities.LogTrazabilidadService;
 import uy.edu.ort.utilities.UsuarioService;
@@ -15,14 +18,8 @@ public class Trazabilidad {
 
     private LogTrazabilidadService logTrazabilidadService;
 
-    private UsuarioService usuarioService;
-
     public void setLogTrazabilidadService(LogTrazabilidadService logTrazabilidadService) {
         this.logTrazabilidadService = logTrazabilidadService;
-    }
-
-    public void setUsuarioService(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
     }
 
     public Object metodoAround(ProceedingJoinPoint pjp) throws Throwable {
@@ -40,10 +37,16 @@ public class Trazabilidad {
             arguments += " " + argument + " -";
         }
 
+        String userName = "Usuario Anonimo";
+        try {
+            HttpSession session = (HttpSession) RequestContextHolder.getRequestAttributes().resolveReference(RequestAttributes.REFERENCE_SESSION);
+            userName = (String) session.getAttribute("user");
+        } catch (Exception e) {}
+
         LogTrazabilidad logTrazabilidad = new LogTrazabilidad();
         logTrazabilidad.setFechaOperacion(date);
         logTrazabilidad.setNombreOperacion(pjp.getSignature().getName());
-        logTrazabilidad.setUsuario(usuarioService.getNombre());
+        logTrazabilidad.setUsuario(userName);
         logTrazabilidad.setParametros(arguments);
         logTrazabilidad.setTiempoEjecucion(time);
         logTrazabilidadService.addLogTrazabilidad(logTrazabilidad);

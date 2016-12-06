@@ -58,10 +58,10 @@ public class BatchController {
         List<Van> vans = batch.getVans();
         if (vans != null) {
             for (Van v : vans) {
-                if (v.getCode() != "") {
+                if (!v.getCode().equals("") && v.getCode() != null) {
                     Camioneta cam = transformVanToCamioneta(v);
                     camionetaService.addCamioneta(cam);
-                }else{
+                } else {
                     return "El codigo en las camionetas es obligatorio";
                 }
             }
@@ -69,29 +69,67 @@ public class BatchController {
         List<Driver> drivers = batch.getDrivers();
         if (drivers != null) {
             for (Driver drv : drivers) {
-                Chofer cho = transformDriverToChofer(drv);
-                choferService.addChofer(cho);
+                    if (!drv.getCode().equals("") && drv.getCode() != null) {
+                    Chofer cho = transformDriverToChofer(drv);
+                    choferService.addChofer(cho);
+                } else {
+                    return "El codigo no puede ser vacio";
+
+                }
             }
         }
         List<Client> client = batch.getClients();
         if (client != null) {
             for (Client cli : client) {
-                Cliente cliente = transformClientToCliente(cli);
-                clienteService.addCliente(cliente);
+                if (!cli.getCompanyName().equals("") && cli.getCompanyName() != null) {
+                    Cliente cliente = transformClientToCliente(cli);
+                    clienteService.addCliente(cliente);
+                } else {
+                    return "El nombre de la empresa no puede ser vacio";
+
+                }
             }
         }
         List<Package> packages = batch.getPackages();
         if (packages != null) {
             for (Package pck : packages) {
-                Paquete pqt = transformPackageToPaquete(pck);
-                paqueteService.addPaquete(pqt);
+                if (!pck.getCode().equals("") && pck.getCode() != null) {
+                    if (!pck.getCompanyName().equals("") && pck.getCompanyName() != null) {
+                        try {
+                            Paquete pqt = transformPackageToPaquete(pck);
+                            paqueteService.addPaquete(pqt);
+                        } catch (ReferenciaNoEncontradaException rne) {
+                            if (rne.getMessage() == "paquete") {
+                                return "El paquete debe tener un cliente existente.";
+                            }
+                        }
+                    } else {
+                        return "El paquete debe tener un cliente.";
+                    }
+                } else {
+                    return "El paquete debe tener un codigo.";
+                }
             }
         }
         List<Agreement> agreements = batch.getAgreements();
         if (agreements != null) {
             for (Agreement agree : agreements) {
-                Convenio con = transformAgreementToConvenio(agree);
-                convenioService.addConvenio(con);
+                if (!agree.getCode().equals("") && agree.getCode() != null) {
+                    if (!agree.getCompanyName().equals("") && agree.getCompanyName() != null) {
+                        try {
+                            Convenio con = transformAgreementToConvenio(agree);
+                            convenioService.addConvenio(con);
+                        } catch (ReferenciaNoEncontradaException rne) {
+                            if (rne.getMessage() == "agree") {
+                                return "El convenio debe tener un cliente existente.";
+                            }
+                        }
+                    } else {
+                        return "El convenio debe tener un cliente.";
+                    }
+                } else {
+                    return "El convenio debe tener un codigo.";
+                }
             }
         }
         List<Delivery> deliveries = batch.getDeliveries();
@@ -106,9 +144,16 @@ public class BatchController {
                     resultado = "El listado de id de paquetes ingresados es incorrecto (al menos uno de ellos).";
                 } else if (rne.getMessage() == "camioneta") {
                     resultado = "La camioneta seleccionada no puede realizar la entrega.";
-                } else if (rne.getMessage() == "chofer") {
+                } else if (rne.getMessage() == "chofer" || rne.getMessage() == "chofer_existe+") {
                     resultado = "El chofer seleccionado no puede realizar la entrega.";
+                } else if (rne.getMessage() == "fecha_entrega") {
+                    resultado = "La fecha de entrega debe ser posterior a hoy";
+                } else if (rne.getMessage() == "camioneta" || rne.getMessage() == "camioneta_existe") {
+                    return "La camioneta ingresada no cumple con todos los requisitos necesarios";
+                }else if (rne.getMessage() == "fecha_existe" ) {
+                    return "La entrega debe tener una fecha";
                 }
+
             }
         }
         return resultado;
@@ -216,34 +261,51 @@ public class BatchController {
         Date date = sdf.parse(agree.getCreationDate());
         conv.setFechaCreacion(date);
         Cliente cli = clienteService.buscarClientePorNombreEmpresa(agree.getCompanyName());
+        if (cli == null) {
+            throw new ReferenciaNoEncontradaException("agree");
+        }
         conv.setCliente(cli);
         conv.setImporteActualConvenio((int) Math.round(agree.getCurrentValue()));
         conv.setImporteInicialConvenio((int) Math.round(agree.getInitialValue()));
         return conv;
     }
 
-    private Paquete transformPackageToPaquete(Package pkg) {
+    private Paquete transformPackageToPaquete(Package pkg) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Paquete pqt = new Paquete();
         pqt.setCodigo(pkg.getCode());
         pqt.setDescripcion(pkg.getDescription());
         pqt.setCosto((int) Math.round(pkg.getCost()));
         Cliente cli = clienteService.buscarClientePorNombreEmpresa(pkg.getCompanyName());
+        if (cli == null) {
+            throw new ReferenciaNoEncontradaException("paquete");
+        }
         pqt.setCliente(cli);
         pqt.setPeso((int) Math.round(pkg.getWeight()));
+        Date date = sdf.parse(pkg.getCreationDate());
+        pqt.setFechaCreacion(date);
         return pqt;
     }
 
-    private Entrega transformDeliverToEntrega(Delivery dlv) {
+    private Entrega transformDeliverToEntrega(Delivery dlv) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Entrega entrega = new Entrega();
         entrega.setCodigo(dlv.getCode());
         entrega.setDistanciaRecorrerKm((int) Math.round(dlv.getTravelDistance()));
-        Date date = new Date();
+        if(dlv.getDate() == "" || dlv.getDate() == null){
+             throw new ReferenciaNoEncontradaException("fecha_existe");
+        }
+        Date date = sdf.parse(dlv.getDate());
         entrega.setFechaEntrega(date);
         Chofer cho = choferService.buscarChoferPorCodigo(dlv.getDriverCode());
         entrega.setChofer(cho);
+        if (cho == null) {
+            throw new ReferenciaNoEncontradaException("chofer_existe");
+        }
         Camioneta camioneta = camionetaService.buscarCamioneta(dlv.getVanCode());
+        if (camioneta == null) {
+            throw new ReferenciaNoEncontradaException("camioneta_existe");
+        }
         entrega.setCamioneta(camioneta);
         List<String> listaPaquetes = dlv.getPackageCodes();
         List<Paquete> listaPaquetesBD = paqueteService.listPaquetes();
@@ -260,7 +322,6 @@ public class BatchController {
             } else {
                 paquetes += "-" + id;
             }
-
         }
 
         entrega.setListaPaquetesString(paquetes);
