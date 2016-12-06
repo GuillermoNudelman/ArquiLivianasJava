@@ -54,13 +54,13 @@ public class EstadisticasController {
     public Map<Map<String, String>, Map<String, Long>> tiempoServicioMasRapido(@PathVariable("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") Date fecha) {
         LogTrazabilidad log = logTrazabilidadService.servicioMasRapido(fecha);
         Map<Map<String, String>, Map<String, Long>> obj = new HashMap<Map<String, String>, Map<String, Long>>();
-
-        Map<String, String> objServ = new HashMap<String, String>();
-        objServ.put("Servicio", log.getNombreOperacion());
-        Map<String, Long> objTiempo = new HashMap<String, Long>();
-        objTiempo.put("Tiempo de ejecucion", log.getTiempoEjecucion());
-        obj.put(objServ, objTiempo);
-
+        if (log != null) {
+            Map<String, String> objServ = new HashMap<String, String>();
+            objServ.put("Servicio", log.getNombreOperacion());
+            Map<String, Long> objTiempo = new HashMap<String, Long>();
+            objTiempo.put("Tiempo de ejecucion", log.getTiempoEjecucion());
+            obj.put(objServ, objTiempo);
+        }
         return obj;
     }
 
@@ -69,13 +69,13 @@ public class EstadisticasController {
     public Map<Map<String, String>, Map<String, Long>> tiempoServicioMasLento(@PathVariable("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") Date fecha) {
         LogTrazabilidad log = logTrazabilidadService.servicioMasLento(fecha);
         Map<Map<String, String>, Map<String, Long>> obj = new HashMap<Map<String, String>, Map<String, Long>>();
-
-        Map<String, String> objServ = new HashMap<String, String>();
-        objServ.put("Servicio", log.getNombreOperacion());
-        Map<String, Long> objTiempo = new HashMap<String, Long>();
-        objTiempo.put("Tiempo de ejecucion", log.getTiempoEjecucion());
-        obj.put(objServ, objTiempo);
-
+        if (log != null) {
+            Map<String, String> objServ = new HashMap<String, String>();
+            objServ.put("Servicio", log.getNombreOperacion());
+            Map<String, Long> objTiempo = new HashMap<String, Long>();
+            objTiempo.put("Tiempo de ejecucion", log.getTiempoEjecucion());
+            obj.put(objServ, objTiempo);
+        }
         return obj;
     }
 
@@ -101,13 +101,13 @@ public class EstadisticasController {
     public Map<Map<String, String>, Map<String, Long>> servicioMasUsado(@PathVariable("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") Date fecha) {
         LogTrazabilidad log = logTrazabilidadService.servicioMasUsado(fecha);
         Map<Map<String, String>, Map<String, Long>> obj = new HashMap<Map<String, String>, Map<String, Long>>();
-
-        Map<String, String> objServ = new HashMap<String, String>();
-        objServ.put("Servicio", log.getNombreOperacion());
-        Map<String, Long> objTiempo = new HashMap<String, Long>();
-        objTiempo.put("Llamadas", log.getTiempoEjecucion());
-        obj.put(objServ, objTiempo);
-
+        if (log != null) {
+            Map<String, String> objServ = new HashMap<String, String>();
+            objServ.put("Servicio", log.getNombreOperacion());
+            Map<String, Long> objTiempo = new HashMap<String, Long>();
+            objTiempo.put("Llamadas", log.getTiempoEjecucion());
+            obj.put(objServ, objTiempo);
+        }
         return obj;
     }
 
@@ -116,13 +116,13 @@ public class EstadisticasController {
     public Map<Map<String, String>, Map<String, Long>> servicioMenosUsado(@PathVariable("fecha") @DateTimeFormat(pattern = "dd-MM-yyyy") Date fecha) {
         LogTrazabilidad log = logTrazabilidadService.servicioMenosUsado(fecha);
         Map<Map<String, String>, Map<String, Long>> obj = new HashMap<Map<String, String>, Map<String, Long>>();
-
-        Map<String, String> objServ = new HashMap<String, String>();
-        objServ.put("Servicio", log.getNombreOperacion());
-        Map<String, Long> objTiempo = new HashMap<String, Long>();
-        objTiempo.put("Llamadas", log.getTiempoEjecucion());
-        obj.put(objServ, objTiempo);
-
+        if (log != null) {
+            Map<String, String> objServ = new HashMap<String, String>();
+            objServ.put("Servicio", log.getNombreOperacion());
+            Map<String, Long> objTiempo = new HashMap<String, Long>();
+            objTiempo.put("Llamadas", log.getTiempoEjecucion());
+            obj.put(objServ, objTiempo);
+        }
         return obj;
     }
 
@@ -244,7 +244,7 @@ public class EstadisticasController {
                     }
                 }
             }
-        }else{
+        } else {
             existe = true;
         }
         return existe;

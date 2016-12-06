@@ -7,7 +7,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import uy.edu.ort.model.LogTrazabilidad;
 import uy.edu.ort.utilities.LogTrazabilidadService;
-import uy.edu.ort.utilities.UsuarioService;
 
 /*
 * Esta clase se ejecuta cuando cualquier metodo de cualquier clase dentro de la carpeta

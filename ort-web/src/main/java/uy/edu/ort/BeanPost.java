@@ -5,7 +5,6 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import uy.edu.ort.model.Beans;
-import uy.edu.ort.utilities.ClusterService;
 import uy.edu.ort.utilities.ServicioBean;
 
 /**
@@ -23,12 +22,6 @@ public class BeanPost implements BeanPostProcessor {
 
     public void setServicioBean(ServicioBean servicioBean) {
         this.servicioBean = servicioBean;
-    }
-    
-    private ClusterService clusterService;
-
-    public void setClusterService(ClusterService clusterService) {
-        this.clusterService = clusterService;
     }
     
     @Override

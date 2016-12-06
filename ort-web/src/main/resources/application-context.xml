@@ -23,21 +23,15 @@
         <property name="logTrazabilidadService" ref="logTrazabilidadService" />
     </bean> 
     
-      
-    <!-- Beans Usuario -->
-            
-    <bean id="usuarioService" class="uy.edu.ort.utilities.UsuarioServiceImp" /> 
     
     <!-- Beans Service -->
       
     <bean id="beanPost" class="uy.edu.ort.BeanPost">
         <property name="servicioBean" ref="servicioBean" />
-        <property name="clusterService" ref="clusterService" />
     </bean>  
     
-    <!-- Beans Cluster -->
+    <!-- Beans Beans -->
             
-    <bean id="clusterService" class="uy.edu.ort.utilities.ClusterServiceImp" />   
     
     <bean id="servicioBean" class="uy.edu.ort.utilities.ServicioBeanImp" >
         <property name="beansDao" ref="beansDao"/>
