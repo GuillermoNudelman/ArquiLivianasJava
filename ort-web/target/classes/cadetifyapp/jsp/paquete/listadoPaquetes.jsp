@@ -17,7 +17,6 @@
             <th>Costo</th>
             <th>Peso (Kg)</th>
             <th>Descripcion</th>
-            <th>Descuento</th>
             <th>Id del cliente</th>
             <th>Editar</th>
             <th>Eliminar</th>
@@ -41,9 +40,6 @@
                     </td>
                     <td>
                         ${paquete.descripcion}
-                    </td>
-                    <td>
-                        ${paquete.descuento}
                     </td>
                     <td>
                         ${paquete.idCliente}

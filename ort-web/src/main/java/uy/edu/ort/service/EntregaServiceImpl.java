@@ -178,7 +178,7 @@ public class EntregaServiceImpl implements EntregaService {
         List<Entrega> entregas = listEntrega();
         for (int i = 0; i < entregas.size(); i++) {
             Entrega entrega = entregas.get(i);
-            if (entrega.getChofer().getId() == e.getIdChofer() && entrega.getFechaEntrega() == e.getFechaEntrega()) {
+            if (entrega.getChofer().getId() == e.getIdChofer() && e.getFechaEntrega().compareTo(entrega.getFechaEntrega())==0) {
                 cantEntregasChofer++;
             }
         }

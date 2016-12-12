@@ -33,10 +33,6 @@
                     <form:input path="descripcion" disabled="true" />
                 </p>
                 <p>
-                    <form:label for="descuento" path="descuento">Descuento</form:label><br/>
-                    <form:input path="descuento" disabled="true" />
-                </p>
-                <p>
                     <form:label for="idCliente" path="idCliente">Id del cliente</form:label><br/>
                     <form:input path="idCliente" disabled="true" />
                 </p>

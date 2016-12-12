@@ -25,10 +25,6 @@
                     <form:input path="distanciaRecorrerKm" required= "required" type="number" min="0" />
                 </p>
                 <p>
-                    <form:label for="importeEntrega" path="importeEntrega">Importe de la entrega</form:label><br/>
-                    <form:input path="importeEntrega" required= "required" type="number" min="0" />
-                </p>
-                <p>
                     <form:label for="idCamioneta" path="idCamioneta">Id de la camioneta</form:label><br/>
                     <form:input path="idCamioneta" required= "required" type="number" min="0" />
                 </p>

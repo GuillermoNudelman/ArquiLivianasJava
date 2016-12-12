@@ -21,24 +21,17 @@
 
     <bean id="trazabilidadBean" class="uy.edu.ort.aop.Trazabilidad">
         <property name="logTrazabilidadService" ref="logTrazabilidadService" />
-        <property name="usuarioService" ref="usuarioService" />
     </bean> 
     
-      
-    <!-- Beans Usuario -->
-            
-    <bean id="usuarioService" class="uy.edu.ort.utilities.UsuarioServiceImp" /> 
     
     <!-- Beans Service -->
       
     <bean id="beanPost" class="uy.edu.ort.BeanPost">
         <property name="servicioBean" ref="servicioBean" />
-        <property name="clusterService" ref="clusterService" />
     </bean>  
     
-    <!-- Beans Cluster -->
+    <!-- Beans Beans -->
             
-    <bean id="clusterService" class="uy.edu.ort.utilities.ClusterServiceImp" />   
     
     <bean id="servicioBean" class="uy.edu.ort.utilities.ServicioBeanImp" >
         <property name="beansDao" ref="beansDao"/>
@@ -169,8 +162,8 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
-                <!--<prop key="hibernate.hbm2ddl.auto">create</prop>-->
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
         
             </props>
         </property>

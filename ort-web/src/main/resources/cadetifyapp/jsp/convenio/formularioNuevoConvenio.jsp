@@ -25,10 +25,6 @@
                     <form:input path="importeInicialConvenio" required= "required" type="number" min="0" />
                 </p>
                 <p>
-                    <form:label for="importeActualConvenio" path="importeActualConvenio">Importe actual del convenio</form:label><br/>
-                    <form:input path="importeActualConvenio" required= "required" type="number" min="0" />
-                </p>
-                <p>
                     <form:label for="idCliente" path="idCliente">Id del cliente</form:label><br/>
                     <form:input path="idCliente" required= "required" type="number" min="0" />
                 </p>

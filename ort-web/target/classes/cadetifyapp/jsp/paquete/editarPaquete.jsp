@@ -34,10 +34,6 @@
                 <form:input path="descripcion" required= "required"/>
             </p>
             <p>
-                <form:label for="descuento" path="descuento">Descuento</form:label><br/>
-                <form:input path="descuento" required= "required" type="number" min="0"/>
-            </p>
-            <p>
                 <form:label for="idCliente" path="idCliente">Id del cliente</form:label><br/>
                 <form:input path="idCliente" required= "required" type="number" min="0"/>
             </p>
